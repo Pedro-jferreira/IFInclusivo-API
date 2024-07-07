@@ -20,6 +20,9 @@ public class MessageService {
     public MessageEntity getById(Long id) {
         return messageRepository.getReferenceById(id);
     }
+    public List<MessageEntity> getExchangedMessages(Long userEnvia, Long userRecebe){
+        return messageRepository.getExchangedMessages(userEnvia,userRecebe);
+    }
     public void deleteById(Long id) {
         messageRepository.deleteById(id);
     }

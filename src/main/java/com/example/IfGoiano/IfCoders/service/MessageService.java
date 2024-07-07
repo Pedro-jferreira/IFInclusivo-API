@@ -1,0 +1,29 @@
+package com.example.IfGoiano.IfCoders.service;
+
+import com.example.IfGoiano.IfCoders.entity.MessageEntity;
+import com.example.IfGoiano.IfCoders.repository.MessageRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+public class MessageService {
+    @Autowired
+    private MessageRepository messageRepository;
+    public MessageEntity createMessage(MessageEntity entity) {
+        return messageRepository.save(entity);
+    }
+    public List<MessageEntity> findAllMessagem() {
+        return messageRepository.findAll();
+    }
+    public MessageEntity getById(Long id) {
+        return messageRepository.getReferenceById(id);
+    }
+    public void deleteById(Long id) {
+        messageRepository.deleteById(id);
+    }
+
+
+
+}

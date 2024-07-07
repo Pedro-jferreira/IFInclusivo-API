@@ -26,11 +26,11 @@ public class MessageEntity implements Serializable {
     @NotNull
     private Boolean view;
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity userEnvia;
 
     @NotNull
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private UserEntity userRecebe;
 
     public MessageEntity() {

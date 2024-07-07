@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface MessageRepository extends JpaRepository<MessageEntity, Long> {
 
-@Query("SELECT m from MessageEntity m where  m.userEnvia = :userEnvia and m.userRecebe = :userRecebe"  )
+@Query("SELECT m from MessageEntity m where  m.userEnvia.id = :userEnvia and m.userRecebe.id = :userRecebe"  )
     List<MessageEntity> getExchangedMessages(@Param("userEnvia") Long userEnvia, @Param("userRecebe") Long userRecebe);
 }

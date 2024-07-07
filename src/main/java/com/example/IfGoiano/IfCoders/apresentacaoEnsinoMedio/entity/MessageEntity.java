@@ -1,4 +1,4 @@
-package com.example.IfGoiano.IfCoders.entity;
+package com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.entity;
 
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;

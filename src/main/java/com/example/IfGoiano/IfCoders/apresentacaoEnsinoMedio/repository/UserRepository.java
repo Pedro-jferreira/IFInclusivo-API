@@ -1,6 +1,6 @@
-package com.example.IfGoiano.IfCoders.repository;
+package com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.repository;
 
-import com.example.IfGoiano.IfCoders.entity.UserEntity;
+import com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

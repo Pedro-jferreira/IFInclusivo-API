@@ -1,7 +1,7 @@
-package com.example.IfGoiano.IfCoders.service;
+package com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.service;
 
-import com.example.IfGoiano.IfCoders.entity.MessageEntity;
-import com.example.IfGoiano.IfCoders.repository.MessageRepository;
+import com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.repository.MessageRepository;
+import com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.entity.MessageEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

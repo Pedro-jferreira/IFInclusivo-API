@@ -1,7 +1,7 @@
-package com.example.IfGoiano.IfCoders.controller;
+package com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.controller;
 
-import com.example.IfGoiano.IfCoders.entity.UserEntity;
-import com.example.IfGoiano.IfCoders.service.UserService;
+import com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.entity.UserEntity;
+import com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

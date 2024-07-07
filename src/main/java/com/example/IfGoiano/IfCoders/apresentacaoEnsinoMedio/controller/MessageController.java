@@ -1,7 +1,7 @@
-package com.example.IfGoiano.IfCoders.controller;
+package com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.controller;
 
-import com.example.IfGoiano.IfCoders.entity.MessageEntity;
-import com.example.IfGoiano.IfCoders.service.MessageService;
+import com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.entity.MessageEntity;
+import com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

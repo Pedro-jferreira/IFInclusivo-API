@@ -39,7 +39,7 @@ public class MessageController {
         messageService.deleteById(id);
         return ResponseEntity.noContent().build();
     }
-    @GetMapping("/sent{idE}/received{idR}")
+    @GetMapping("/{idE}/{idR}")
     public ResponseEntity<List<MessageEntity>> getExchangedMessages(@PathVariable Long idE,@PathVariable Long idR){
         return ResponseEntity.ok(messageService.getExchangedMessages(idE,idR));
     }

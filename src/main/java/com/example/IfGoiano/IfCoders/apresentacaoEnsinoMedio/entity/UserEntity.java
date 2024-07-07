@@ -1,11 +1,13 @@
 package com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
 
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "users")
 public class UserEntity implements Serializable {

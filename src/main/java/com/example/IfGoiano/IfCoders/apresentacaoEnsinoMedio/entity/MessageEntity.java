@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.apresentacaoEnsinoMedio.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.antlr.v4.runtime.misc.NotNull;
 
@@ -26,11 +27,13 @@ public class MessageEntity implements Serializable {
     @NotNull
     private Boolean view;
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JsonIgnore
     private UserEntity userEnvia;
 
     @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
+    @JsonIgnore
     private UserEntity userRecebe;
 
     public MessageEntity() {

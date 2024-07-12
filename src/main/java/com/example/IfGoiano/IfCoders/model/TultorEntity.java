@@ -6,17 +6,17 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class TutorEntity extends Usuario{
+public class TultorEntity extends Usuario{
 
     private String especialidade;
 
 
 
-    public TutorEntity() {
+    public TultorEntity() {
 
     }
 
-    public TutorEntity(Long id,String nome,String especialidade  ,String login, String senha, Long matricula, String biografia) {
+    public TultorEntity(Long id, String nome, String especialidade  , String login, String senha, Long matricula, String biografia) {
         super(id,nome,login,senha,matricula,biografia);
         this.especialidade = especialidade;
     }

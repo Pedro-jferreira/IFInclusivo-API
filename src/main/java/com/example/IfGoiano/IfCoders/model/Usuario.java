@@ -2,8 +2,10 @@ package com.example.IfGoiano.IfCoders.model;
 
 
 import javax.persistence.*;
+import java.util.List;
 
-@MappedSuperclass
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Usuario {
 
     @Id
@@ -15,6 +17,10 @@ public abstract class Usuario {
     private Long matricula;
     private String biografia;
     //private ConfigAce confiAcessibilidade;
+
+
+    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
+    private List<ResolveuProblema> resolveuProblemas;
 
 
     public Usuario() {

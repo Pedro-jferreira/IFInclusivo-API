@@ -19,10 +19,15 @@ public abstract class Usuario {
     //private ConfigAce confiAcessibilidade;
 
 
-    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
     private List<ResolveuProblema> resolveuProblemas;
 
-
+    @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
+    private List<Comentario> comentarios;
+    @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
+    private List<Like> likes;
+    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
+    private List<Publicacao> publicacaos;
     public Usuario() {
     }
 

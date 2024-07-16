@@ -1,68 +1,54 @@
 package com.example.IfGoiano.IfCoders.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serial;
+import com.example.IfGoiano.IfCoders.model.PK.ResolveuProblemaId;
+
+import javax.persistence.EmbeddedId;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
+@Table(name = "SolvedProblems")
 public class ResolveuProblema implements Serializable {
     private static final long serialVersionUID = 1L;
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @ManyToOne()
-    @NotNull
-    @JoinColumn(name = "comentario_id")
+    @EmbeddedId
+    private ResolveuProblemaId id;
 
-    private Comentario comentario;
-    @ManyToOne()
-    @NotNull
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
 
     public ResolveuProblema() {
     }
 
     public ResolveuProblema(Comentario comentario, Usuario usuario) {
-        this.comentario = comentario;
-        this.usuario = usuario;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+        this.id.setComentario(comentario);
+        this.id.setUsuario(usuario);
     }
 
     public Comentario getComentario() {
-        return comentario;
+        return this.id.getComentario();
     }
 
     public void setComentario(Comentario comentario) {
-        this.comentario = comentario;
+        this.id.setComentario(comentario);
     }
 
     public Usuario getUsuario() {
-        return usuario;
+        return this.id.getUsuario();
     }
 
     public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+        this.id.setUsuario(usuario);
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof ResolveuProblema that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(getComentario(), that.getComentario()) && Objects.equals(getUsuario(), that.getUsuario());
+        return Objects.equals(id, that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, getComentario(), getUsuario());
+        return Objects.hash(id);
     }
 }

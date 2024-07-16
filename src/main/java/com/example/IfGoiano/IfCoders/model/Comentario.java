@@ -1,5 +1,7 @@
 package com.example.IfGoiano.IfCoders.model;
 
+import com.example.IfGoiano.IfCoders.model.PK.ComentarioId;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serial;
@@ -9,29 +11,27 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Comments")
 public class Comentario implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private  Long id;
+    @EmbeddedId
+    private ComentarioId id;
+
 
     @NotNull
     private String content;
-
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "publicacao_id")
-    private Publicacao publicacao;
-
     @NotNull
     private LocalDateTime localDateTime = LocalDateTime.now();
 
     @ManyToOne()
-    @JoinColumn(name = "comentario_pai")
+    @JoinColumns({
+            @JoinColumn(name = "comentario_pai_publicacao_id", referencedColumnName = "publicacao_id"),
+            @JoinColumn(name = "comentario_pai_usuario_id", referencedColumnName = "usuario_id")
+    })
     private Comentario comentarioPai;
 
-    @OneToMany(mappedBy = "comentario",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.comentario",cascade = CascadeType.ALL)
     private List<ResolveuProblema>resolveuProblemas;
 
     @OneToMany(mappedBy = "comentarioPai",cascade = CascadeType.ALL, orphanRemoval = true)
@@ -42,19 +42,13 @@ public class Comentario implements Serializable {
 
     public Comentario(String content, Publicacao publicacao, Comentario comentarioPai, List<ResolveuProblema> resolveuProblemas, List<Comentario> comentariosFilhos) {
         this.content = content;
-        this.publicacao = publicacao;
+        this.id.setPublicacao(publicacao);
         this.comentarioPai = comentarioPai;
         this.resolveuProblemas = resolveuProblemas;
         this.comentariosFilhos = comentariosFilhos;
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public @NotNull String getContent() {
         return content;
@@ -65,11 +59,18 @@ public class Comentario implements Serializable {
     }
 
     public @NotNull Publicacao getPublicacao() {
-        return publicacao;
+        return this.id.getPublicacao();
     }
 
     public void setPublicacao(@NotNull Publicacao publicacao) {
-        this.publicacao = publicacao;
+        this.id.setPublicacao(publicacao);
+    }
+    public @NotNull Usuario getUsuario() {
+        return this.id.getUsuario();
+    }
+
+    public void setUsuario(@NotNull Usuario usuario) {
+        this.id.setUsuario(usuario);
     }
 
     public @NotNull LocalDateTime getLocalDateTime() {

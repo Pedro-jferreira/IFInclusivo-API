@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Entity
+@Table(name = "Publications")
 public class Publicacao implements Serializable {
     private static final long serialVersionUID = 1L;
 
@@ -31,11 +32,11 @@ public class Publicacao implements Serializable {
     private Topico topico;
 
     @NotNull
-    @OneToMany(mappedBy = "publicacao",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
     private List<Like> likes;
 
     @NotNull
-    @OneToMany(mappedBy = "publicacao",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
     private List<Comentario> comentarios;
 
     public Publicacao() {

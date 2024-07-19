@@ -4,9 +4,12 @@ package com.example.IfGoiano.IfCoders.model;
 import com.example.IfGoiano.IfCoders.model.Enums.Status;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
-@Table
+@Table(name = "libras")
 public class LibrasEntity {
 
     @Id
@@ -20,7 +23,8 @@ public class LibrasEntity {
     private String justificativa;
     private Status status;
     //private Usuario usuarioSugere;
-   // private Interprete interpreteAnalise;
+    @ManyToMany
+    private List<InterpreteEntity> interpreteAnalise = new ArrayList<>();
 
     public LibrasEntity() {}
 
@@ -80,6 +84,22 @@ public class LibrasEntity {
         return justificativa;
     }
 
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public List<InterpreteEntity> getInterpreteAnalise() {
+        return interpreteAnalise;
+    }
+
+    public void setInterpreteAnalise(List<InterpreteEntity> interpreteAnalise) {
+        this.interpreteAnalise = interpreteAnalise;
+    }
+
     public Long getId() {
         return id;
     }
@@ -90,5 +110,33 @@ public class LibrasEntity {
 
     public void setJustificativa(String justificativa) {
         this.justificativa = justificativa;
+    }
+
+    @Override
+    public String toString() {
+        return "LibrasEntity{" +
+                "justificativa='" + justificativa + '\'' +
+                ", status=" + status +
+                ", interpreteAnalise=" + interpreteAnalise +
+                ", foto='" + foto + '\'' +
+                ", video='" + video + '\'' +
+                ", url='" + url + '\'' +
+                ", palavra='" + palavra + '\'' +
+                ", id=" + id +
+                ", descricao='" + descricao + '\'' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LibrasEntity that = (LibrasEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(palavra, that.palavra) && Objects.equals(descricao, that.descricao) && Objects.equals(url, that.url) && Objects.equals(video, that.video) && Objects.equals(foto, that.foto) && Objects.equals(justificativa, that.justificativa) && status == that.status && Objects.equals(interpreteAnalise, that.interpreteAnalise);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, palavra, descricao, url, video, foto, justificativa, status, interpreteAnalise);
     }
 }

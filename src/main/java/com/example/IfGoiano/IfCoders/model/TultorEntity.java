@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Table
+@Table(name= "Tultor")
 public class TultorEntity extends Usuario{
 
     private String especialidade;

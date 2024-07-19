@@ -4,7 +4,7 @@ package com.example.IfGoiano.IfCoders.model;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "Aluno_napne")
 public class AlunoNapneEntity {
 
     @Id

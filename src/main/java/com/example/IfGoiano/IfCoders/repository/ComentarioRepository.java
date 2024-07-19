@@ -1,6 +1,12 @@
 package com.example.IfGoiano.IfCoders.repository;
 
+import com.example.IfGoiano.IfCoders.model.Comentario;
+import com.example.IfGoiano.IfCoders.model.PK.ComentarioId;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ComentarioRepository extends JpaRepository<ComentarioRepository,Long> {
+import java.util.List;
+
+public interface ComentarioRepository extends JpaRepository<Comentario, ComentarioId> {
+
+    List<ComentarioRepository> findByComentarioPai(Comentario comentarioPai);
 }

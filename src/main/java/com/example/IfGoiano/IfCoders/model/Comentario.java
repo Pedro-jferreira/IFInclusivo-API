@@ -48,7 +48,13 @@ public class Comentario implements Serializable {
         this.comentariosFilhos = comentariosFilhos;
     }
 
+    public ComentarioId getId() {
+        return id;
+    }
 
+    public void setId(ComentarioId id) {
+        this.id = id;
+    }
 
     public @NotNull String getContent() {
         return content;

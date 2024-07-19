@@ -14,8 +14,8 @@ public class TestConfig implements CommandLineRunner {
     ComentarioService comentarioService;
     @Override
     public void run(String... args) throws Exception {
-        Comentario comentario = new Comentario("oii",new Publicacao(),null,null,null);
-        comentarioService.save(comentario);
+//        Comentario comentario = new Comentario("oii",new Publicacao(),null,null,null);
+//        comentarioService.save(comentario);
 
     }
 }

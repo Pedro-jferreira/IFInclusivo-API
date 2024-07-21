@@ -17,7 +17,7 @@ public class TultorEntity extends Usuario{
     }
 
     public TultorEntity(Long id, String nome, String especialidade  , String login, String senha, Long matricula, String biografia) {
-        super(id,nome,login,senha,matricula,biografia);
+        super(nome,login,senha,matricula,biografia);
         this.especialidade = especialidade;
     }
 

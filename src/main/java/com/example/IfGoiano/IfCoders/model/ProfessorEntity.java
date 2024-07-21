@@ -15,8 +15,8 @@ public class ProfessorEntity extends Usuario {
     }
 
 
-    public ProfessorEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, String formacao) {
-        super(id, nome, login, senha, matricula, biografia);
+    public ProfessorEntity( String nome, String login, String senha, Long matricula, String biografia, String formacao) {
+        super(nome, login, senha, matricula, biografia);
         this.formacao = formacao;
     }
 

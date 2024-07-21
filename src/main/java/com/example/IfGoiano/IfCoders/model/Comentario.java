@@ -16,7 +16,7 @@ public class Comentario implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    private ComentarioId id;
+    private ComentarioId id = new ComentarioId();
 
 
     @NotNull
@@ -38,6 +38,12 @@ public class Comentario implements Serializable {
     private List<Comentario> comentariosFilhos;
 
     public Comentario() {
+    }
+
+    public Comentario(String content, Publicacao publicacao, Usuario usuario) {
+        this.content = content;
+        this.id.setUsuario(usuario);
+        this.id.setPublicacao(publicacao);
     }
 
     public Comentario(String content, Publicacao publicacao, Comentario comentarioPai, List<ResolveuProblema> resolveuProblemas, List<Comentario> comentariosFilhos) {

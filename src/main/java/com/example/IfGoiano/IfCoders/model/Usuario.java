@@ -31,8 +31,8 @@ public abstract class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id, String nome, String login, String senha, Long matricula, String biografia) {
-        this.id = id;
+    public Usuario( String nome, String login, String senha, Long matricula, String biografia) {
+
         this.nome = nome;
         this.login = login;
         this.senha = senha;

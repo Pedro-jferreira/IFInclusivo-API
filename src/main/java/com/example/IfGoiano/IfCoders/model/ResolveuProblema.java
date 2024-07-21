@@ -13,7 +13,7 @@ import java.util.Objects;
 public class ResolveuProblema implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    private ResolveuProblemaId id;
+    private ResolveuProblemaId id = new ResolveuProblemaId();
 
 
     public ResolveuProblema() {

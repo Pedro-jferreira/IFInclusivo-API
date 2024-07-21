@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Like implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    private LikeId id;
+    private LikeId id = new LikeId();
 
 
 

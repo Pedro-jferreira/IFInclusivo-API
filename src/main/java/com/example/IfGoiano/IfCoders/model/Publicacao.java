@@ -21,7 +21,7 @@ public class Publicacao implements Serializable {
     private String urlFoto;
     private LocalDateTime localDateTime = LocalDateTime.now();
 
-    @NotNull
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
@@ -31,15 +31,22 @@ public class Publicacao implements Serializable {
     @JoinColumn(name = "topico_id")
     private Topico topico;
 
-    @NotNull
+
     @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
     private List<Like> likes;
 
-    @NotNull
+
     @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
     private List<Comentario> comentarios;
 
     public Publicacao() {
+    }
+
+    public Publicacao(String text, String urlVideo, String urlFoto, Usuario usuario) {
+        this.text = text;
+        this.urlVideo = urlVideo;
+        this.urlFoto = urlFoto;
+        this.usuario = usuario;
     }
 
     public Publicacao(String text, String urlVideo, String urlFoto, LocalDateTime localDateTime, Usuario usuario, List<Like> likes, List<Comentario> comentarios) {
@@ -92,19 +99,19 @@ public class Publicacao implements Serializable {
         this.localDateTime = localDateTime;
     }
 
-    public @NotNull Usuario getUsuario() {
+    public  Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(@NotNull Usuario usuario) {
+    public void setUsuario( Usuario usuario) {
         this.usuario = usuario;
     }
 
-    public @NotNull List<Like> getLikes() {
+    public  List<Like> getLikes() {
         return likes;
     }
 
-    public void setLikes(@NotNull List<Like> likes) {
+    public void setLikes( List<Like> likes) {
         this.likes = likes;
     }
 
@@ -112,7 +119,7 @@ public class Publicacao implements Serializable {
         return comentarios;
     }
 
-    public void setComentarios(@NotNull List<Comentario> comentarios) {
+    public void setComentarios( List<Comentario> comentarios) {
         this.comentarios = comentarios;
     }
 

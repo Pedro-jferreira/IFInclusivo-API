@@ -38,4 +38,16 @@ public class ComentarioId implements Serializable {
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ComentarioId that)) return false;
+        return Objects.equals(getPublicacao(), that.getPublicacao()) && Objects.equals(getUsuario(), that.getUsuario());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getPublicacao(), getUsuario());
+    }
 }

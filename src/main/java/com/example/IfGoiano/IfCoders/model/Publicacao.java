@@ -1,9 +1,14 @@
 package com.example.IfGoiano.IfCoders.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -33,11 +38,11 @@ public class Publicacao implements Serializable {
 
 
     @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
-    private List<Like> likes;
+    private List<Like> likes = new ArrayList<>();
 
 
     @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
-    private List<Comentario> comentarios;
+    private List<Comentario> comentarios = new ArrayList<>();
 
     public Publicacao() {
     }
@@ -122,6 +127,31 @@ public class Publicacao implements Serializable {
     public void setComentarios( List<Comentario> comentarios) {
         this.comentarios = comentarios;
     }
+
+    public Topico getTopico() {
+        return topico;
+    }
+
+    public void setTopico(Topico topico) {
+        this.topico = topico;
+    }
+    public void addLikeToPublicacao(Like like){
+        like.setPublicacao(this);
+        getLikes().add(like);
+    }
+    public void removeLikeFromPublicacao(Like like){
+        like.setPublicacao(null);
+        getLikes().remove(like);
+    }
+    public void addCommentToPublicacao(Comentario comentario){
+        comentario.setPublicacao(this);
+        getComentarios().add(comentario);
+    }
+    public void removeCommentFromPublicacao(Comentario comentario){
+        comentario.setPublicacao(null);
+        getComentarios().remove(comentario);
+    }
+
 
     @Override
     public boolean equals(Object o) {

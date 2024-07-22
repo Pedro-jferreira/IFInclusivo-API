@@ -1,8 +1,12 @@
 package com.example.IfGoiano.IfCoders.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -25,13 +29,14 @@ public class Topico implements Serializable {
     private String categoria;
 
     @OneToMany(mappedBy = "topico")
-    private List<Publicacao> publicacoes;
+
+    private List<Publicacao> publicacoes = new ArrayList<>();
 
 
     public Topico() {
     }
 
-    public Topico(String tema, String descripcion, String categoria, List<Publicacao> publicacoes) {
+    public Topico(String tema, String descripcion, String categoria) {
         this.tema = tema;
         this.descripcion = descripcion;
         this.categoria = categoria;
@@ -72,6 +77,14 @@ public class Topico implements Serializable {
 
     public List<Publicacao> getPublicacoes() {
         return publicacoes;
+    }
+    public void addPublicacao(Publicacao publicacao){
+        publicacao.setTopico(this);
+        getPublicacoes().add(publicacao);
+    }
+    public void removePublicacao(Publicacao publicacao){
+        publicacao.setTopico(null);
+        getPublicacoes().remove(publicacao);
     }
 
     public void setPublicacoes(List<Publicacao> publicacoes) {

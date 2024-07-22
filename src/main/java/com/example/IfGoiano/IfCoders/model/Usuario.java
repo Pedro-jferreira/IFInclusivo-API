@@ -82,11 +82,63 @@ public abstract class Usuario {
         this.matricula = matricula;
     }
 
+    public List<ResolveuProblema> getResolveuProblemas() {
+        return resolveuProblemas;
+    }
+
+    public void setResolveuProblemas(List<ResolveuProblema> resolveuProblemas) {
+        this.resolveuProblemas = resolveuProblemas;
+    }
+
+    public List<Comentario> getComentarios() {
+        return comentarios;
+    }
+
+    public void setComentarios(List<Comentario> comentarios) {
+        this.comentarios = comentarios;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(List<Like> likes) {
+        this.likes = likes;
+    }
+
+    public List<Publicacao> getPublicacaos() {
+        return publicacaos;
+    }
+
+    public void setPublicacaos(List<Publicacao> publicacaos) {
+        this.publicacaos = publicacaos;
+    }
+
     public String getBiografia() {
         return biografia;
     }
 
     public void setBiografia(String biografia) {
         this.biografia = biografia;
+    }
+
+    public void removeLikeFromUser(Like like) {
+        like.setUsuario(null);
+        getLikes().remove(like);
+    }
+
+    public void addLikeToUsuario(Like like) {
+        like.setUsuario(this);
+        getLikes().add(like);
+    }
+
+    public void removeCommentFromUser(Comentario comentario) {
+        comentario.setUsuario(null);
+        getComentarios().remove(comentario);
+    }
+
+    public void addCommentToUser(Comentario comentario) {
+        comentario.setUsuario(this);
+        getComentarios().add(comentario);
     }
 }

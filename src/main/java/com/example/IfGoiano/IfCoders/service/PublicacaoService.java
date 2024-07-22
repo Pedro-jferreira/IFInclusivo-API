@@ -2,7 +2,6 @@ package com.example.IfGoiano.IfCoders.service;
 
 import com.example.IfGoiano.IfCoders.model.Comentario;
 import com.example.IfGoiano.IfCoders.model.Like;
-import com.example.IfGoiano.IfCoders.model.PK.LikeId;
 import com.example.IfGoiano.IfCoders.model.Publicacao;
 import com.example.IfGoiano.IfCoders.model.Usuario;
 import com.example.IfGoiano.IfCoders.repository.PublicacaoRepositoy;

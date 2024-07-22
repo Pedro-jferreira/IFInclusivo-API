@@ -1,6 +1,8 @@
 package com.example.IfGoiano.IfCoders.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 
@@ -18,14 +20,19 @@ public abstract class Usuario {
     private String biografia;
     //private ConfigAce confiAcessibilidade;
 
-
+    @JsonManagedReference
     @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
     private List<ResolveuProblema> resolveuProblemas;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
     private List<Comentario> comentarios;
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
     private List<Like> likes;
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
     private List<Publicacao> publicacaos;
     public Usuario() {

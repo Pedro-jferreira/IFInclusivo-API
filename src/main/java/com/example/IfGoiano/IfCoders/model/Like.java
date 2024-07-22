@@ -25,6 +25,13 @@ public class Like implements Serializable {
     }
 
 
+    public LikeId getId() {
+        return id;
+    }
+
+    public void setId(LikeId id) {
+        this.id = id;
+    }
 
     public @NotNull Usuario getUsuario() {
         return this.id.getUsuario();

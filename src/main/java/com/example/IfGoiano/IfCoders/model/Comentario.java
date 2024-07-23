@@ -1,13 +1,9 @@
 package com.example.IfGoiano.IfCoders.model;
 
 import com.example.IfGoiano.IfCoders.model.PK.ComentarioId;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,7 +24,7 @@ public class Comentario implements Serializable {
     @NotNull
     private LocalDateTime localDateTime;
 
-    @JsonBackReference
+
     @ManyToOne()
     @JoinColumns({
             @JoinColumn(name = "comentario_pai_publicacao_id", referencedColumnName = "publicacao_id"),
@@ -36,11 +32,11 @@ public class Comentario implements Serializable {
     })
     private Comentario comentarioPai;
 
-    @JsonManagedReference
+
     @OneToMany(mappedBy = "id.comentario",cascade = CascadeType.ALL)
     private List<ResolveuProblema>resolveuProblemas = new ArrayList<>();
 
-    @JsonManagedReference
+
     @OneToMany(mappedBy = "comentarioPai",cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comentario> comentariosFilhos = new ArrayList<>();
 

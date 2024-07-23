@@ -29,7 +29,6 @@ public class Topico implements Serializable {
     private String categoria;
 
     @OneToMany(mappedBy = "topico")
-    @JsonManagedReference
     private List<Publicacao> publicacoes = new ArrayList<>();
 
 

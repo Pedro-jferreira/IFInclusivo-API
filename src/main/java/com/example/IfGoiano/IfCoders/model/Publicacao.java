@@ -26,21 +26,21 @@ public class Publicacao implements Serializable {
     private String urlFoto;
     private LocalDateTime localDateTime = LocalDateTime.now();
 
-    @JsonBackReference
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
 
-    @JsonBackReference
+
     @ManyToOne
     @JoinColumn(name = "topico_id")
     private Topico topico;
 
-    @JsonManagedReference
+
     @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
 
-    @JsonManagedReference
+
     @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
     private List<Comentario> comentarios = new ArrayList<>();
 

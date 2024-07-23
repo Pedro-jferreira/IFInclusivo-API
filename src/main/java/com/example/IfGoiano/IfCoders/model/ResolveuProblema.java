@@ -24,6 +24,14 @@ public class ResolveuProblema implements Serializable {
         this.id.setUsuario(usuario);
     }
 
+    public ResolveuProblemaId getId() {
+        return id;
+    }
+
+    public void setId(ResolveuProblemaId id) {
+        this.id = id;
+    }
+
     public Comentario getComentario() {
         return this.id.getComentario();
     }

@@ -104,7 +104,7 @@ public class LikeController {
             return ResponseEntity.ok().body(likeService.update(id, likeDetails));
 
         } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while updating the publication", e);
+            throw new InternalServerErrorException("Database error occurred while updating the like", e);
         }
     }
 

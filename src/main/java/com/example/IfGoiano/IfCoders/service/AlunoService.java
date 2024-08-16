@@ -1,61 +1,77 @@
 package com.example.IfGoiano.IfCoders.service;
 
 import com.example.IfGoiano.IfCoders.model.Aluno;
+import com.example.IfGoiano.IfCoders.model.Usuario;
 import com.example.IfGoiano.IfCoders.repository.AlunoRepository;
+import com.example.IfGoiano.IfCoders.service.Exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.service.Exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AlunoService {
-    private final AlunoRepository alunoRepository;
 
     @Autowired
-    public AlunoService(AlunoRepository alunoRepository) {
-        this.alunoRepository = alunoRepository;
-    }
+    private AlunoRepository alunoRepository;
 
-    // Método para buscar todos os alunos
-    public List<Aluno> findAllAlunos() {
-        return alunoRepository.findAll();
-    }
-
-    // Método para buscar um aluno por ID
-    public Aluno findAlunoById(Long id) {
-        return alunoRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException(id));
-    }
-
-    // Método para salvar um aluno
-    public Aluno saveAluno(Aluno aluno) {
-        // Implementar lógica de validação, se necessário
-        return alunoRepository.save(aluno);
-    }
-
-    // Método para atualizar um aluno
-    public Aluno updateAluno(Long id, Aluno alunoAtualizado) {
-        Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-
-        // Atualizar os campos do aluno com os valores do alunoAtualizado
-        aluno.setNome(alunoAtualizado.getNome());
-        aluno.setLogin(alunoAtualizado.getLogin());
-        aluno.setSenha(alunoAtualizado.getSenha());
-        aluno.setMatricula(alunoAtualizado.getMatricula());
-        aluno.setBiografia(alunoAtualizado.getBiografia());
-        aluno.setConfigAcessibilidade(alunoAtualizado.getConfigAcessibilidade());
-        aluno.setCurso(alunoAtualizado.getCurso());
-
-        // Salvar e retornar o aluno atualizado
-        return alunoRepository.save(aluno);
-    }
-
-    // Método para deletar um aluno por ID
-    public void deleteAluno(Long id) {
-        if (!alunoRepository.existsById(id)) {
-            throw new ResourceNotFoundException(id);
+    public List<Aluno> findAll() {
+        try {
+            return alunoRepository.findAll();
+        } catch (DataBaseException e) {
+            throw new DataBaseException("Database error occurred while fetching all alunos: " + e);
         }
-        alunoRepository.deleteById(id);
+    }
+
+    public Aluno findById(Long id) {
+        try {
+            Optional<Aluno> aluno = alunoRepository.findById(id);
+            return aluno.orElseThrow(() -> new ResourceNotFoundException(id));
+        } catch (DataBaseException e) {
+            throw new DataBaseException("Database error occurred while fetching user: " + e);
+        }
+    }
+
+    @Transactional
+    public Aluno save(Aluno aluno) {
+        try {
+            return alunoRepository.save(aluno);
+        } catch (DataBaseException e) {
+            throw new DataBaseException("Database error occurred while saving new aluno: " + e);
+        }
+    }
+
+    @Transactional
+    public Aluno update(Long id, Aluno alunoDetails) {
+        try {
+            Aluno aluno = alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+            updateAlunoDetails(aluno, alunoDetails);
+            return alunoRepository.save(aluno);
+        } catch (DataAccessException e) {
+            throw new DataBaseException("Database error occurred while updating the aluno: " + e);
+        }
+    }
+
+    @Transactional
+    public void delete(Long id) {
+        try {
+            Aluno aluno = findById(id);
+            alunoRepository.delete(aluno);
+        } catch (DataAccessException e) {
+            throw new DataBaseException("Database error occurred while deleting the aluno: " + e);
+        }
+    }
+
+    public void updateAlunoDetails (Aluno aluno, Aluno alunoDetails){
+        aluno.setNome(alunoDetails.getNome());
+        aluno.setLogin(alunoDetails.getLogin());
+        aluno.setSenha(alunoDetails.getSenha());
+        aluno.setMatricula(alunoDetails.getMatricula());
+        aluno.setBiografia(alunoDetails.getBiografia());
+        aluno.setConfigAcessibilidade(alunoDetails.getConfigAcessibilidade());
     }
 }

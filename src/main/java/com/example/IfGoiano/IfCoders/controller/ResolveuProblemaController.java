@@ -53,15 +53,10 @@ public class ResolveuProblemaController {
                     content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<ResolveuProblema> findById(@PathVariable ResolveuProblemaId id) {
-        try {
+
             ResolveuProblema resolveuProblema = resolveuProblemaService.findById(id);
-
-            if (resolveuProblema == null) throw new ResourceNotFoundException(id);
-
             return ResponseEntity.ok().body(resolveuProblema);
-        }  catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while fetching solvedProblem with ID: " + id, e);
-        }
+
     }
 
     @Operation(summary = "Criar um novo ResolveuProblema")
@@ -73,14 +68,10 @@ public class ResolveuProblemaController {
                     content = @Content) })
     @PostMapping
     public ResponseEntity<ResolveuProblema> create(@RequestBody ResolveuProblema resolveuProblema) {
-        try {
             ResolveuProblema resolveuProblema1 = resolveuProblemaService.save(resolveuProblema);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(resolveuProblema1.getId()).toUri();
             return ResponseEntity.created(location).body(resolveuProblema1);
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while saving the solvedProblem", e);
-        }
     }
 
     @Operation(summary = "Atualizar um ResolveuProblema por ID")
@@ -94,17 +85,7 @@ public class ResolveuProblemaController {
                     content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<ResolveuProblema> update(@PathVariable ResolveuProblemaId id, @RequestBody ResolveuProblema resolveuProblemaDetails) {
-        try {
-            if (resolveuProblemaService.findById(id) == null) throw new ResourceNotFoundException(id);
-
-            if (resolveuProblemaDetails == null)
-                throw new BadRequestException("solvedProblem Details cannot be null");
-
             return ResponseEntity.ok().body(resolveuProblemaService.update(id, resolveuProblemaDetails));
-
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while updating the solvedProblem", e);
-        }
     }
 
     @Operation(summary = "Excluir um ResolveuProblema por ID")
@@ -117,23 +98,13 @@ public class ResolveuProblemaController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable ResolveuProblemaId id, @RequestHeader("Authorization") String authToken) {
-        try {
+
             ResolveuProblema resolveuProblema = resolveuProblemaService.findById(id);
-            if (resolveuProblema == null) throw new ResourceNotFoundException(id);
-
-            if (!isUserAuthorizedToDelete(authToken,resolveuProblema))
-                throw new UnauthorizedException("You are not authorized to delete this solvedProblem");
-
-            resolveuProblemaService.delete(id);
+       resolveuProblemaService.delete(id);
             return ResponseEntity.noContent().build();
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while deleting the solvedProblem", e);
-        }
+
     }
 
-    private boolean isUserAuthorizedToDelete(String authToken, ResolveuProblema resolveuProblema) {
-        // Lógica para verificar se o usuário está autorizado a deletar o resolveuProblema
-        return true;
-    }
+
 
 }

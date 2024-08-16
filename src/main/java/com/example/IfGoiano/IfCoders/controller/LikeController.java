@@ -35,12 +35,10 @@ public class LikeController {
     })
     @GetMapping
     public ResponseEntity<List<Like>> findAll() {
-        try {
+
             List<Like> likes = likeService.findAll();
             return ResponseEntity.ok().body(likes);
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while fetching publications", e);
-        }
+
     }
 
     @Operation(summary = "Buscar Like por ID")
@@ -54,15 +52,8 @@ public class LikeController {
                     content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<Like> findById(@PathVariable LikeId id) {
-        try {
             Like like = likeService.findById(id);
-
-            if (like == null) throw new ResourceNotFoundException(id);
-
             return ResponseEntity.ok().body(like);
-        }  catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while fetching like with ID: " + id, e);
-        }
     }
 
     @Operation(summary = "Criar uma nova Like")
@@ -74,14 +65,10 @@ public class LikeController {
                     content = @Content) })
     @PostMapping
     public ResponseEntity<Like> create(@RequestBody Like like) {
-        try {
             Like savedlike = likeService.save(like);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(savedlike.getId()).toUri();
             return ResponseEntity.created(location).body(savedlike);
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while saving the like", e);
-        }
     }
 
     @Operation(summary = "Atualizar um like por ID")
@@ -95,17 +82,7 @@ public class LikeController {
                     content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<Like> update(@PathVariable LikeId id, @RequestBody Like likeDetails) {
-        try {
-            if (likeService.findById(id) == null) throw new ResourceNotFoundException(id);
-
-            if (likeDetails == null)
-                throw new BadRequestException("LikeDetails cannot be null");
-
             return ResponseEntity.ok().body(likeService.update(id, likeDetails));
-
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while updating the like", e);
-        }
     }
 
     @Operation(summary = "Excluir uma Like por ID")
@@ -118,24 +95,9 @@ public class LikeController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable LikeId id, @RequestHeader("Authorization") String authToken) {
-        try {
             Like like = likeService.findById(id);
-            if (like == null) throw new ResourceNotFoundException(id);
-
-            if (!isUserAuthorizedToDelete(authToken,like))
-                throw new UnauthorizedException("You are not authorized to delete this like");
-
             likeService.delete(id);
             return ResponseEntity.noContent().build();
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while deleting the like", e);
-        }
     }
-
-    private boolean isUserAuthorizedToDelete(String authToken, Like like) {
-        // Lógica para verificar se o usuário está autorizado a deletar o comentário
-        return true;
-    }
-
 
 }

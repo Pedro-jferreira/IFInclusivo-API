@@ -36,11 +36,7 @@ public class TopicoController {
     })
     @GetMapping
     public ResponseEntity<List<Topico>> findAll() {
-        try {
             return ResponseEntity.ok().body(topicoService.findAll());
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while fetching topics", e);
-        }
     }
 
     @Operation(summary = "Buscar Topico por ID")
@@ -54,15 +50,8 @@ public class TopicoController {
                     content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<Topico> findById(@PathVariable Long id) {
-        try {
             Topico topico = topicoService.findById(id);
-
-            if (topico == null) throw new ResourceNotFoundException(id);
-
             return ResponseEntity.ok().body(topico);
-        }  catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while fetching topic with ID: " + id, e);
-        }
     }
 
     @Operation(summary = "Criar um novo Topico")
@@ -74,14 +63,11 @@ public class TopicoController {
                     content = @Content) })
     @PostMapping
     public ResponseEntity<Topico> create(@RequestBody Topico topico) {
-        try {
+
             Topico topico1 = topicoService.save(topico);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(topico1.getId()).toUri();
             return ResponseEntity.created(location).body(topico1);
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while saving the topic", e);
-        }
     }
 
     @Operation(summary = "Atualizar um Topico por ID")
@@ -95,17 +81,7 @@ public class TopicoController {
                     content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<Topico> update(@PathVariable Long id, @RequestBody Topico topicoDetails) {
-        try {
-            if (topicoService.findById(id) == null) throw new ResourceNotFoundException(id);
-
-            if (topicoDetails == null)
-                throw new BadRequestException("topic Details cannot be null");
-
             return ResponseEntity.ok().body(topicoService.update(id, topicoDetails));
-
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while updating the topic", e);
-        }
     }
 
     @Operation(summary = "Excluir um Topico por ID")
@@ -118,23 +94,10 @@ public class TopicoController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
-        try {
-            Topico topico = topicoService.findById(id);
-            if (topico == null) throw new ResourceNotFoundException(id);
-
-            if (!isUserAuthorizedToDelete(authToken,topico))
-                throw new UnauthorizedException("You are not authorized to delete this topic");
-
             topicoService.delete(id);
             return ResponseEntity.noContent().build();
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while deleting the topic", e);
-        }
     }
 
-    private boolean isUserAuthorizedToDelete(String authToken, Topico topico) {
-        // Lógica para verificar se o usuário está autorizado a deletar o comentário
-        return true;
-    }
+
 
 }

@@ -39,6 +39,11 @@ public class GlobalExceptionHandler {
         ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), "Conflict");
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
+    @ExceptionHandler(DataBaseException.class)
+    public ResponseEntity<ExceptionResponse> handleDataBaseException(DataBaseException ex) {
+        ExceptionResponse response = new ExceptionResponse(new Date(), ex.getMessage(), "Database error");
+        return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ExceptionResponse> handleGenericException(Exception ex) {

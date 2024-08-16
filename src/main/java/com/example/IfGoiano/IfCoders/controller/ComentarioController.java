@@ -34,12 +34,9 @@ public class ComentarioController {
                     content = @Content) })
     @GetMapping
     public ResponseEntity<List<Comentario>> findAll() {
-        try {
+
             List<Comentario> comentarios = comentarioService.findAll();
             return ResponseEntity.ok().body(comentarios);
-        } catch (Exception e) {
-            throw new InternalServerErrorException("An unexpected error occurred while fetching comentarios", e);
-        }
     }
 
     @Operation(summary = "bscar comentario por ID")
@@ -53,15 +50,10 @@ public class ComentarioController {
                     content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<Comentario> findById(@PathVariable ComentarioId id) {
-        try {
+
             Comentario comentario = comentarioService.findById(id);
-
-            if (comentario == null) throw new ResourceNotFoundException(id);
-
             return ResponseEntity.ok().body(comentario);
-        }catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while fetching comment with ID: " + id, e);
-        }
+
     }
 
     @Operation(summary = "Criar um novo comentário")
@@ -73,17 +65,10 @@ public class ComentarioController {
                     content = @Content) })
     @PostMapping
     public ResponseEntity<Comentario> create(@RequestBody Comentario comentario) {
-        try {
-            if (comentario == null || comentario.getContent().isEmpty()) {
-                throw new BadRequestException("Comentario cannot be null or empty");
-            }
             Comentario savedComentario = comentarioService.save(comentario);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(savedComentario.getId()).toUri();
             return ResponseEntity.created(location).body(savedComentario);
-        } catch (Exception e) {
-            throw new InternalServerErrorException("An unexpected error occurred while saving the comentario", e);
-        }
     }
 
     @Operation(summary = "Atualizar um comentário por ID")
@@ -97,18 +82,7 @@ public class ComentarioController {
                     content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<Comentario> update(@PathVariable ComentarioId id, @RequestBody Comentario comentarioDetails) {
-        try {
-            if (comentarioService.findById(id) == null)
-                throw new ResourceNotFoundException(id);
-
-            if (comentarioDetails == null || comentarioDetails.getContent().isEmpty())
-                throw new BadRequestException("comment details cannot be null or empty");
-
             return ResponseEntity.ok().body(comentarioService.update(id, comentarioDetails));
-
-        } catch (DataBaseException e) {
-                throw new InternalServerErrorException("Database error occurred while updating the comment", e);
-            }
     }
 
     @Operation(summary = "Excluir um comentário por ID")
@@ -121,23 +95,9 @@ public class ComentarioController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable ComentarioId id, @RequestHeader("Authorization") String authToken) {
-        try {
-            Comentario comentario = comentarioService.findById(id);
-            if (comentario == null) throw new ResourceNotFoundException(id);
-
-            if (!isUserAuthorizedToDelete(authToken, comentario))
-                throw new UnauthorizedException("You are not authorized to delete this comment");
-
         comentarioService.delete(id);
         return ResponseEntity.noContent().build();
-        } catch (DataBaseException e) {
-            throw new InternalServerErrorException("Database error occurred while deleting the comment", e);
-        }
     }
 
-    private boolean isUserAuthorizedToDelete(String authToken, Comentario comentario) {
-        // Lógica para verificar se o usuário está autorizado a deletar o comentário
-        return true;
-    }
 
 }

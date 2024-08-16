@@ -5,13 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
-@Table(name = "interprete")
-public class InterpreteEntity extends TultorEntity{
+@Table
+public class InterpreteEntity extends Tutor {
 
     private Double salary;
 
@@ -21,45 +22,9 @@ public class InterpreteEntity extends TultorEntity{
     public InterpreteEntity() {
     }
 
-
-    public InterpreteEntity(Long id, String nome, String especialidade, String login, String senha, Long matricula, String biografia) {
-        super(id, nome, especialidade, login, senha, matricula, biografia);
-    }
-
-    public Double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Double salary) {
+    public InterpreteEntity(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidade configAcessibilidade, String especialidade, Double salary) {
+        super(nome, login, senha, matricula, biografia, configAcessibilidade, especialidade);
         this.salary = salary;
-    }
 
-    public List<LibrasEntity> getLibras() {
-        return libras;
-    }
-
-    public void setLibras(List<LibrasEntity> libras) {
-        this.libras = libras;
-    }
-
-    @Override
-    public String toString() {
-        return "InterpreteEntity{" +
-                "salary=" + salary +
-                ", libras=" + libras +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        InterpreteEntity that = (InterpreteEntity) o;
-        return Objects.equals(salary, that.salary) && Objects.equals(libras, that.libras);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(salary, libras);
-    }
+   }
 }

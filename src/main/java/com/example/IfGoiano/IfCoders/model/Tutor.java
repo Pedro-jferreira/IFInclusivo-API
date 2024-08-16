@@ -3,21 +3,20 @@ package com.example.IfGoiano.IfCoders.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
-@Table(name= "Tultor")
-public class TultorEntity extends Usuario{
+@Table(name= "Tutor")
+public class Tutor extends Usuario{
 
     private String especialidade;
 
-
-
-    public TultorEntity() {
+    public Tutor () {
 
     }
 
-    public TultorEntity(Long id, String nome, String especialidade  , String login, String senha, Long matricula, String biografia) {
-        super(nome,login,senha,matricula,biografia);
+    public Tutor(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidade configAcessibilidade, String especialidade) {
+        super(nome, login, senha, matricula, biografia, configAcessibilidade);
         this.especialidade = especialidade;
     }
 

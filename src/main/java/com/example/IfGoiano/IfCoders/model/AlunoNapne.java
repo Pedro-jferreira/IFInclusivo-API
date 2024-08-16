@@ -5,11 +5,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Aluno_napne")
-public class AlunoNapneEntity {
+public class AlunoNapne extends Aluno {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String condicao;
     private String laudo;
     private String necessidadeEspecial;
@@ -18,25 +15,18 @@ public class AlunoNapneEntity {
     private String situacao;
 
 
-    public AlunoNapneEntity() {
+    public AlunoNapne() {
+
     }
 
-    public AlunoNapneEntity(Long id, String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento, String situacao) {
-        this.id = id;
+    public AlunoNapne(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidade configAcessibilidade, Curso curso, String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento, String situacao) {
+        super(nome, login, senha, matricula, biografia, configAcessibilidade, curso);
         this.condicao = condicao;
         this.laudo = laudo;
         this.necessidadeEspecial = necessidadeEspecial;
         this.necessidadeEscolar = necessidadeEscolar;
         this.acompanhamento = acompanhamento;
         this.situacao = situacao;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getCondicao() {

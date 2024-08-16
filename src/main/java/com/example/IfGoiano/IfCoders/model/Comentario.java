@@ -4,9 +4,9 @@ import com.example.IfGoiano.IfCoders.model.PK.ComentarioId;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -16,13 +16,14 @@ public class Comentario implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
-    private ComentarioId id;
+    private ComentarioId id = new ComentarioId();
 
 
     @NotNull
     private String content;
     @NotNull
-    private LocalDateTime localDateTime = LocalDateTime.now();
+    private LocalDateTime localDateTime;
+
 
     @ManyToOne()
     @JoinColumns({
@@ -31,13 +32,22 @@ public class Comentario implements Serializable {
     })
     private Comentario comentarioPai;
 
+
     @OneToMany(mappedBy = "id.comentario",cascade = CascadeType.ALL)
-    private List<ResolveuProblema>resolveuProblemas;
+    private List<ResolveuProblema>resolveuProblemas = new ArrayList<>();
+
 
     @OneToMany(mappedBy = "comentarioPai",cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Comentario> comentariosFilhos;
+    private List<Comentario> comentariosFilhos = new ArrayList<>();
 
     public Comentario() {
+    }
+
+    public Comentario(String content, Publicacao publicacao, Usuario usuario) {
+        this.content = content;
+        this.id.setUsuario(usuario);
+        this.id.setPublicacao(publicacao);
+        this.localDateTime = LocalDateTime.now();
     }
 
     public Comentario(String content, Publicacao publicacao, Comentario comentarioPai, List<ResolveuProblema> resolveuProblemas, List<Comentario> comentariosFilhos) {
@@ -64,18 +74,19 @@ public class Comentario implements Serializable {
         this.content = content;
     }
 
-    public @NotNull Publicacao getPublicacao() {
+    public  Publicacao getPublicacao() {
         return this.id.getPublicacao();
     }
 
-    public void setPublicacao(@NotNull Publicacao publicacao) {
+    public void setPublicacao( Publicacao publicacao) {
         this.id.setPublicacao(publicacao);
     }
-    public @NotNull Usuario getUsuario() {
+
+    public  Usuario getUsuario() {
         return this.id.getUsuario();
     }
 
-    public void setUsuario(@NotNull Usuario usuario) {
+    public void setUsuario( Usuario usuario) {
         this.id.setUsuario(usuario);
     }
 
@@ -109,6 +120,24 @@ public class Comentario implements Serializable {
 
     public void setComentariosFilhos(List<Comentario> comentariosFilhos) {
         this.comentariosFilhos = comentariosFilhos;
+    }
+
+    public void addResolveuProblemaToComment(ResolveuProblema resolveuProblema){
+        resolveuProblema.setComentario(this);
+        getResolveuProblemas().add(resolveuProblema);
+    }
+    public void removeResolveuProblemaFromComment(ResolveuProblema resolveuProblema){
+        resolveuProblema.setComentario(null);
+        getResolveuProblemas().remove(resolveuProblema);
+    }
+    public void addChildCommentToComment(Comentario comentario){
+        comentario.setComentarioPai(this);
+        getComentariosFilhos().add(comentario);
+    }
+
+    public void removeChildCommentFromComment(Comentario comentario){
+        comentario.setComentarioPai(null);
+        getComentariosFilhos().remove(comentario);
     }
 
     @Override

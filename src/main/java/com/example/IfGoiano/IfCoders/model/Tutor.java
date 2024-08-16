@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name= "Tutor")
 public class Tutor extends Usuario{
 
     private String especialidade;
@@ -19,6 +19,8 @@ public class Tutor extends Usuario{
         super(nome, login, senha, matricula, biografia, configAcessibilidade);
         this.especialidade = especialidade;
     }
+
+
 
     public String getEspecialidade() {
         return especialidade;

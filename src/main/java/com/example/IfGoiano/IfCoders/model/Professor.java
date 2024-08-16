@@ -6,13 +6,16 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Entity
-@Table
+@Table(name= "professor")
 public class Professor extends Usuario {
 
     private String formacao;
 
     public Professor() {
+    }
 
+    public Professor(String formacao) {
+        this.formacao = formacao;
     }
 
     public Professor(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidade configAcessibilidade, String formacao) {

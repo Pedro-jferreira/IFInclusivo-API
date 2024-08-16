@@ -1,6 +1,8 @@
 package com.example.IfGoiano.IfCoders.model;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.util.List;
 import java.util.Objects;
@@ -19,15 +21,21 @@ public abstract class Usuario {
     private String biografia;
     private ConfigAcessibilidade configAcessibilidade;
 
+    //private ConfigAce confiAcessibilidade;
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
     private List<ResolveuProblema> resolveuProblemas;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
     private List<Comentario> comentarios;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
     private List<Like> likes;
 
+    @JsonManagedReference
     @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
     private List<Publicacao> publicacaos;
 
@@ -39,6 +47,7 @@ public abstract class Usuario {
     }
 
     public Usuario(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidade configAcessibilidade) {
+
         this.nome = nome;
         this.login = login;
         this.senha = senha;
@@ -145,10 +154,8 @@ public abstract class Usuario {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Usuario usuario = (Usuario) o;
         return Objects.equals(id, usuario.id) && Objects.equals(nome, usuario.nome) && Objects.equals(login, usuario.login) && Objects.equals(senha, usuario.senha) && Objects.equals(matricula, usuario.matricula) && Objects.equals(biografia, usuario.biografia) && Objects.equals(configAcessibilidade, usuario.configAcessibilidade) && Objects.equals(resolveuProblemas, usuario.resolveuProblemas) && Objects.equals(comentarios, usuario.comentarios) && Objects.equals(likes, usuario.likes) && Objects.equals(publicacaos, usuario.publicacaos) && Objects.equals(config, usuario.config);
     }

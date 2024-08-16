@@ -13,7 +13,7 @@ import java.util.Objects;
 public class ResolveuProblema implements Serializable {
     private static final long serialVersionUID = 1L;
     @EmbeddedId
-    private ResolveuProblemaId id;
+    private ResolveuProblemaId id = new ResolveuProblemaId();
 
 
     public ResolveuProblema() {
@@ -22,6 +22,14 @@ public class ResolveuProblema implements Serializable {
     public ResolveuProblema(Comentario comentario, Usuario usuario) {
         this.id.setComentario(comentario);
         this.id.setUsuario(usuario);
+    }
+
+    public ResolveuProblemaId getId() {
+        return id;
+    }
+
+    public void setId(ResolveuProblemaId id) {
+        this.id = id;
     }
 
     public Comentario getComentario() {

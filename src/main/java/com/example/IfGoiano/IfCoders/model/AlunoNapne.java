@@ -4,7 +4,7 @@ package com.example.IfGoiano.IfCoders.model;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "Aluno_napne")
 public class AlunoNapne extends Aluno {
 
     private String condicao;
@@ -76,6 +76,4 @@ public class AlunoNapne extends Aluno {
     public void setSituacao(String situacao) {
         this.situacao = situacao;
     }
-
-
 }

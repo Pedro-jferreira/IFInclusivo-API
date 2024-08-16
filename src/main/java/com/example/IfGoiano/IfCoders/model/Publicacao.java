@@ -1,9 +1,14 @@
 package com.example.IfGoiano.IfCoders.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,7 +26,7 @@ public class Publicacao implements Serializable {
     private String urlFoto;
     private LocalDateTime localDateTime = LocalDateTime.now();
 
-    @NotNull
+
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
@@ -31,15 +36,22 @@ public class Publicacao implements Serializable {
     @JoinColumn(name = "topico_id")
     private Topico topico;
 
-    @NotNull
-    @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
-    private List<Like> likes;
 
-    @NotNull
     @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
-    private List<Comentario> comentarios;
+    private List<Like> likes = new ArrayList<>();
+
+
+    @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
+    private List<Comentario> comentarios = new ArrayList<>();
 
     public Publicacao() {
+    }
+
+    public Publicacao(String text, String urlVideo, String urlFoto, Usuario usuario) {
+        this.text = text;
+        this.urlVideo = urlVideo;
+        this.urlFoto = urlFoto;
+        this.usuario = usuario;
     }
 
     public Publicacao(String text, String urlVideo, String urlFoto, LocalDateTime localDateTime, Usuario usuario, List<Like> likes, List<Comentario> comentarios) {
@@ -92,19 +104,19 @@ public class Publicacao implements Serializable {
         this.localDateTime = localDateTime;
     }
 
-    public @NotNull Usuario getUsuario() {
+    public  Usuario getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(@NotNull Usuario usuario) {
+    public void setUsuario( Usuario usuario) {
         this.usuario = usuario;
     }
 
-    public @NotNull List<Like> getLikes() {
+    public  List<Like> getLikes() {
         return likes;
     }
 
-    public void setLikes(@NotNull List<Like> likes) {
+    public void setLikes( List<Like> likes) {
         this.likes = likes;
     }
 
@@ -112,9 +124,34 @@ public class Publicacao implements Serializable {
         return comentarios;
     }
 
-    public void setComentarios(@NotNull List<Comentario> comentarios) {
+    public void setComentarios( List<Comentario> comentarios) {
         this.comentarios = comentarios;
     }
+
+    public Topico getTopico() {
+        return topico;
+    }
+
+    public void setTopico(Topico topico) {
+        this.topico = topico;
+    }
+    public void addLikeToPublicacao(Like like){
+        like.setPublicacao(this);
+        getLikes().add(like);
+    }
+    public void removeLikeFromPublicacao(Like like){
+        like.setPublicacao(null);
+        getLikes().remove(like);
+    }
+    public void addCommentToPublicacao(Comentario comentario){
+        comentario.setPublicacao(this);
+        getComentarios().add(comentario);
+    }
+    public void removeCommentFromPublicacao(Comentario comentario){
+        comentario.setPublicacao(null);
+        getComentarios().remove(comentario);
+    }
+
 
     @Override
     public boolean equals(Object o) {

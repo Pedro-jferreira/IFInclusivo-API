@@ -1,8 +1,9 @@
 package com.example.IfGoiano.IfCoders.config;
 
-import com.example.IfGoiano.IfCoders.model.Comentario;
-import com.example.IfGoiano.IfCoders.model.Publicacao;
-import com.example.IfGoiano.IfCoders.service.ComentarioService;
+import com.example.IfGoiano.IfCoders.model.*;
+import com.example.IfGoiano.IfCoders.repository.AlunoRepository;
+import com.example.IfGoiano.IfCoders.repository.CursoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -11,11 +12,16 @@ import org.springframework.context.annotation.Profile;
 @Profile("test")
 public class TestConfig implements CommandLineRunner {
 
-    ComentarioService comentarioService;
+    @Autowired
+    AlunoRepository alunoRepository;
+    @Autowired
+    CursoRepository cursoRepository;
     @Override
     public void run(String... args) throws Exception {
-        Comentario comentario = new Comentario("oii",new Publicacao(),null,null,null);
-        comentarioService.save(comentario);
+        Curso curso = new Curso("Informática");
+        cursoRepository.save(curso);
+        Aluno aluno = new Aluno("Helo", "helo", "1234", 2022101202010074L, "oi eu sou helo", null, curso);
+        alunoRepository.save(aluno);
 
     }
 }

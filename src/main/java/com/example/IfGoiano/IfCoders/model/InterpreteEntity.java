@@ -3,18 +3,19 @@ package com.example.IfGoiano.IfCoders.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table
-public class InterpreteEntity extends TultorEntity{
+public class InterpreteEntity extends Tutor {
 
     private Double salary;
 
     public InterpreteEntity() {
     }
 
-    public InterpreteEntity(Long id, String nome, String especialidade, String login, String senha, Long matricula, String biografia) {
-        super(id, nome, especialidade, login, senha, matricula, biografia);
+    public InterpreteEntity(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidade configAcessibilidade, String especialidade, Double salary) {
+        super(nome, login, senha, matricula, biografia, configAcessibilidade, especialidade);
+        this.salary = salary;
     }
-
 }

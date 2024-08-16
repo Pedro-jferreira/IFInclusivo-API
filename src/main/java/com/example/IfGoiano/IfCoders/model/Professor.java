@@ -3,23 +3,22 @@ package com.example.IfGoiano.IfCoders.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.List;
 
 @Entity
 @Table
-public class ProfessorEntity extends Usuario {
+public class Professor extends Usuario {
 
     private String formacao;
 
+    public Professor() {
 
-    public ProfessorEntity() {
     }
 
-
-    public ProfessorEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, String formacao) {
-        super(id, nome, login, senha, matricula, biografia);
+    public Professor(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidade configAcessibilidade, String formacao) {
+        super(nome, login, senha, matricula, biografia, configAcessibilidade);
         this.formacao = formacao;
     }
-
 
     public String getFormacao() {
         return formacao;

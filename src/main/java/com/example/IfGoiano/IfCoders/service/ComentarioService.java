@@ -76,47 +76,6 @@ public class ComentarioService {
         comentarioId.setPublicacao(publicacao);
         return comentarioRepository.findById(comentarioId);
     }
-    @Transactional
-    public Comentario receberSubComentario(ComentarioId comentarioPaiId, Usuario usuario, Comentario comentario){
-
-      try {
-          Optional<Comentario> comentarioOptional = comentarioRepository.findById(comentarioPaiId);
-          if (comentarioOptional.isPresent()){
-              Comentario comentarioPai = comentarioOptional.get();
-              comentario.setPublicacao(comentarioPai.getPublicacao());
-              comentarioPai.addChildCommentToComment(comentario);
-              usuario.addCommentToUser(comentario);
-              comentarioRepository.save(comentario);
-              comentarioRepository.save(comentarioPai);
-              return comentario;
-          }else throw  new ResourceNotFoundException(comentarioPaiId);
-      } catch (DataBaseException e){
-          throw new DataBaseException("Database error occurred when adding a Comment to the comment" + e);
-      }
-
-    }
-    @Transactional
-    public void removerSubComentario(ComentarioId comentarioPaiId, ComentarioId subComentarioId) {
-        try {
-            Optional<Comentario> comentarioPaiOptional = comentarioRepository.findById(comentarioPaiId);
-            if (comentarioPaiOptional.isPresent()) {
-                Comentario comentarioPai = comentarioPaiOptional.get();
-                Optional<Comentario> subComentarioOptional = comentarioRepository.findById(subComentarioId);
-                if (subComentarioOptional.isPresent()) {
-                    Comentario subComentario = subComentarioOptional.get();
-                    comentarioPai.removeChildCommentFromComment(subComentario);
-                    comentarioRepository.save(comentarioPai);
-                    comentarioRepository.delete(subComentario);
-                } else {
-                    throw new ResourceNotFoundException(subComentarioId);
-                }
-            } else {
-                throw new ResourceNotFoundException(comentarioPaiId);
-            }
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred when removing a sub-comment" + e);
-        }
-    }
     private void updateComentarioDetails(Comentario comentario, Comentario comentarioDetails) {
         comentario.setContent(comentarioDetails.getContent());
         comentario.setLocalDateTime(comentarioDetails.getLocalDateTime());

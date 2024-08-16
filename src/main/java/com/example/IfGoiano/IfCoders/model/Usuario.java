@@ -21,8 +21,6 @@ public abstract class Usuario {
     private String biografia;
     private ConfigAcessibilidade configAcessibilidade;
 
-    //private ConfigAce confiAcessibilidade;
-
     @JsonManagedReference
     @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
     private List<ResolveuProblema> resolveuProblemas;
@@ -47,7 +45,6 @@ public abstract class Usuario {
     }
 
     public Usuario(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidade configAcessibilidade) {
-
         this.nome = nome;
         this.login = login;
         this.senha = senha;

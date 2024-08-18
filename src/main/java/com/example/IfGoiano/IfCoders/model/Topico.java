@@ -39,7 +39,6 @@ public class Topico implements Serializable {
         this.tema = tema;
         this.descripcion = descripcion;
         this.categoria = categoria;
-        this.publicacoes = publicacoes;
     }
 
     public Long getId() {
@@ -76,14 +75,6 @@ public class Topico implements Serializable {
 
     public List<Publicacao> getPublicacoes() {
         return publicacoes;
-    }
-    public void addPublicacao(Publicacao publicacao){
-        publicacao.setTopico(this);
-        getPublicacoes().add(publicacao);
-    }
-    public void removePublicacao(Publicacao publicacao){
-        publicacao.setTopico(null);
-        getPublicacoes().remove(publicacao);
     }
 
     public void setPublicacoes(List<Publicacao> publicacoes) {

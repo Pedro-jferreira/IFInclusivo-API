@@ -14,50 +14,11 @@ public class Like implements Serializable {
     @EmbeddedId
     private LikeId id = new LikeId();
 
-
-
-    public Like() {
-    }
-
-    public Like(Usuario usuario, Publicacao publicacao) {
-        this.id.setUsuario(usuario);
-        this.id.setPublicacao(publicacao);
-    }
-
-
     public LikeId getId() {
         return id;
     }
 
     public void setId(LikeId id) {
         this.id = id;
-    }
-
-    public @NotNull Usuario getUsuario() {
-        return this.id.getUsuario();
-    }
-
-    public void setUsuario(@NotNull Usuario usuario) {
-        this.id.setUsuario(usuario);
-    }
-
-    public @NotNull Publicacao getPublicacao() {
-        return this.id.getPublicacao();
-    }
-
-    public void setPublicacao(@NotNull Publicacao publicacao) {
-        this.id.setPublicacao(publicacao);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Like like)) return false;
-        return Objects.equals(id, like.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
     }
 }

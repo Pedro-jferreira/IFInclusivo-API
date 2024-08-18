@@ -19,9 +19,7 @@ import java.util.Optional;
 public class PublicacaoService {
     @Autowired
     private PublicacaoRepositoy publicacaoRepositoy;
-    private LikeService likeService = new LikeService();
 
-    private ComentarioService comentarioService = new ComentarioService();
 
     public List<Publicacao> findAll(){
         try {
@@ -69,77 +67,6 @@ public class PublicacaoService {
         }
     }
 
-    @Transactional
-    public  Like receberLike(Long publicacaoId, Usuario usuario){
-        try{
-            Optional<Publicacao> publicacaoOpt = publicacaoRepositoy.findById(publicacaoId);
-            if (publicacaoOpt.isPresent()){
-                Publicacao publicacao = publicacaoOpt.get();
-                Like like = new Like(usuario,publicacao);
-                publicacao.addLikeToPublicacao(like);
-                likeService.save(like);
-                publicacaoRepositoy.save(publicacao);
-                return like;
-            } else throw new ResourceNotFoundException(publicacaoId);
-        } catch (DataBaseException e){
-            throw  new DataBaseException("Database error occurred when adding a like to the post"+ e);
-        }
-
-    }
-    public void removerLike(Long publicacaoId, Usuario usuario) {
-        try {
-            Optional<Publicacao> publicacaoOpt = publicacaoRepositoy.findById(publicacaoId);
-            if (publicacaoOpt.isPresent()){
-                Publicacao publicacao = publicacaoOpt.get();
-                Optional<Like> like = likeService.findByUsuarioAndPublicacao(usuario,publicacao);
-                if (like.isPresent()){
-                    Like like1 = like.get();
-                    likeService.delete(like1.getId());
-                    publicacao.removeLikeFromPublicacao(like1);
-                    usuario.removeLikeFromUser(like1);
-                    publicacaoRepositoy.save(publicacao);
-                }else throw new ResourceNotFoundException(like.get().getId());
-            }else throw new ResourceNotFoundException(publicacaoId);
-        }catch (DataBaseException e){
-            throw new DataBaseException("Database error occurred when removing a like to the post"+ e);
-        }
-    }
-
-
-    public Comentario receberComentario(Long publicacaoId, Comentario comentario) {
-        try{
-            Optional<Publicacao> publicacaoOpt = publicacaoRepositoy.findById(publicacaoId);
-            if (publicacaoOpt.isPresent()){
-                Publicacao publicacao = publicacaoOpt.get();
-                publicacao.addCommentToPublicacao(comentario);
-                comentarioService.save(comentario);
-                publicacaoRepositoy.save(publicacao);
-                return comentario;
-            } else throw  new ResourceNotFoundException(publicacaoId);
-        } catch (DataBaseException e){
-            throw new DataBaseException("Database error occurred when adding a Comment to the post"+ e);
-        }
-
-    }
-    @Transactional
-    public void removerComentario(Long publicacaoId, Usuario  usuario) {
-        try {
-            Optional<Publicacao> publicacaoOpt = publicacaoRepositoy.findById(publicacaoId);
-            if (publicacaoOpt.isPresent()) {
-                Publicacao publicacao = publicacaoOpt.get();
-                Optional<Comentario> comentarioOpt =comentarioService.findByUsuarioAndPublicacao(usuario, publicacao);
-                if (comentarioOpt.isPresent()){
-                    Comentario comentario = comentarioOpt.get();
-                    comentarioService.delete(comentario.getId());
-                    publicacao.removeCommentFromPublicacao(comentario);
-                    publicacaoRepositoy.save(publicacao);
-                    usuario.removeCommentFromUser(comentario);
-                } else  throw new ResourceNotFoundException(comentarioOpt.get().getId());
-            }else throw new ResourceNotFoundException(publicacaoId);
-        } catch (Exception e) {
-            throw new DataBaseException("Database error occurred when removing a Comment to the post"+ e);
-        }
-    }
 
     private void updatePublicacaoDetails(Publicacao publicacao, Publicacao publicacaoDetails) {
         publicacao.setText(publicacaoDetails.getText());

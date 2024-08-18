@@ -74,8 +74,8 @@ public class LikeService {
     }
 
     private void updateLikeDetails(Like like, Like likeDetails) {
-        like.setPublicacao(likeDetails.getPublicacao());
-        like.setUsuario(likeDetails.getUsuario());
+        like.getId().setPublicacao(likeDetails.getId().getPublicacao());
+        like.getId().setUsuario(likeDetails.getId().getUsuario());
 
 
     }

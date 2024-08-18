@@ -18,6 +18,10 @@ public class Curso {
 
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public Curso(String nome) {
         this.nome = nome;
     }

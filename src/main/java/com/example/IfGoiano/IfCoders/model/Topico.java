@@ -92,4 +92,11 @@ public class Topico implements Serializable {
     public int hashCode() {
         return Objects.hash(getId(), getTema(), getDescripcion(), getCategoria(), getPublicacoes());
     }
+
+    public void addPublicacao(Publicacao publicacao) {
+    }
+
+    public void removePublicacao(Publicacao publicacao) {
+
+    }
 }

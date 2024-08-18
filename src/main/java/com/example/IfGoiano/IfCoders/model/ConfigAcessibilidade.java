@@ -30,6 +30,10 @@ public class ConfigAcessibilidade implements Serializable {
         this.zoom = zoom;
     }
 
+    public Long getId() {
+        return id;
+    }
+
     public String getAudicao() {
         return audicao;
     }

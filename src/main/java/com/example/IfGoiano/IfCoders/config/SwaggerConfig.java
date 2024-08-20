@@ -17,14 +17,13 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("IF-Inclusivo api")
-                        .description("Esta API faz parte de um projeto de extensão desenvolvido" +
-                                " na disciplina Projeto Integrador. O objetivo da disciplina é " +
-                                "reunir três professores e grupos de alunos para integrar o conhecimento" +
-                                " de várias matérias e, ao final, entregar um projeto de extensão. Neste" +
-                                " caso, o projeto é um aplicativo destinado a ajudar pessoas com necessidades" +
-                                " específicas. O aplicativo é um fórum onde essas pessoas podem enviar suas" +
-                                " dúvidas e receber ajuda de professores e alunos. Além disso, o aplicativo" +
-                                " conta com um glossário de Libras, com palavras específicas para programação," +
+                        .description("Esta API faz parte de um projeto de extensão desenvolvido na disciplina Projeto " +
+                                "Integrador. O objetivo da disciplina é reunir três professores e grupos de alunos" +
+                                " para integrar o conhecimento de várias matérias e, ao final, entregar um projeto" +
+                                " de extensão. Neste caso, o projeto é um aplicativo destinado a ajudar pessoas" +
+                                " com necessidades específicas. O aplicativo é um fórum onde essas pessoas podem" +
+                                " enviar suas dúvidas e receber ajuda de professores e alunos. Além disso, o aplicativo" +
+                                " conta com um glossário de Libras, que inclui palavras específicas para programação," +
                                 " gerenciado por tutores que adicionam palavras e vídeos de tradução para Libras.")
                         .version("1.0.0")
                 )

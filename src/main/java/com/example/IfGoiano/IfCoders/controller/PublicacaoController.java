@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
+import com.example.IfGoiano.IfCoders.DTO.PublicacaoDTO;
 import com.example.IfGoiano.IfCoders.controller.Exception.*;
 import com.example.IfGoiano.IfCoders.model.Comentario;
 import com.example.IfGoiano.IfCoders.model.Publicacao;
@@ -28,13 +29,13 @@ public class PublicacaoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Found all Publication",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Publicacao.class))}),
+                            schema = @Schema(implementation = PublicacaoDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<Publicacao>> findAll() {
-            List<Publicacao> publicacoes = publicacaoService.findAll();
+    public ResponseEntity<List<PublicacaoDTO>> findAll() {
+            List<PublicacaoDTO> publicacoes = publicacaoService.findAll();
             return ResponseEntity.ok().body(publicacoes);
     }
 
@@ -42,14 +43,14 @@ public class PublicacaoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the publication",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Comentario.class)) }),
+                            schema = @Schema(implementation = PublicacaoDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<Publicacao> findById(@PathVariable Long id) {
-            Publicacao publicacao = publicacaoService.findById(id);
+    public ResponseEntity<PublicacaoDTO> findById(@PathVariable Long id) {
+        PublicacaoDTO publicacao = publicacaoService.findById(id);
             return ResponseEntity.ok().body(publicacao);
     }
 
@@ -61,9 +62,9 @@ public class PublicacaoController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
-    public ResponseEntity<Publicacao> create(@RequestBody Publicacao publicacao) {
+    public ResponseEntity<PublicacaoDTO> create(@RequestBody PublicacaoDTO publicacao) {
 
-            Publicacao savedPublicacao = publicacaoService.save(publicacao);
+        PublicacaoDTO savedPublicacao = publicacaoService.save(publicacao);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(savedPublicacao.getId()).toUri();
             return ResponseEntity.created(location).body(savedPublicacao);
@@ -73,13 +74,13 @@ public class PublicacaoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "publication updated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Comentario.class)) }),
+                            schema = @Schema(implementation = PublicacaoDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<Publicacao> update(@PathVariable Long id, @RequestBody Publicacao publicacaoDetails) {
+    public ResponseEntity<PublicacaoDTO> update(@PathVariable Long id, @RequestBody PublicacaoDTO publicacaoDetails) {
 
             return ResponseEntity.ok().body(publicacaoService.update(id, publicacaoDetails));
     }
@@ -94,7 +95,6 @@ public class PublicacaoController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
-            Publicacao publicacao = publicacaoService.findById(id);
             publicacaoService.delete(id);
             return ResponseEntity.noContent().build();
     }

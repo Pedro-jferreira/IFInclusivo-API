@@ -37,11 +37,11 @@ public class Publicacao implements Serializable {
     private Topico topico;
 
 
-    @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "publicacao",cascade = CascadeType.ALL)
     private List<Like> likes = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "id.publicacao",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "publicacao",cascade = CascadeType.ALL)
     private List<Comentario> comentarios = new ArrayList<>();
 
     public Publicacao() {
@@ -134,7 +134,8 @@ public class Publicacao implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Publicacao that)) return false;
+        if (!(o instanceof Publicacao)) return false;
+        Publicacao that = (Publicacao) o;
         return Objects.equals(getId(), that.getId()) && Objects.equals(getText(), that.getText()) && Objects.equals(getUrlVideo(), that.getUrlVideo()) && Objects.equals(getUrlFoto(), that.getUrlFoto()) && Objects.equals(getLocalDateTime(), that.getLocalDateTime()) && Objects.equals(getUsuario(), that.getUsuario()) && Objects.equals(getTopico(), that.getTopico()) && Objects.equals(getLikes(), that.getLikes()) && Objects.equals(getComentarios(), that.getComentarios());
     }
 

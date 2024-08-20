@@ -2,26 +2,43 @@ package com.example.IfGoiano.IfCoders.model;
 
 import com.example.IfGoiano.IfCoders.model.PK.ResolveuProblemaId;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
 @Table(name = "SolvedProblems")
 public class ResolveuProblema implements Serializable {
-    private static final long serialVersionUID = 1L;
     @EmbeddedId
-    private ResolveuProblemaId id = new ResolveuProblemaId();
+    private ResolveuProblemaId id;
 
+    @ManyToOne
+    @MapsId("usuarioId")
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
+
+    @ManyToOne
+    @MapsId("comentarioId")
+    @JoinColumn(name = "comentario_id", nullable = false)
+    private Comentario comentario;
+
+    private LocalDateTime dataHoraVoto = LocalDateTime.now();
 
     public ResolveuProblema() {
     }
 
-    public ResolveuProblema(Comentario comentario, Usuario usuario) {
-        this.id.setComentario(comentario);
-        this.id.setUsuario(usuario);
+    public ResolveuProblema(ResolveuProblemaId id, Usuario usuario, Comentario comentario) {
+        this.id = id;
+        this.usuario = usuario;
+        this.comentario = comentario;
+    }
+
+    public ResolveuProblema(ResolveuProblemaId id, Usuario usuario, Comentario comentario, LocalDateTime dataHoraVoto) {
+        this.id = id;
+        this.usuario = usuario;
+        this.comentario = comentario;
+        this.dataHoraVoto = dataHoraVoto;
     }
 
     public ResolveuProblemaId getId() {
@@ -32,31 +49,27 @@ public class ResolveuProblema implements Serializable {
         this.id = id;
     }
 
-    public Comentario getComentario() {
-        return this.id.getComentario();
-    }
-
-    public void setComentario(Comentario comentario) {
-        this.id.setComentario(comentario);
-    }
-
     public Usuario getUsuario() {
-        return this.id.getUsuario();
+        return usuario;
     }
 
     public void setUsuario(Usuario usuario) {
-        this.id.setUsuario(usuario);
+        this.usuario = usuario;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ResolveuProblema that)) return false;
-        return Objects.equals(id, that.id);
+    public Comentario getComentario() {
+        return comentario;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
+    public void setComentario(Comentario comentario) {
+        this.comentario = comentario;
+    }
+
+    public LocalDateTime getDataHoraVoto() {
+        return dataHoraVoto;
+    }
+
+    public void setDataHoraVoto(LocalDateTime dataHoraVoto) {
+        this.dataHoraVoto = dataHoraVoto;
     }
 }

@@ -1,9 +1,10 @@
 package com.example.IfGoiano.IfCoders.service;
 
-import com.example.IfGoiano.IfCoders.model.Comentario;
-import com.example.IfGoiano.IfCoders.model.Like;
+import com.example.IfGoiano.IfCoders.DTO.PublicacaoDTO;
+import com.example.IfGoiano.IfCoders.mapper.LikeMapper;
+import com.example.IfGoiano.IfCoders.mapper.PublicacaoMapper;
 import com.example.IfGoiano.IfCoders.model.Publicacao;
-import com.example.IfGoiano.IfCoders.model.Usuario;
+import com.example.IfGoiano.IfCoders.repository.LikeRepository;
 import com.example.IfGoiano.IfCoders.repository.PublicacaoRepositoy;
 import com.example.IfGoiano.IfCoders.service.Exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.service.Exception.ResourceNotFoundException;
@@ -14,45 +15,56 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class PublicacaoService {
     @Autowired
-    private PublicacaoRepositoy publicacaoRepositoy;
+    private PublicacaoRepositoy repositoy;
+    @Autowired
+    private PublicacaoMapper mapper;
+    @Autowired
+    private LikeRepository likeRepository;
+    @Autowired
+    private LikeMapper likeMapper;
 
 
-    public List<Publicacao> findAll(){
+    public List<PublicacaoDTO> findAll(){
         try {
-            return publicacaoRepositoy.findAll();
+            return repositoy.findAll().stream().map(mapper::publicacaoToPublicacaoDTO).collect(Collectors.toList());
         } catch (DataBaseException e){
             throw new DataBaseException("Database error occurred while fetching all publications"+ e);
         }
     }
 
-    public Publicacao findById(Long id){
+    public PublicacaoDTO findById(Long id){
         try {
-            Optional<Publicacao> publicacao = publicacaoRepositoy.findById(id);
-            return publicacao.orElseThrow(() -> new ResourceNotFoundException(id));
+            Optional<Publicacao> publicacao = repositoy.findById(id);
+            if (publicacao.isPresent()) return mapper.publicacaoToPublicacaoDTO(publicacao.get());
+            else throw new ResourceNotFoundException("Publication not found");
         } catch (DataBaseException e){
             throw new DataBaseException("Database error occurred while fetching publication with ID: "+ e);
         }
     }
 
     @Transactional
-    public Publicacao save(Publicacao publicacao){
+    public PublicacaoDTO save(PublicacaoDTO publicacao){
         try{
-            return publicacaoRepositoy.save(publicacao);
+            return mapper.publicacaoToPublicacaoDTO(repositoy.save(mapper.publicacaoDTOToPublicacao(publicacao))) ;
         }catch (DataBaseException e){
             throw new DataBaseException("Database error occurred while saving the publication"+ e);
         }
     }
 
     @Transactional
-    public Publicacao update(Long id, Publicacao publicacaoDetails) {
+    public PublicacaoDTO update(Long id, PublicacaoDTO publicacaoDetails) {
         try {
-            Publicacao publicacao = findById(id);
-            updatePublicacaoDetails(publicacao, publicacaoDetails);
-            return publicacaoRepositoy.save(publicacao);
+            Optional<Publicacao> publicacaoOpt = repositoy.findById(id);
+            if (publicacaoOpt.isPresent()) {
+                Publicacao publicacao = publicacaoOpt.get();
+                mapper.updatePublicacaoFromDTO(publicacaoDetails,publicacao);
+                return mapper.publicacaoToPublicacaoDTO(repositoy.save(publicacao));
+            }else throw new ResourceNotFoundException("Publication not found");
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while updating the publication"+ e);
         }
@@ -60,23 +72,11 @@ public class PublicacaoService {
     @Transactional
     public void delete(Long id) {
         try {
-            Publicacao publicacao = findById(id);
-            publicacaoRepositoy.delete(publicacao);
+            PublicacaoDTO publicacao = findById(id);
+            repositoy.delete(mapper.publicacaoDTOToPublicacao(publicacao));
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while deleting the publication"+ e);
         }
     }
 
-
-    private void updatePublicacaoDetails(Publicacao publicacao, Publicacao publicacaoDetails) {
-        publicacao.setText(publicacaoDetails.getText());
-        publicacao.setUrlVideo(publicacaoDetails.getUrlVideo());
-        publicacao.setUrlFoto(publicacaoDetails.getUrlFoto());
-        publicacao.setLocalDateTime(publicacaoDetails.getLocalDateTime());
-        publicacao.setUsuario(publicacaoDetails.getUsuario());
-        publicacao.setTopico(publicacaoDetails.getTopico());
-        publicacao.setLikes(publicacaoDetails.getLikes());
-        publicacao.setComentarios(publicacaoDetails.getComentarios());
-
-    }
 }

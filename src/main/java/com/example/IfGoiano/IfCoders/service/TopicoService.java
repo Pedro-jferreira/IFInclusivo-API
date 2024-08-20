@@ -1,5 +1,7 @@
 package com.example.IfGoiano.IfCoders.service;
 
+import com.example.IfGoiano.IfCoders.DTO.TopicoDTO;
+import com.example.IfGoiano.IfCoders.mapper.TopicoMapper;
 import com.example.IfGoiano.IfCoders.model.Publicacao;
 import com.example.IfGoiano.IfCoders.model.Topico;
 import com.example.IfGoiano.IfCoders.repository.TopicoRepositoy;
@@ -12,43 +14,51 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 public class TopicoService {
     @Autowired
     private TopicoRepositoy topicoRepository;
+    @Autowired
+    private TopicoMapper mapper;
 
-    public List<Topico> findAll(){
+    public List<TopicoDTO> findAll(){
         try {
-            return topicoRepository.findAll();
+            return topicoRepository.findAll().stream().map(mapper::topicoToTopicoDTO).collect(Collectors.toList());
         } catch (DataBaseException e){
             throw new DataBaseException("Database error occurred while fetching all topics"+ e);
         }
     }
 
-    public Topico findById(Long id){
+    public TopicoDTO findById(Long id){
         try {
             Optional<Topico> topico = topicoRepository.findById(id);
-            return topico.orElseThrow(() -> new ResourceNotFoundException(id));
+            if (topico.isPresent()) return mapper.topicoToTopicoDTO(topico.get());
+            else throw  new ResourceNotFoundException(id);
         } catch (DataBaseException e){
             throw new DataBaseException("Database error occurred while fetching topic: "+ e);
         }
     }
 
     @Transactional
-    public Topico save(Topico topico){
+    public TopicoDTO save(TopicoDTO topico){
         try{
-            return topicoRepository.save(topico);
+            return mapper.topicoToTopicoDTO(topicoRepository.save(mapper.topicoDTOToTopico(topico)));
         }catch (DataBaseException e){
             throw new DataBaseException("Database error occurred while saving the topic"+ e);
         }
     }
 
     @Transactional
-    public Topico update(Long id, Topico topicoDetails) {
+    public TopicoDTO update(Long id, TopicoDTO topicoDetails) {
         try {
-            Topico topico = findById(id);
-            updateTopicoDetails(topico, topicoDetails);
-            return topicoRepository.save(topico);
+            Optional<Topico> topicoOpt = topicoRepository.findById(id);
+            if (topicoOpt.isPresent()) {
+                Topico topico = topicoOpt.get();
+                mapper.updateTopicoFromDTO(topicoDetails,topico);
+                return mapper.topicoToTopicoDTO(topico);
+            }else throw  new ResourceNotFoundException(id);
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while updating the topic"+ e);
         }
@@ -56,39 +66,11 @@ public class TopicoService {
     @Transactional
     public void delete(Long id) {
         try {
-            Topico topico = findById(id);
-            topicoRepository.delete(topico);
+            TopicoDTO topico = findById(id);
+            topicoRepository.delete(mapper.topicoDTOToTopico(topico));
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while deleting the topic"+ e);
         }
     }
 
-    @Transactional
-    public void addPublicacaoToTopico(Long topicoId, Publicacao publicacao) {
-        PublicacaoService publicacaoService = new PublicacaoService();
-        Topico topico = topicoRepository.findById(topicoId)
-                .orElseThrow(() -> new ResourceNotFoundException(topicoId));
-        topico.addPublicacao(publicacao);
-        publicacaoService.save(publicacao);
-        topicoRepository.save(topico);
-    }
-
-    @Transactional
-    public void removePublicacaoFromTopico(Long topicoId, Publicacao publicacao) {
-        PublicacaoService publicacaoService = new PublicacaoService();
-        Topico topico = topicoRepository.findById(topicoId)
-                .orElseThrow(() -> new ResourceNotFoundException(topicoId));
-        topico.removePublicacao(publicacao);
-        publicacaoService.save(publicacao);
-        topicoRepository.save(topico);
-    }
-
-    private void updateTopicoDetails(Topico topico, Topico topicoDetails) {
-        topico.setTema(topicoDetails.getTema());
-        topico.setDescripcion(topicoDetails.getDescripcion());
-        topico.setCategoria(topicoDetails.getCategoria());
-        topico.setPublicacoes(topicoDetails.getPublicacoes());
-
-
-    }
 }

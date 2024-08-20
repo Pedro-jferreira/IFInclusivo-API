@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.controller;
 
+import com.example.IfGoiano.IfCoders.DTO.TopicoDTO;
 import com.example.IfGoiano.IfCoders.controller.Exception.*;
 import com.example.IfGoiano.IfCoders.model.Comentario;
 import com.example.IfGoiano.IfCoders.model.Publicacao;
@@ -30,12 +31,12 @@ public class TopicoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Found all topic",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Publicacao.class))}),
+                            schema = @Schema(implementation = TopicoDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<Topico>> findAll() {
+    public ResponseEntity<List<TopicoDTO>> findAll() {
             return ResponseEntity.ok().body(topicoService.findAll());
     }
 
@@ -43,14 +44,14 @@ public class TopicoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the topic",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Comentario.class)) }),
+                            schema = @Schema(implementation = TopicoDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "topic not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<Topico> findById(@PathVariable Long id) {
-            Topico topico = topicoService.findById(id);
+    public ResponseEntity<TopicoDTO> findById(@PathVariable Long id) {
+        TopicoDTO topico = topicoService.findById(id);
             return ResponseEntity.ok().body(topico);
     }
 
@@ -58,13 +59,13 @@ public class TopicoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "topic created",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Comentario.class)) }),
+                            schema = @Schema(implementation = TopicoDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
-    public ResponseEntity<Topico> create(@RequestBody Topico topico) {
+    public ResponseEntity<TopicoDTO> create(@RequestBody TopicoDTO topico) {
 
-            Topico topico1 = topicoService.save(topico);
+        TopicoDTO topico1 = topicoService.save(topico);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(topico1.getId()).toUri();
             return ResponseEntity.created(location).body(topico1);
@@ -74,13 +75,13 @@ public class TopicoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "topic updated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Comentario.class)) }),
+                            schema = @Schema(implementation = TopicoDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "topic not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<Topico> update(@PathVariable Long id, @RequestBody Topico topicoDetails) {
+    public ResponseEntity<TopicoDTO> update(@PathVariable Long id, @RequestBody TopicoDTO topicoDetails) {
             return ResponseEntity.ok().body(topicoService.update(id, topicoDetails));
     }
 

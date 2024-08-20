@@ -14,43 +14,43 @@ import java.util.Objects;
 @Embeddable
 public class ResolveuProblemaId implements Serializable {
 
-    @ManyToOne()
-    @NotNull
-    @JoinColumns({
-            @JoinColumn(name = "comentario_publicacao_id", referencedColumnName = "publicacao_id"),
-            @JoinColumn(name = "comentario_usuario_id", referencedColumnName = "usuario_id")
-    })
-    private Comentario comentario;
-    @ManyToOne()
-    @NotNull
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private Long usuarioId;
+    private Long comentarioId;
 
-    public Comentario getComentario() {
-        return comentario;
+    public ResolveuProblemaId() {
     }
 
-    public void setComentario(Comentario comentario) {
-        this.comentario = comentario;
+    public ResolveuProblemaId(Long usuarioId, Long comentarioId) {
+        this.usuarioId = usuarioId;
+        this.comentarioId = comentarioId;
     }
 
-    public Usuario getUsuario() {
-        return usuario;
+    public Long getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
+    }
+
+    public Long getComentarioId() {
+        return comentarioId;
+    }
+
+    public void setComentarioId(Long comentarioId) {
+        this.comentarioId = comentarioId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ResolveuProblemaId that)) return false;
-        return Objects.equals(getComentario(), that.getComentario()) && Objects.equals(getUsuario(), that.getUsuario());
+        if (!(o instanceof ResolveuProblemaId)) return false;
+        ResolveuProblemaId that = (ResolveuProblemaId) o;
+        return Objects.equals(getUsuarioId(), that.getUsuarioId()) && Objects.equals(getComentarioId(), that.getComentarioId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getComentario(), getUsuario());
+        return Objects.hash(getUsuarioId(), getComentarioId());
     }
 }

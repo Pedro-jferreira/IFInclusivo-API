@@ -4,6 +4,7 @@ package com.example.IfGoiano.IfCoders.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -21,24 +22,21 @@ public abstract class Usuario {
     private String biografia;
     private ConfigAcessibilidade configAcessibilidade;
 
-    @JsonManagedReference
-    @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
-    private List<ResolveuProblema> resolveuProblemas;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
-    private List<Comentario> comentarios;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "id.usuario",cascade = CascadeType.ALL)
-    private List<Like> likes;
-
-    @JsonManagedReference
-    @OneToMany(mappedBy = "usuario",cascade = CascadeType.ALL)
-    private List<Publicacao> publicacaos;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<ConfigAcessibilidade> config;
+    private List<ResolveuProblema> resolveuProblemas = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Comentario> comentarios = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Like> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<Publicacao> publicacaos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<ConfigAcessibilidade> config = new ArrayList<>();
 
     public Usuario () {
 

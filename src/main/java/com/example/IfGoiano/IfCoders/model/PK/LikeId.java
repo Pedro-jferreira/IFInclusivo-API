@@ -12,41 +12,35 @@ import java.util.Objects;
 
 @Embeddable
 public class LikeId implements Serializable {
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private Long usuarioId;
+    private Long publicacaoId;
 
-    @NotNull
-    @ManyToOne
-    @JoinColumn(name = "publicacao_id")
-    private Publicacao publicacao;
-
-    public Usuario getUsuario() {
-        return usuario;
+    public Long getUsuarioId() {
+        return usuarioId;
     }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
+    public void setUsuarioId(Long usuarioId) {
+        this.usuarioId = usuarioId;
     }
 
-    public Publicacao getPublicacao() {
-        return publicacao;
+    public Long getPublicacaoId() {
+        return publicacaoId;
     }
 
-    public void setPublicacao(Publicacao publicacao) {
-        this.publicacao = publicacao;
+    public void setPublicacaoId(Long publicacaoId) {
+        this.publicacaoId = publicacaoId;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof LikeId likeId)) return false;
-        return Objects.equals(getUsuario(), likeId.getUsuario()) && Objects.equals(getPublicacao(), likeId.getPublicacao());
+        if (!(o instanceof LikeId)) return false;
+        LikeId likeId = (LikeId) o;
+        return Objects.equals(getUsuarioId(), likeId.getUsuarioId()) && Objects.equals(getPublicacaoId(), likeId.getPublicacaoId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getUsuario(), getPublicacao());
+        return Objects.hash(getUsuarioId(), getPublicacaoId());
     }
 }

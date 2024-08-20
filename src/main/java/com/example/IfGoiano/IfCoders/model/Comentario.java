@@ -1,7 +1,5 @@
 package com.example.IfGoiano.IfCoders.model;
 
-import com.example.IfGoiano.IfCoders.model.PK.ComentarioId;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -15,48 +13,54 @@ import java.util.Objects;
 public class Comentario implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @EmbeddedId
-    private ComentarioId id = new ComentarioId();
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @NotNull
+    private LocalDateTime localDateTime = LocalDateTime.now();
 
     @NotNull
     private String content;
-    @NotNull
-    private LocalDateTime localDateTime;
 
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private Usuario usuario;
 
-    @ManyToOne()
-    @JoinColumns({
-            @JoinColumn(name = "comentario_pai_publicacao_id", referencedColumnName = "publicacao_id"),
-            @JoinColumn(name = "comentario_pai_usuario_id", referencedColumnName = "usuario_id")
-    })
+    @ManyToOne
+    @JoinColumn(name = "publicacao_id", nullable = false)
+    private Publicacao publicacao;
+
+    @ManyToOne
+    @JoinColumn(name = "comentario_id")
     private Comentario comentarioPai;
 
-
-    @OneToMany(mappedBy = "id.comentario",cascade = CascadeType.ALL)
-    private List<ResolveuProblema>resolveuProblemas = new ArrayList<>();
-
-
-    @OneToMany(mappedBy = "comentarioPai",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "comentarioPai", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comentario> comentariosFilhos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "comentario", cascade = CascadeType.ALL)
+    private List<ResolveuProblema> resolveuProblemas = new ArrayList<>();
 
     public Comentario() {
     }
 
-    public ComentarioId getId() {
+    public Comentario(Long id, LocalDateTime localDateTime, Usuario usuario, Publicacao publicacao, Comentario comentarioPai, String content, List<ResolveuProblema> resolveuProblemas, List<Comentario> comentariosFilhos) {
+        this.id = id;
+        this.localDateTime = localDateTime;
+        this.usuario = usuario;
+        this.publicacao = publicacao;
+        this.comentarioPai = comentarioPai;
+        this.content = content;
+        this.resolveuProblemas = resolveuProblemas;
+        this.comentariosFilhos = comentariosFilhos;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(ComentarioId id) {
+    public void setId(Long id) {
         this.id = id;
-    }
-
-    public @NotNull String getContent() {
-        return content;
-    }
-
-    public void setContent(@NotNull String content) {
-        this.content = content;
     }
 
     public @NotNull LocalDateTime getLocalDateTime() {
@@ -67,12 +71,36 @@ public class Comentario implements Serializable {
         this.localDateTime = localDateTime;
     }
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Publicacao getPublicacao() {
+        return publicacao;
+    }
+
+    public void setPublicacao(Publicacao publicacao) {
+        this.publicacao = publicacao;
+    }
+
     public Comentario getComentarioPai() {
         return comentarioPai;
     }
 
     public void setComentarioPai(Comentario comentarioPai) {
         this.comentarioPai = comentarioPai;
+    }
+
+    public @NotNull String getContent() {
+        return content;
+    }
+
+    public void setContent(@NotNull String content) {
+        this.content = content;
     }
 
     public List<ResolveuProblema> getResolveuProblemas() {
@@ -94,12 +122,13 @@ public class Comentario implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Comentario that)) return false;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getContent(), that.getContent()) && Objects.equals(getLocalDateTime(), that.getLocalDateTime()) && Objects.equals(getComentarioPai(), that.getComentarioPai()) && Objects.equals(getResolveuProblemas(), that.getResolveuProblemas()) && Objects.equals(getComentariosFilhos(), that.getComentariosFilhos());
+        if (!(o instanceof Comentario)) return false;
+        Comentario that = (Comentario) o;
+        return Objects.equals(id, that.id) && Objects.equals(usuario, that.usuario) && Objects.equals(publicacao, that.publicacao);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getContent(), getLocalDateTime(), getComentarioPai(), getResolveuProblemas(), getComentariosFilhos());
+        return Objects.hash(id, usuario, publicacao);
     }
 }

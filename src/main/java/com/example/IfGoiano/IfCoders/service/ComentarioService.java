@@ -1,7 +1,8 @@
 package com.example.IfGoiano.IfCoders.service;
 
+import com.example.IfGoiano.IfCoders.DTO.ComentarioDTO;
+import com.example.IfGoiano.IfCoders.mapper.ComentarioMapper;
 import com.example.IfGoiano.IfCoders.model.Comentario;
-import com.example.IfGoiano.IfCoders.model.PK.ComentarioId;
 import com.example.IfGoiano.IfCoders.model.Publicacao;
 import com.example.IfGoiano.IfCoders.model.Usuario;
 import com.example.IfGoiano.IfCoders.repository.ComentarioRepository;
@@ -14,73 +15,77 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ComentarioService {
 
     @Autowired
-    private ComentarioRepository comentarioRepository;
+    private ComentarioRepository repository;
 
-    public List<Comentario> findAll() {
+
+    @Autowired
+    private ComentarioMapper mapper;
+
+    public List<ComentarioDTO> findAll() {
         try {
-            return comentarioRepository.findAll();
+            return repository.findAll().stream().map(mapper::comentarioToComentarioDTO).collect(Collectors.toList());
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while fetching all comments"+ e);
         }
     }
 
-    public Comentario findById(ComentarioId id) {
+    public ComentarioDTO findById(Long id) {
         try {
-            Optional<Comentario> comentario = comentarioRepository.findById(id);
-            return comentario.orElseThrow(() -> new ResourceNotFoundException(id));
+            Optional<Comentario> comentario = repository.findById(id);
+            if (comentario.isPresent()) return mapper.comentarioToComentarioDTO(comentario.get());
+            else throw  new ResourceNotFoundException(id);
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while fetching comment : " + e);
         }
     }
 
     @Transactional
-    public Comentario save(Comentario comentario) {
+    public ComentarioDTO save(ComentarioDTO comentario) {
         try {
-            if (comentario.getComentarioPai() == null) {
-                comentario.setComentarioPai(comentario);
+            if (comentario.getComentarioPaiDTO() == null) {
+                comentario.setComentarioPaiDTO(comentario);
             }
-            return comentarioRepository.save(comentario);
+            return mapper.comentarioToComentarioDTO(repository.save(mapper.comentarioDTOToComentario(comentario)));
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while saving the comment"+ e);
         }
     }
 
     @Transactional
-    public Comentario update(ComentarioId id, Comentario comentarioDetails) {
+    public ComentarioDTO update(Long id, ComentarioDTO comentarioDetails) {
         try {
-            Comentario comentario = findById(id);
-            updateComentarioDetails(comentario, comentarioDetails);
-            return comentarioRepository.save(comentario);
+            Optional<Comentario> comentario = repository.findById(id);
+            if (comentario.isPresent()) {
+                Comentario comentario1 = comentario.get();
+                mapper.updateComentarioFromDTO(comentarioDetails,comentario1);
+                return mapper.comentarioToComentarioDTO(repository.save(comentario1));
+            }else throw  new ResourceNotFoundException(id);
+
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while updating the comment"+ e);
         }
     }
 
     @Transactional
-    public void delete(ComentarioId id) {
+    public void delete(Long id) {
         try {
-            Comentario comentario = findById(id);
-            comentarioRepository.delete(comentario);
+            Optional<Comentario> comentario = repository.findById(id);
+            comentario.ifPresent(value -> repository.delete(value));
+
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while deleting the comment"+ e);
         }
     }
     public Optional<Comentario> findByUsuarioAndPublicacao(Usuario usuario, Publicacao publicacao){
-        ComentarioId comentarioId = new ComentarioId();
-        comentarioId.setUsuario(usuario);
-        comentarioId.setPublicacao(publicacao);
-        return comentarioRepository.findById(comentarioId);
+
+
+        return repository.findById(1L);
     }
-    private void updateComentarioDetails(Comentario comentario, Comentario comentarioDetails) {
-        comentario.setContent(comentarioDetails.getContent());
-        comentario.setLocalDateTime(comentarioDetails.getLocalDateTime());
-        comentario.setComentarioPai(comentarioDetails.getComentarioPai());
-        comentario.setResolveuProblemas(comentarioDetails.getResolveuProblemas());
-        comentario.setComentariosFilhos(comentarioDetails.getComentariosFilhos());
-    }
+
 }

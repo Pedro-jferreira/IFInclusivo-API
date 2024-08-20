@@ -84,19 +84,13 @@ public class Topico implements Serializable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Topico topico)) return false;
+        if (!(o instanceof Topico)) return false;
+        Topico topico = (Topico) o;
         return Objects.equals(getId(), topico.getId()) && Objects.equals(getTema(), topico.getTema()) && Objects.equals(getDescripcion(), topico.getDescripcion()) && Objects.equals(getCategoria(), topico.getCategoria()) && Objects.equals(getPublicacoes(), topico.getPublicacoes());
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(getId(), getTema(), getDescripcion(), getCategoria(), getPublicacoes());
-    }
-
-    public void addPublicacao(Publicacao publicacao) {
-    }
-
-    public void removePublicacao(Publicacao publicacao) {
-
     }
 }

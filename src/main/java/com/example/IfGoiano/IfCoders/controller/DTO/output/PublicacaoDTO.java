@@ -1,6 +1,5 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.input.LikeDTO;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;

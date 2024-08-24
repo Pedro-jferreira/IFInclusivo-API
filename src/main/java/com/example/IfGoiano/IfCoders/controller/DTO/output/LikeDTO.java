@@ -1,4 +1,4 @@
-package com.example.IfGoiano.IfCoders.controller.DTO.input;
+package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
 import org.springframework.hateoas.RepresentationModel;
 

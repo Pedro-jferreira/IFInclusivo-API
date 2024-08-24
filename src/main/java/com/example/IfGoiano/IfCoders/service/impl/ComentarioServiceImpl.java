@@ -2,7 +2,7 @@ package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
-import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.ComentarioMapper;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;

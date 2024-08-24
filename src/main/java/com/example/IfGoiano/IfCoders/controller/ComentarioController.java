@@ -1,7 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
-import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioDTO;
 import com.example.IfGoiano.IfCoders.service.impl.ComentarioServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

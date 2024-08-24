@@ -1,7 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
 
-import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioDTO;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

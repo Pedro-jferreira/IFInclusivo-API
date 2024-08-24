@@ -1,7 +1,5 @@
-package com.example.IfGoiano.IfCoders.controller.DTO.input;
+package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.ResolveuProblemaDTO;
 import org.springframework.hateoas.RepresentationModel;
 
 import java.time.LocalDateTime;

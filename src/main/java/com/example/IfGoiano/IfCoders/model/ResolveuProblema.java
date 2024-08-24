@@ -5,7 +5,6 @@ import com.example.IfGoiano.IfCoders.model.PK.ResolveuProblemaId;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "SolvedProblems")
@@ -16,7 +15,7 @@ public class ResolveuProblema implements Serializable {
     @ManyToOne
     @MapsId("usuarioId")
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    private UsuarioEntity usuario;
 
     @ManyToOne
     @MapsId("comentarioId")
@@ -28,13 +27,13 @@ public class ResolveuProblema implements Serializable {
     public ResolveuProblema() {
     }
 
-    public ResolveuProblema(ResolveuProblemaId id, Usuario usuario, Comentario comentario) {
+    public ResolveuProblema(ResolveuProblemaId id, UsuarioEntity usuario, Comentario comentario) {
         this.id = id;
         this.usuario = usuario;
         this.comentario = comentario;
     }
 
-    public ResolveuProblema(ResolveuProblemaId id, Usuario usuario, Comentario comentario, LocalDateTime dataHoraVoto) {
+    public ResolveuProblema(ResolveuProblemaId id, UsuarioEntity usuario, Comentario comentario, LocalDateTime dataHoraVoto) {
         this.id = id;
         this.usuario = usuario;
         this.comentario = comentario;
@@ -49,11 +48,11 @@ public class ResolveuProblema implements Serializable {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioEntity getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
 

@@ -1,6 +1,5 @@
 package com.example.IfGoiano.IfCoders.service;
 
-import com.example.IfGoiano.IfCoders.model.Aluno;
 import com.example.IfGoiano.IfCoders.model.ConfigAcessibilidade;
 import com.example.IfGoiano.IfCoders.repository.ConfigAcessibilidadeRepository;
 import com.example.IfGoiano.IfCoders.service.Exception.DataBaseException;

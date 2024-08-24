@@ -4,20 +4,21 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-public class Aluno extends Usuario {
+public class AlunoEntity extends UsuarioEntity {
 
     @ManyToOne
     @JoinColumn(name = "curso_id")
     private Curso curso;
 
-    public Aluno() {
 
-    }
+    public AlunoEntity() {    }
 
-    public Aluno(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidade configAcessibilidade, Curso curso) {
+    public AlunoEntity(String nome, String login, String senha, Long matricula, String biografia,
+                       ConfigAcessibilidade configAcessibilidade, Curso curso) {
         super(nome, login, senha, matricula, biografia, configAcessibilidade);
         this.curso = curso;
     }
+
 
     public Curso getCurso() {
         return curso;
@@ -27,6 +28,7 @@ public class Aluno extends Usuario {
         this.curso = curso;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o)
@@ -34,7 +36,7 @@ public class Aluno extends Usuario {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o))
             return false;
-        Aluno aluno = (Aluno) o;
+        AlunoEntity aluno = (AlunoEntity) o;
         return Objects.equals(curso, aluno.curso);
     }
 

@@ -1,6 +1,6 @@
 package com.example.IfGoiano.IfCoders.service;
 
-import com.example.IfGoiano.IfCoders.model.AlunoNapne;
+import com.example.IfGoiano.IfCoders.model.AlunoNapneEntity;
 import com.example.IfGoiano.IfCoders.repository.AlunoNapneRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,11 +12,11 @@ public class AlunoNapneService {
     AlunoNapneRepository alunoNapneRepository;
 
 
-    public AlunoNapne createdAlunoNapne(AlunoNapne alunoNapneEntity) {
+    public AlunoNapneEntity createdAlunoNapne(AlunoNapneEntity alunoNapneEntity) {
        return alunoNapneRepository.save(alunoNapneEntity);
     }
 
-    public AlunoNapne findByIdAlunoNapne(Long id){
+    public AlunoNapneEntity findByIdAlunoNapne(Long id){
         return alunoNapneRepository.findById(id).get();
     }
 

@@ -2,24 +2,33 @@ package com.example.IfGoiano.IfCoders.model;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 
 @Entity
 @Table(name = "Aluno_napne")
-public class AlunoNapne extends Aluno {
+public class AlunoNapneEntity extends AlunoEntity {
 
+    @NotNull   @Column(nullable = false)
     private String condicao;
+    @NotNull   @Column(nullable = false)
     private String laudo;
+    @NotNull   @Column(nullable = false)
     private String necessidadeEspecial;
+    @NotNull   @Column(nullable = false)
     private String necessidadeEscolar;
+    @NotNull   @Column(nullable = false)
     private String acompanhamento;
+    @NotNull   @Column(nullable = false)
     private String situacao;
 
 
-    public AlunoNapne() {
+    public AlunoNapneEntity() {    }
 
-    }
-
-    public AlunoNapne(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidade configAcessibilidade, Curso curso, String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento, String situacao) {
+    public AlunoNapneEntity(String nome, String login, String senha, Long matricula, String biografia,
+                            ConfigAcessibilidade configAcessibilidade, Curso curso, String condicao,
+                            String laudo, String necessidadeEspecial, String necessidadeEscolar,
+                            String acompanhamento, String situacao) {
         super(nome, login, senha, matricula, biografia, configAcessibilidade, curso);
         this.condicao = condicao;
         this.laudo = laudo;
@@ -28,6 +37,7 @@ public class AlunoNapne extends Aluno {
         this.acompanhamento = acompanhamento;
         this.situacao = situacao;
     }
+
 
     public String getCondicao() {
         return condicao;
@@ -75,5 +85,23 @@ public class AlunoNapne extends Aluno {
 
     public void setSituacao(String situacao) {
         this.situacao = situacao;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        AlunoNapneEntity that = (AlunoNapneEntity) o;
+        return Objects.equals(condicao, that.condicao) && Objects.equals(laudo, that.laudo) &&
+                Objects.equals(necessidadeEspecial, that.necessidadeEspecial) &&
+                Objects.equals(necessidadeEscolar, that.necessidadeEscolar) &&
+                Objects.equals(acompanhamento, that.acompanhamento) && Objects.equals(situacao, that.situacao);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), condicao, laudo, necessidadeEspecial, necessidadeEscolar, acompanhamento, situacao);
     }
 }

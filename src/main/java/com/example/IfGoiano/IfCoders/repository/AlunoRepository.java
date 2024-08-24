@@ -1,11 +1,11 @@
 package com.example.IfGoiano.IfCoders.repository;
 
-import com.example.IfGoiano.IfCoders.model.Aluno;
+import com.example.IfGoiano.IfCoders.model.AlunoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface AlunoRepository extends JpaRepository<Aluno, Long> {
+public interface AlunoRepository extends JpaRepository<AlunoEntity, Long> {
 
 }
 

@@ -2,7 +2,6 @@ package com.example.IfGoiano.IfCoders.service;
 
 
 import com.example.IfGoiano.IfCoders.model.Curso;
-import com.example.IfGoiano.IfCoders.model.Usuario;
 import com.example.IfGoiano.IfCoders.repository.CursoRepository;
 import com.example.IfGoiano.IfCoders.service.Exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.service.Exception.ResourceNotFoundException;

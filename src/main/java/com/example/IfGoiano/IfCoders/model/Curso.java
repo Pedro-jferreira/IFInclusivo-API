@@ -12,7 +12,7 @@ public class Curso {
     private String nome;
 
     @OneToMany(mappedBy = "curso",cascade = CascadeType.ALL)
-    private List<Aluno> alunos;
+    private List<AlunoEntity> alunos;
 
     public Curso() {
 
@@ -34,11 +34,11 @@ public class Curso {
         this.nome = nome;
     }
 
-    public List<Aluno> getAlunos() {
+    public List<AlunoEntity> getAlunos() {
         return alunos;
     }
 
-    public void setAlunos(List<Aluno> alunos) {
+    public void setAlunos(List<AlunoEntity> alunos) {
         this.alunos = alunos;
     }
 

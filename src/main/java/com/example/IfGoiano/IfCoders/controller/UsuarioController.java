@@ -1,6 +1,6 @@
 package com.example.IfGoiano.IfCoders.controller;
 
-import com.example.IfGoiano.IfCoders.model.Usuario;
+import com.example.IfGoiano.IfCoders.model.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,13 +25,13 @@ public class UsuarioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found all users",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Usuario.class))}),
+                            schema = @Schema(implementation = UsuarioEntity.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<Usuario>> findAll() {
-        List<Usuario> usuarios = usuarioService.findAll();
+    public ResponseEntity<List<UsuarioEntity>> findAll() {
+        List<UsuarioEntity> usuarios = usuarioService.findAll();
         return ResponseEntity.ok().body(usuarios);
     }
 
@@ -39,14 +39,14 @@ public class UsuarioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the user",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Usuario.class)) }),
+                            schema = @Schema(implementation = UsuarioEntity.class)) }),
             @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id) {
-        Usuario usuario = usuarioService.findById(id);
+    public ResponseEntity<UsuarioEntity> findById(@PathVariable Long id) {
+        UsuarioEntity usuario = usuarioService.findById(id);
         return ResponseEntity.ok().body(usuario);
     }
 
@@ -54,12 +54,12 @@ public class UsuarioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "User created",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Usuario.class)) }),
+                            schema = @Schema(implementation = UsuarioEntity.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
-    public ResponseEntity<Usuario> save(@RequestBody Usuario usuario) {
-        Usuario savedUsuario = usuarioService.save(usuario);
+    public ResponseEntity<UsuarioEntity> save(@RequestBody UsuarioEntity usuario) {
+        UsuarioEntity savedUsuario = usuarioService.save(usuario);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedUsuario.getId()).toUri();
         return ResponseEntity.created(location).body(savedUsuario);
@@ -69,13 +69,13 @@ public class UsuarioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "User updated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Usuario.class)) }),
+                            schema = @Schema(implementation = UsuarioEntity.class)) }),
             @ApiResponse(responseCode = "404", description = "User not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody Usuario usuarioDetails) {
+    public ResponseEntity<UsuarioEntity> update(@PathVariable Long id, @RequestBody UsuarioEntity usuarioDetails) {
         return ResponseEntity.ok().body(usuarioService.update(id, usuarioDetails));
     }
 

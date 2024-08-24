@@ -1,11 +1,6 @@
 package com.example.IfGoiano.IfCoders.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -29,7 +24,7 @@ public class Publicacao implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
-    private Usuario usuario;
+    private UsuarioEntity usuario;
 
 
     @ManyToOne
@@ -47,7 +42,7 @@ public class Publicacao implements Serializable {
     public Publicacao() {
     }
 
-    public Publicacao(Long id, String text, String urlVideo, String urlFoto, LocalDateTime localDateTime, Usuario usuario, Topico topico, List<Like> likes, List<Comentario> comentarios) {
+    public Publicacao(Long id, String text, String urlVideo, String urlFoto, LocalDateTime localDateTime, UsuarioEntity usuario, Topico topico, List<Like> likes, List<Comentario> comentarios) {
         this.id = id;
         this.text = text;
         this.urlVideo = urlVideo;
@@ -99,11 +94,11 @@ public class Publicacao implements Serializable {
         this.localDateTime = localDateTime;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioEntity getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
 

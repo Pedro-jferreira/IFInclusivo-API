@@ -18,7 +18,7 @@ public class ConfigAcessibilidade implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "configAcessibilidade_id")
-    private Usuario usuario;
+    private UsuarioEntity usuario;
 
     public ConfigAcessibilidade(){
 

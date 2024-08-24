@@ -1,7 +1,6 @@
 package com.example.IfGoiano.IfCoders.service;
 
-import com.example.IfGoiano.IfCoders.model.Publicacao;
-import com.example.IfGoiano.IfCoders.model.Usuario;
+import com.example.IfGoiano.IfCoders.model.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
 import com.example.IfGoiano.IfCoders.service.Exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.service.Exception.ResourceNotFoundException;
@@ -19,7 +18,7 @@ public class UsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public List<Usuario> findAll() {
+    public List<UsuarioEntity> findAll() {
         try {
             return usuarioRepository.findAll();
         } catch (DataBaseException e) {
@@ -28,9 +27,9 @@ public class UsuarioService {
 
     }
 
-    public Usuario findById(Long id) {
+    public UsuarioEntity findById(Long id) {
         try {
-            Optional<Usuario> usuario = usuarioRepository.findById(id);
+            Optional<UsuarioEntity> usuario = usuarioRepository.findById(id);
             return usuario.orElseThrow(() -> new ResourceNotFoundException(id));
         } catch (DataBaseException e) {
             throw new DataBaseException("Database error occurred while fetching user: " + e);
@@ -38,7 +37,7 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario save(Usuario usuario) {
+    public UsuarioEntity save(UsuarioEntity usuario) {
         try {
             return usuarioRepository.save(usuario);
         } catch (DataBaseException e) {
@@ -47,9 +46,9 @@ public class UsuarioService {
     }
 
     @Transactional
-    public Usuario update(Long id, Usuario usuarioDetails) {
+    public UsuarioEntity update(Long id, UsuarioEntity usuarioDetails) {
         try {
-            Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+            UsuarioEntity usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
             updateUsuarioDetails(usuario, usuarioDetails);
             return usuarioRepository.save(usuario);
         } catch (DataAccessException e) {
@@ -60,14 +59,14 @@ public class UsuarioService {
     @Transactional
     public void delete(Long id) {
         try {
-            Usuario usuario = findById(id);
+            UsuarioEntity usuario = findById(id);
             usuarioRepository.delete(usuario);
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while deleting the user: " + e);
         }
     }
 
-    public void updateUsuarioDetails (Usuario usuario, Usuario usuarioDetails){
+    public void updateUsuarioDetails (UsuarioEntity usuario, UsuarioEntity usuarioDetails){
         usuario.setNome(usuarioDetails.getNome());
         usuario.setLogin(usuarioDetails.getLogin());
         usuario.setSenha(usuarioDetails.getSenha());

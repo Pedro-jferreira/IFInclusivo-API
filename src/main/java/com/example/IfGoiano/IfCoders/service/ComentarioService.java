@@ -4,7 +4,7 @@ import com.example.IfGoiano.IfCoders.DTO.ComentarioDTO;
 import com.example.IfGoiano.IfCoders.mapper.ComentarioMapper;
 import com.example.IfGoiano.IfCoders.model.Comentario;
 import com.example.IfGoiano.IfCoders.model.Publicacao;
-import com.example.IfGoiano.IfCoders.model.Usuario;
+import com.example.IfGoiano.IfCoders.model.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.repository.ComentarioRepository;
 import com.example.IfGoiano.IfCoders.service.Exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.service.Exception.ResourceNotFoundException;
@@ -82,7 +82,7 @@ public class ComentarioService {
             throw new DataBaseException("Database error occurred while deleting the comment"+ e);
         }
     }
-    public Optional<Comentario> findByUsuarioAndPublicacao(Usuario usuario, Publicacao publicacao){
+    public Optional<Comentario> findByUsuarioAndPublicacao(UsuarioEntity usuario, Publicacao publicacao){
 
 
         return repository.findById(1L);

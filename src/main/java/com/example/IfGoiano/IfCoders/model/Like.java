@@ -3,10 +3,8 @@ package com.example.IfGoiano.IfCoders.model;
 import com.example.IfGoiano.IfCoders.model.PK.LikeId;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 @Entity
 @Table(name = "Likes")
@@ -17,7 +15,7 @@ public class Like implements Serializable {
     @ManyToOne
     @MapsId("usuarioId")
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    private UsuarioEntity usuario;
 
     @ManyToOne
     @MapsId("publicacaoId")
@@ -29,7 +27,7 @@ public class Like implements Serializable {
     public Like() {
     }
 
-    public Like(LikeId id, Usuario usuario, Publicacao publicacao) {
+    public Like(LikeId id, UsuarioEntity usuario, Publicacao publicacao) {
         this.id = id;
         this.usuario = usuario;
         this.publicacao = publicacao;
@@ -43,11 +41,11 @@ public class Like implements Serializable {
         this.id = id;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioEntity getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
 

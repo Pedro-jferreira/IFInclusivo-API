@@ -6,6 +6,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.Objects;
 
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -28,17 +29,17 @@ public class MessageEntity implements Serializable {
     private Boolean view;
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    private UserEntity userEnvia;
+    private UsuarioEntity userEnvia;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
-    private UserEntity userRecebe;
+    private UsuarioEntity userRecebe;
 
     public MessageEntity() {
         super();
     }
 
-    public MessageEntity(Long id, String text , UserEntity userEnvia, UserEntity userRecebe) {
+    public MessageEntity(Long id, String text , UsuarioEntity userEnvia, UsuarioEntity userRecebe) {
         this.id = id;
         this.text = text;
         this.view = false;
@@ -79,19 +80,35 @@ public class MessageEntity implements Serializable {
         this.view = view;
     }
 
-    public UserEntity getUserEnvia() {
+    public UsuarioEntity getUserEnvia() {
         return userEnvia;
     }
 
-    public void setUserEnvia(UserEntity userEnvia) {
+    public void setUserEnvia(UsuarioEntity userEnvia) {
         this.userEnvia = userEnvia;
     }
 
-    public UserEntity getUserRecebe() {
+    public UsuarioEntity getUserRecebe() {
         return userRecebe;
     }
 
-    public void setUserRecebe(UserEntity userRecebe) {
+    public void setUserRecebe(UsuarioEntity userRecebe) {
         this.userRecebe = userRecebe;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MessageEntity that = (MessageEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(text, that.text) &&
+                Objects.equals(dateTime, that.dateTime) && Objects.equals(view, that.view) &&
+                Objects.equals(userEnvia, that.userEnvia) && Objects.equals(userRecebe, that.userRecebe);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, text, dateTime, view, userEnvia, userRecebe);
     }
 }

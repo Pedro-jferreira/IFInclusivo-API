@@ -25,7 +25,7 @@ public class Comentario implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    private Usuario usuario;
+    private UsuarioEntity usuario;
 
     @ManyToOne
     @JoinColumn(name = "publicacao_id", nullable = false)
@@ -44,7 +44,7 @@ public class Comentario implements Serializable {
     public Comentario() {
     }
 
-    public Comentario(Long id, LocalDateTime localDateTime, Usuario usuario, Publicacao publicacao, Comentario comentarioPai, String content, List<ResolveuProblema> resolveuProblemas, List<Comentario> comentariosFilhos) {
+    public Comentario(Long id, LocalDateTime localDateTime, UsuarioEntity usuario, Publicacao publicacao, Comentario comentarioPai, String content, List<ResolveuProblema> resolveuProblemas, List<Comentario> comentariosFilhos) {
         this.id = id;
         this.localDateTime = localDateTime;
         this.usuario = usuario;
@@ -71,11 +71,11 @@ public class Comentario implements Serializable {
         this.localDateTime = localDateTime;
     }
 
-    public Usuario getUsuario() {
+    public UsuarioEntity getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(Usuario usuario) {
+    public void setUsuario(UsuarioEntity usuario) {
         this.usuario = usuario;
     }
 

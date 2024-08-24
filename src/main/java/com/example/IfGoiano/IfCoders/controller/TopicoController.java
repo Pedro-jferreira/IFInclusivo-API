@@ -1,11 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
-import com.example.IfGoiano.IfCoders.DTO.TopicoDTO;
-import com.example.IfGoiano.IfCoders.controller.Exception.*;
-import com.example.IfGoiano.IfCoders.model.Comentario;
-import com.example.IfGoiano.IfCoders.model.Publicacao;
-import com.example.IfGoiano.IfCoders.model.Topico;
-import com.example.IfGoiano.IfCoders.service.TopicoService;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoDTO;
+import com.example.IfGoiano.IfCoders.service.impl.TopicoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -24,7 +20,7 @@ import java.util.List;
 public class TopicoController {
 
     @Autowired
-    private TopicoService topicoService;
+    private TopicoServiceImpl topicoServiceImpl;
 
 
     @Operation(summary = "Buscar todos os Topicos")
@@ -37,7 +33,7 @@ public class TopicoController {
     })
     @GetMapping
     public ResponseEntity<List<TopicoDTO>> findAll() {
-            return ResponseEntity.ok().body(topicoService.findAll());
+            return ResponseEntity.ok().body(topicoServiceImpl.findAll());
     }
 
     @Operation(summary = "Buscar Topico por ID")
@@ -51,7 +47,7 @@ public class TopicoController {
                     content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<TopicoDTO> findById(@PathVariable Long id) {
-        TopicoDTO topico = topicoService.findById(id);
+        TopicoDTO topico = topicoServiceImpl.findById(id);
             return ResponseEntity.ok().body(topico);
     }
 
@@ -65,7 +61,7 @@ public class TopicoController {
     @PostMapping
     public ResponseEntity<TopicoDTO> create(@RequestBody TopicoDTO topico) {
 
-        TopicoDTO topico1 = topicoService.save(topico);
+        TopicoDTO topico1 = topicoServiceImpl.save(topico);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(topico1.getId()).toUri();
             return ResponseEntity.created(location).body(topico1);
@@ -82,7 +78,7 @@ public class TopicoController {
                     content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<TopicoDTO> update(@PathVariable Long id, @RequestBody TopicoDTO topicoDetails) {
-            return ResponseEntity.ok().body(topicoService.update(id, topicoDetails));
+            return ResponseEntity.ok().body(topicoServiceImpl.update(id, topicoDetails));
     }
 
     @Operation(summary = "Excluir um Topico por ID")
@@ -95,7 +91,7 @@ public class TopicoController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
-            topicoService.delete(id);
+            topicoServiceImpl.delete(id);
             return ResponseEntity.noContent().build();
     }
 

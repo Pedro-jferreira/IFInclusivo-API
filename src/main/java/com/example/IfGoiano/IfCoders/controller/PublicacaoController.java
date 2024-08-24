@@ -1,11 +1,9 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
-import com.example.IfGoiano.IfCoders.DTO.PublicacaoDTO;
-import com.example.IfGoiano.IfCoders.controller.Exception.*;
-import com.example.IfGoiano.IfCoders.model.Comentario;
-import com.example.IfGoiano.IfCoders.model.Publicacao;
-import com.example.IfGoiano.IfCoders.service.PublicacaoService;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoDTO;
+import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
+import com.example.IfGoiano.IfCoders.service.impl.PublicacaoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +21,7 @@ import java.util.List;
 @RequestMapping("/publicacoes")
 public class PublicacaoController {
     @Autowired
-    private PublicacaoService publicacaoService;
+    private PublicacaoServiceImpl publicacaoServiceImpl;
 
     @Operation(summary = "Buscar todas as Publicacões")
     @ApiResponses(value = {
@@ -35,7 +33,7 @@ public class PublicacaoController {
     })
     @GetMapping
     public ResponseEntity<List<PublicacaoDTO>> findAll() {
-            List<PublicacaoDTO> publicacoes = publicacaoService.findAll();
+            List<PublicacaoDTO> publicacoes = publicacaoServiceImpl.findAll();
             return ResponseEntity.ok().body(publicacoes);
     }
 
@@ -50,7 +48,7 @@ public class PublicacaoController {
                     content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<PublicacaoDTO> findById(@PathVariable Long id) {
-        PublicacaoDTO publicacao = publicacaoService.findById(id);
+        PublicacaoDTO publicacao = publicacaoServiceImpl.findById(id);
             return ResponseEntity.ok().body(publicacao);
     }
 
@@ -58,13 +56,13 @@ public class PublicacaoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "publication created",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Comentario.class)) }),
+                            schema = @Schema(implementation = ComentarioEntity.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
     public ResponseEntity<PublicacaoDTO> create(@RequestBody PublicacaoDTO publicacao) {
 
-        PublicacaoDTO savedPublicacao = publicacaoService.save(publicacao);
+        PublicacaoDTO savedPublicacao = publicacaoServiceImpl.save(publicacao);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(savedPublicacao.getId()).toUri();
             return ResponseEntity.created(location).body(savedPublicacao);
@@ -82,7 +80,7 @@ public class PublicacaoController {
     @PutMapping("/{id}")
     public ResponseEntity<PublicacaoDTO> update(@PathVariable Long id, @RequestBody PublicacaoDTO publicacaoDetails) {
 
-            return ResponseEntity.ok().body(publicacaoService.update(id, publicacaoDetails));
+            return ResponseEntity.ok().body(publicacaoServiceImpl.update(id, publicacaoDetails));
     }
 
     @Operation(summary = "Excluir uma publicação por ID")
@@ -95,7 +93,7 @@ public class PublicacaoController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
-            publicacaoService.delete(id);
+            publicacaoServiceImpl.delete(id);
             return ResponseEntity.noContent().build();
     }
 

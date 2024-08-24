@@ -1,7 +1,7 @@
 package com.example.IfGoiano.IfCoders.repository;
 
-import com.example.IfGoiano.IfCoders.model.Topico;
+import com.example.IfGoiano.IfCoders.entity.TopicoEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface TopicoRepositoy extends JpaRepository<Topico,Long> {
+public interface TopicoRepositoy extends JpaRepository<TopicoEntity,Long> {
 }

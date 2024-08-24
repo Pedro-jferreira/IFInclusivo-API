@@ -1,8 +1,8 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
-import com.example.IfGoiano.IfCoders.DTO.ComentarioDTO;
-import com.example.IfGoiano.IfCoders.service.ComentarioService;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioDTO;
+import com.example.IfGoiano.IfCoders.service.impl.ComentarioServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +21,7 @@ import java.util.List;
 public class ComentarioController {
 
     @Autowired
-    private ComentarioService comentarioService;
+    private ComentarioServiceImpl comentarioServiceImpl;
 
     @Operation(summary = "Buscar todos os comentarios")
     @ApiResponses(value = {
@@ -33,7 +33,7 @@ public class ComentarioController {
     @GetMapping
     public ResponseEntity<List<ComentarioDTO>> findAll() {
 
-            List<ComentarioDTO> comentarios = comentarioService.findAll();
+            List<ComentarioDTO> comentarios = comentarioServiceImpl.findAll();
             return ResponseEntity.ok().body(comentarios);
     }
 
@@ -49,7 +49,7 @@ public class ComentarioController {
     @GetMapping("/{id}")
     public ResponseEntity<ComentarioDTO> findById(@PathVariable Long id) {
 
-            ComentarioDTO comentario = comentarioService.findById(id);
+            ComentarioDTO comentario = comentarioServiceImpl.findById(id);
             return ResponseEntity.ok().body(comentario);
 
     }
@@ -63,7 +63,7 @@ public class ComentarioController {
                     content = @Content) })
     @PostMapping
     public ResponseEntity<ComentarioDTO> create(@RequestBody ComentarioDTO comentario) {
-            ComentarioDTO savedComentarioDTO = comentarioService.save(comentario);
+            ComentarioDTO savedComentarioDTO = comentarioServiceImpl.save(comentario);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(ComentarioDTO.class).toUri();
             return ResponseEntity.created(location).body(savedComentarioDTO);
@@ -80,7 +80,7 @@ public class ComentarioController {
                     content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<ComentarioDTO> update(@PathVariable Long id, @RequestBody ComentarioDTO comentarioDetails) {
-            return ResponseEntity.ok().body(comentarioService.update(id, comentarioDetails));
+            return ResponseEntity.ok().body(comentarioServiceImpl.update(id, comentarioDetails));
     }
 
     @Operation(summary = "Excluir um comentário por ID")
@@ -93,7 +93,7 @@ public class ComentarioController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
-        comentarioService.delete(id);
+        comentarioServiceImpl.delete(id);
         return ResponseEntity.noContent().build();
     }
 

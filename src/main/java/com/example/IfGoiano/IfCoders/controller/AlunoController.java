@@ -1,7 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
-import com.example.IfGoiano.IfCoders.model.AlunoEntity;
-import com.example.IfGoiano.IfCoders.service.AlunoService;
+import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
+import com.example.IfGoiano.IfCoders.service.impl.AlunoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/alunos")
 public class AlunoController {
     @Autowired
-    private AlunoService alunoService;
+    private AlunoServiceImpl alunoServiceImpl;
 
     @Operation(summary = "Buscar todos os alunos")
     @ApiResponses(value = {
@@ -31,7 +31,7 @@ public class AlunoController {
     })
     @GetMapping
     public ResponseEntity<List<AlunoEntity>> findAll() {
-        List<AlunoEntity> alunos = alunoService.findAll();
+        List<AlunoEntity> alunos = alunoServiceImpl.findAll();
         return ResponseEntity.ok().body(alunos);
     }
 
@@ -46,7 +46,7 @@ public class AlunoController {
                     content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<AlunoEntity> findById(@PathVariable Long id) {
-        AlunoEntity aluno = alunoService.findById(id);
+        AlunoEntity aluno = alunoServiceImpl.findById(id);
         return ResponseEntity.ok().body(aluno);
     }
 
@@ -59,7 +59,7 @@ public class AlunoController {
                     content = @Content) })
     @PostMapping
     public ResponseEntity<AlunoEntity> save(@RequestBody AlunoEntity aluno) {
-        AlunoEntity savedAluno = alunoService.save(aluno);
+        AlunoEntity savedAluno = alunoServiceImpl.save(aluno);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedAluno.getId()).toUri();
         return ResponseEntity.created(location).body(savedAluno);
@@ -76,7 +76,7 @@ public class AlunoController {
                     content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<AlunoEntity> update(@PathVariable Long id, @RequestBody AlunoEntity alunoDetails) {
-        return ResponseEntity.ok().body(alunoService.update(id, alunoDetails));
+        return ResponseEntity.ok().body(alunoServiceImpl.update(id, alunoDetails));
     }
 
     @Operation(summary = "Excluir aluno por ID")
@@ -89,7 +89,7 @@ public class AlunoController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
-        alunoService.delete(id);
+        alunoServiceImpl.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

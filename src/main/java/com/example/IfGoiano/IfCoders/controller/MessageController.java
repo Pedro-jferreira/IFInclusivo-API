@@ -1,6 +1,6 @@
 package com.example.IfGoiano.IfCoders.controller;
 
-import com.example.IfGoiano.IfCoders.service.MessageService;
+import com.example.IfGoiano.IfCoders.service.impl.MessageServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class MessageController {
 
     @Autowired
-    private MessageService messageService;
+    private MessageServiceImpl messageServiceImpl;
 
     // Endpoint para enviar uma mensagem
     @PostMapping("/send")
@@ -21,7 +21,7 @@ public class MessageController {
                                             @RequestParam Long receiverId,
                                             @RequestParam String text) {
 
-        messageService.sendMessage(senderId, receiverId, text);
+        messageServiceImpl.sendMessage(senderId, receiverId, text);
 
         return ResponseEntity.ok().build();
     }

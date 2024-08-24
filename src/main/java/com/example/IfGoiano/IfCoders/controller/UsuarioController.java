@@ -1,7 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
-import com.example.IfGoiano.IfCoders.model.UsuarioEntity;
-import com.example.IfGoiano.IfCoders.service.UsuarioService;
+import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
+import com.example.IfGoiano.IfCoders.service.impl.UsuarioServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/usuarios")
 public class UsuarioController {
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioServiceImpl usuarioServiceImpl;
 
     @Operation(summary = "Buscar todos os usuários")
     @ApiResponses(value = {
@@ -31,7 +31,7 @@ public class UsuarioController {
     })
     @GetMapping
     public ResponseEntity<List<UsuarioEntity>> findAll() {
-        List<UsuarioEntity> usuarios = usuarioService.findAll();
+        List<UsuarioEntity> usuarios = usuarioServiceImpl.findAll();
         return ResponseEntity.ok().body(usuarios);
     }
 
@@ -46,7 +46,7 @@ public class UsuarioController {
                     content = @Content) })
     @GetMapping("/{id}")
     public ResponseEntity<UsuarioEntity> findById(@PathVariable Long id) {
-        UsuarioEntity usuario = usuarioService.findById(id);
+        UsuarioEntity usuario = usuarioServiceImpl.findById(id);
         return ResponseEntity.ok().body(usuario);
     }
 
@@ -59,7 +59,7 @@ public class UsuarioController {
                     content = @Content) })
     @PostMapping
     public ResponseEntity<UsuarioEntity> save(@RequestBody UsuarioEntity usuario) {
-        UsuarioEntity savedUsuario = usuarioService.save(usuario);
+        UsuarioEntity savedUsuario = usuarioServiceImpl.save(usuario);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedUsuario.getId()).toUri();
         return ResponseEntity.created(location).body(savedUsuario);
@@ -76,7 +76,7 @@ public class UsuarioController {
                     content = @Content) })
     @PutMapping("/{id}")
     public ResponseEntity<UsuarioEntity> update(@PathVariable Long id, @RequestBody UsuarioEntity usuarioDetails) {
-        return ResponseEntity.ok().body(usuarioService.update(id, usuarioDetails));
+        return ResponseEntity.ok().body(usuarioServiceImpl.update(id, usuarioDetails));
     }
 
     @Operation(summary = "Excluir usuário por ID")
@@ -89,7 +89,7 @@ public class UsuarioController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
-        usuarioService.delete(id);
+        usuarioServiceImpl.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -4,6 +4,7 @@ import com.example.IfGoiano.IfCoders.exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
+import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -13,60 +14,39 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UsuarioServiceImpl {
+public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     public List<UsuarioEntity> findAll() {
-        try {
-            return usuarioRepository.findAll();
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while fetching all users: " + e);
-        }
-
+        return usuarioRepository.findAll();
     }
 
     public UsuarioEntity findById(Long id) {
-        try {
-            Optional<UsuarioEntity> usuario = usuarioRepository.findById(id);
-            return usuario.orElseThrow(() -> new ResourceNotFoundException(id));
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while fetching user: " + e);
-        }
+        Optional<UsuarioEntity> usuario = usuarioRepository.findById(id);
+        return usuario.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     @Transactional
     public UsuarioEntity save(UsuarioEntity usuario) {
-        try {
-            return usuarioRepository.save(usuario);
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while saving new user: " + e);
-        }
+        return usuarioRepository.save(usuario);
     }
 
     @Transactional
     public UsuarioEntity update(Long id, UsuarioEntity usuarioDetails) {
-        try {
-            UsuarioEntity usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-            updateUsuarioDetails(usuario, usuarioDetails);
-            return usuarioRepository.save(usuario);
-        } catch (DataAccessException e) {
-            throw new DataBaseException("Database error occurred while updating the user: " + e);
-        }
+        UsuarioEntity usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        updateUsuarioDetails(usuario, usuarioDetails);
+        return usuarioRepository.save(usuario);
     }
 
     @Transactional
     public void delete(Long id) {
-        try {
-            UsuarioEntity usuario = findById(id);
-            usuarioRepository.delete(usuario);
-        } catch (DataAccessException e) {
-            throw new DataBaseException("Database error occurred while deleting the user: " + e);
-        }
+        UsuarioEntity usuario = findById(id);
+        usuarioRepository.delete(usuario);
     }
 
-    public void updateUsuarioDetails (UsuarioEntity usuario, UsuarioEntity usuarioDetails){
+    private void updateUsuarioDetails (UsuarioEntity usuario, UsuarioEntity usuarioDetails){
         usuario.setNome(usuarioDetails.getNome());
         usuario.setLogin(usuarioDetails.getLogin());
         usuario.setSenha(usuarioDetails.getSenha());

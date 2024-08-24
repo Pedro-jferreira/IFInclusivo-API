@@ -5,64 +5,49 @@ import com.example.IfGoiano.IfCoders.exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.entity.CursoEntity;
 import com.example.IfGoiano.IfCoders.repository.CursoRepository;
+import com.example.IfGoiano.IfCoders.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class CursoServiceImpl {
+public class CursoServiceImpl implements CursoService {
 
     @Autowired
     private CursoRepository cursoRepository;
 
     public List<CursoEntity> findAll() {
-        try {
-            return cursoRepository.findAll();
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while fetching all cursos: " + e);
-        }
+        return cursoRepository.findAll();
     }
 
     public CursoEntity findById(Long id) {
-        try {
-            Optional<CursoEntity> curso = cursoRepository.findById(id);
-            return curso.orElseThrow(() -> new ResourceNotFoundException(id));
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while fetching curso: " + e);
-        }
+        Optional<CursoEntity> curso = cursoRepository.findById(id);
+        return curso.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public CursoEntity save(CursoEntity cursoEntity) {
-        try {
-            return cursoRepository.save(cursoEntity);
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while saving new cursoEntity: " + e);
-        }
+    @Transactional
+    public CursoEntity save(CursoEntity curso) {
+        return cursoRepository.save(curso);
     }
 
-    public CursoEntity update(Long id, CursoEntity cursoEntityDetails) {
-        try {
-            CursoEntity cursoEntity = cursoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-            updateCursoDetails(cursoEntity, cursoEntityDetails);
-            return cursoRepository.save(cursoEntity);
-        } catch (DataAccessException e) {
-            throw new DataBaseException("Database error occurred while updating the curso: " + e);
-        }
+    @Transactional
+    public CursoEntity update(Long id, CursoEntity cursoDetails) {
+        CursoEntity curso = cursoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        updateCursoDetails(curso, cursoDetails);
+        return cursoRepository.save(curso);
     }
 
+    @Transactional
     public void delete(Long id) {
-        try {
-            CursoEntity cursoEntity = findById(id);
-            cursoRepository.delete(cursoEntity);
-        } catch (DataAccessException e) {
-            throw new DataBaseException("Database error occurred while deleting the curso: " + e);
-        }
+        CursoEntity curso = findById(id);
+        cursoRepository.delete(curso);
     }
 
-    public void updateCursoDetails (CursoEntity cursoEntity, CursoEntity cursoEntityDetails){
-        cursoEntity.setNome(cursoEntityDetails.getNome());
+    private void updateCursoDetails (CursoEntity curso, CursoEntity cursoDetails) {
+        curso.setNome(cursoDetails.getNome());
     }
 }

@@ -1,5 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
 import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
@@ -14,8 +16,8 @@ public class TutorOutputDTO extends UsuarioOutputDTO{
     public TutorOutputDTO() {    }
 
     public TutorOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
-                          ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios,
-                          List<PublicacaoEntity> publicacaoEntities, List<ConfigAcessibilidadeEntity> config, String especialidade) {
+                          ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios,
+                          List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config, String especialidade) {
         super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config);
         this.especialidade = especialidade;
     }

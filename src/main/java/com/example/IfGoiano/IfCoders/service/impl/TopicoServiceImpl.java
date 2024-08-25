@@ -1,8 +1,9 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
 import com.example.IfGoiano.IfCoders.exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoDTO;
+
 import com.example.IfGoiano.IfCoders.controller.mapper.TopicoMapper;
 import com.example.IfGoiano.IfCoders.entity.TopicoEntity;
 import com.example.IfGoiano.IfCoders.repository.TopicoRepositoy;
@@ -22,7 +23,7 @@ public class TopicoServiceImpl {
     @Autowired
     private TopicoMapper mapper;
 
-    public List<TopicoDTO> findAll(){
+    public List<TopicoOutputDTO> findAll(){
         try {
             return topicoRepository.findAll().stream().map(mapper::topicoToTopicoDTO).collect(Collectors.toList());
         } catch (DataBaseException e){
@@ -30,7 +31,7 @@ public class TopicoServiceImpl {
         }
     }
 
-    public TopicoDTO findById(Long id){
+    public TopicoOutputDTO findById(Long id){
         try {
             Optional<TopicoEntity> topico = topicoRepository.findById(id);
             if (topico.isPresent()) return mapper.topicoToTopicoDTO(topico.get());
@@ -41,7 +42,7 @@ public class TopicoServiceImpl {
     }
 
     @Transactional
-    public TopicoDTO save(TopicoDTO topico){
+    public TopicoOutputDTO save(TopicoOutputDTO topico){
         try{
             return mapper.topicoToTopicoDTO(topicoRepository.save(mapper.topicoDTOToTopico(topico)));
         }catch (DataBaseException e){
@@ -50,7 +51,7 @@ public class TopicoServiceImpl {
     }
 
     @Transactional
-    public TopicoDTO update(Long id, TopicoDTO topicoDetails) {
+    public TopicoOutputDTO update(Long id, TopicoOutputDTO topicoDetails) {
         try {
             Optional<TopicoEntity> topicoOpt = topicoRepository.findById(id);
             if (topicoOpt.isPresent()) {
@@ -65,7 +66,7 @@ public class TopicoServiceImpl {
     @Transactional
     public void delete(Long id) {
         try {
-            TopicoDTO topico = findById(id);
+            TopicoOutputDTO topico = findById(id);
             topicoRepository.delete(mapper.topicoDTOToTopico(topico));
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while deleting the topic"+ e);

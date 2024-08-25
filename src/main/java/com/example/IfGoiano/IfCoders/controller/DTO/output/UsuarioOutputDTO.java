@@ -1,5 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
 import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
@@ -19,9 +21,9 @@ public class UsuarioOutputDTO {
 
     private ConfigAcessibilidadeEntity configAcessibilidadeEntity;
 
-    private List<ComentarioEntity> comentarios = new ArrayList<>();
+    private List<SimpleComentarioDTO> comentarios = new ArrayList<>();
 
-    private List<PublicacaoEntity> publicacaoEntities = new ArrayList<>();
+    private List<SimplePublicacaoDTO> publicacaoEntities = new ArrayList<>();
 
     private List<ConfigAcessibilidadeEntity> config = new ArrayList<>();
 
@@ -29,8 +31,8 @@ public class UsuarioOutputDTO {
     public UsuarioOutputDTO() {    }
 
     public UsuarioOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
-                            ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios,
-                            List<PublicacaoEntity> publicacaoEntities, List<ConfigAcessibilidadeEntity> config) {
+                            ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios,
+                            List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config) {
         this.id = id;
         this.nome = nome;
         this.login = login;
@@ -100,19 +102,19 @@ public class UsuarioOutputDTO {
         this.configAcessibilidadeEntity = configAcessibilidadeEntity;
     }
 
-    public List<ComentarioEntity> getComentarios() {
+    public List<SimpleComentarioDTO> getComentarios() {
         return comentarios;
     }
 
-    public void setComentarios(List<ComentarioEntity> comentarios) {
+    public void setComentarios(List<SimpleComentarioDTO> comentarios) {
         this.comentarios = comentarios;
     }
 
-    public List<PublicacaoEntity> getPublicacaos() {
+    public List<SimplePublicacaoDTO> getPublicacaos() {
         return publicacaoEntities;
     }
 
-    public void setPublicacaos(List<PublicacaoEntity> publicacaoEntities) {
+    public void setPublicacaos(List<SimplePublicacaoDTO> publicacaoEntities) {
         this.publicacaoEntities = publicacaoEntities;
     }
 

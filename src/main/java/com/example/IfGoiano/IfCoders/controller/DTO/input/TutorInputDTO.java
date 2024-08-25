@@ -4,15 +4,16 @@ import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
 
 import java.util.Objects;
 
-public class TutorInputDTO extends UsuarioInputDTO{
+public class TutorInputDTO extends UsuarioInputDTO {
     private String especialidade;
 
 
-    public TutorInputDTO() {    }
+    public TutorInputDTO() {
+    }
 
-    public TutorInputDTO(String nome, String login, String senha, Long matricula, String biografia,
+    public TutorInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
                          ConfigAcessibilidadeEntity configAcessibilidadeEntity, String especialidade) {
-        super(nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
         this.especialidade = especialidade;
     }
 
@@ -26,17 +27,4 @@ public class TutorInputDTO extends UsuarioInputDTO{
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        TutorInputDTO that = (TutorInputDTO) o;
-        return Objects.equals(especialidade, that.especialidade);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), especialidade);
-    }
 }

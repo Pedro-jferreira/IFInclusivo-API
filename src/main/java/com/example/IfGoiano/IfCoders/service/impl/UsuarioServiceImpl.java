@@ -72,6 +72,6 @@ public class UsuarioServiceImpl {
         usuario.setSenha(usuarioDetails.getSenha());
         usuario.setMatricula(usuarioDetails.getMatricula());
         usuario.setBiografia(usuarioDetails.getBiografia());
-        usuario.setConfigAcessibilidade(usuarioDetails.getConfigAcessibilidade());
+
     }
 }

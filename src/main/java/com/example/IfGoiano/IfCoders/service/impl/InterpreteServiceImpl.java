@@ -1,54 +1,81 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.InterpreteMapper;
 import com.example.IfGoiano.IfCoders.entity.InterpreteEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.InterpreteRepository;
 
+import com.example.IfGoiano.IfCoders.service.InterpreteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class InterpreteServiceImpl {
+public class InterpreteServiceImpl implements InterpreteService {
 
     @Autowired
     InterpreteRepository interpreteRepository;
 
-    public InterpreteEntity save(InterpreteEntity interpreteEntity) {
-        return interpreteRepository.save(interpreteEntity);
+    @Autowired
+    InterpreteMapper interpreteMapper;
+
+
+    public InterpreteOutputDTO save(InterpreteInputDTO interpreteInputDTO) {
+        var entity = interpreteMapper.toInterpreteEntity(interpreteInputDTO);
+
+        return interpreteMapper.toInterpreteOutputDTO(interpreteRepository.save(entity));
     }
 
-    public InterpreteEntity findById(Long id) {
+    public InterpreteOutputDTO findById(Long id) {
         var interprete = interpreteRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Interprete not found"));
 
-        return interprete;
+        return interpreteMapper.toInterpreteOutputDTO(interprete);
     }
 
-    public InterpreteEntity update(InterpreteEntity interpreteEntity) {
-        var interprete = interpreteRepository.findById(interpreteEntity.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("Interprete not found"));
+    public InterpreteOutputDTO update(InterpreteInputDTO interpreteInputDTO, Long id) {
+        var interprete = interpreteRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Interprete not found Id :"+ id));
 
-        interprete.setId(interpreteEntity.getId());
-        interprete.setLibras(interpreteEntity.getLibras());
-        interprete.setBiografia(interpreteEntity.getBiografia());
-        interprete.setSalary(interpreteEntity.getSalary());
-        interprete.setEspecialidade(interpreteEntity.getEspecialidade());
-        interprete.setComentarios(interpreteEntity.getComentarios());
-        interprete.setLogin(interpreteEntity.getLogin());
-        interprete.setMatricula(interpreteEntity.getMatricula());
-        interprete.setNome(interpreteEntity.getNome());
-        interprete.setSenha(interpreteEntity.getSenha());
-        return interpreteRepository.save(interprete);
+
+        updateIntrepreDetails(interprete, interpreteInputDTO);
+
+
+        return interpreteMapper.toInterpreteOutputDTO(interpreteRepository.save(interprete));
     }
 
-    public List<InterpreteEntity> findAll() {
-        return interpreteRepository.findAll();
+    public List<InterpreteOutputDTO> findAll() {
+        List<InterpreteOutputDTO> listIntrepretes = new ArrayList<>();
+
+        this.interpreteRepository.findAll().stream().
+                forEach(interpreteEntity -> listIntrepretes.add(interpreteMapper.toInterpreteOutputDTO(interpreteEntity)));
+
+        return listIntrepretes;
     }
 
     public void delete(Long id) {
-        interpreteRepository.deleteById(id);
+        var interprete = interpreteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Interprete not found"));
+
+        interpreteRepository.delete(interprete);
     }
+
+
+    public void updateIntrepreDetails(InterpreteEntity interprete, InterpreteInputDTO interpreteOutputDTO) {
+        interprete.setId(interpreteOutputDTO.getId());
+        // interprete.setLibras(interpreteOutputDTO.getLibras());
+        interprete.setBiografia(interpreteOutputDTO.getBiografia());
+        interprete.setSalary(interpreteOutputDTO.getSalary());
+        interprete.setEspecialidade(interpreteOutputDTO.getEspecialidade());
+        //interprete.setComentarios(interpreteOutputDTO.getComentarios());
+        interprete.setLogin(interpreteOutputDTO.getLogin());
+        interprete.setMatricula(interpreteOutputDTO.getMatricula());
+        interprete.setNome(interpreteOutputDTO.getNome());
+        interprete.setSenha(interpreteOutputDTO.getSenha());
+    }
+
 }

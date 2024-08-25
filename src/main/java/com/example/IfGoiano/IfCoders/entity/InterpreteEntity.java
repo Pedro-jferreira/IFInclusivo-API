@@ -21,24 +21,11 @@ public class InterpreteEntity extends TutorEntity {
     public InterpreteEntity() {
     }
 
-    public InterpreteEntity(String nome, String login, String senha, Long matricula, String biografia,
-                            ConfigAcessibilidadeEntity configAcessibilidadeEntity, String especialidade, Double salary) {
-        super(nome, login, senha, matricula, biografia, configAcessibilidadeEntity, especialidade);
+    public InterpreteEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities,  List<PublicacaoEntity> likes, List<ComentarioEntity> useful, String especialidade, Double salary, List<LibrasEntity> libras) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities,  likes, useful, especialidade);
         this.salary = salary;
-   }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        InterpreteEntity that = (InterpreteEntity) o;
-        return Objects.equals(salary, that.salary) && Objects.equals(libras, that.libras);
+        this.libras = libras;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), salary, libras);
-    }
+
 }

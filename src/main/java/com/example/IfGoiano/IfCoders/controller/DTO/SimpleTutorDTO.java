@@ -4,13 +4,12 @@ public class SimpleTutorDTO extends SimpleUsuarioDTO {
     private String especialidade;
 
 
-    public SimpleTutorDTO() {    }
+    public SimpleTutorDTO() {   super();  }
 
-    public SimpleTutorDTO(Long id, String nome, Long matricula, String especialidade) {
+    public SimpleTutorDTO(Long id, String nome, Long matricula,  String especialidade) {
         super(id, nome, matricula);
         this.especialidade = especialidade;
     }
-
 
     public String getEspecialidade() {
         return especialidade;

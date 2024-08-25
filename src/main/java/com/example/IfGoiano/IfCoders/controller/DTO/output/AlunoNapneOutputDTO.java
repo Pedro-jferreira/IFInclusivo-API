@@ -16,15 +16,11 @@ public class AlunoNapneOutputDTO extends AlunoOutputDTO{
     private String acompanhamento;
     private String situacao;
 
+    public AlunoNapneOutputDTO() {super();
+    }
 
-    public AlunoNapneOutputDTO() {    }
-
-    public AlunoNapneOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
-                               ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios,
-                               List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config,
-                               SimpleCursoDTO cursoEntity, String condicao, String laudo, String necessidadeEspecial,
-                               String necessidadeEscolar, String acompanhamento, String situacao) {
-        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config, cursoEntity);
+    public AlunoNapneOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config, SimpleCursoDTO cursoDTO, String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento, String situacao) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config, cursoDTO);
         this.condicao = condicao;
         this.laudo = laudo;
         this.necessidadeEspecial = necessidadeEspecial;
@@ -32,7 +28,6 @@ public class AlunoNapneOutputDTO extends AlunoOutputDTO{
         this.acompanhamento = acompanhamento;
         this.situacao = situacao;
     }
-
 
     public String getCondicao() {
         return condicao;

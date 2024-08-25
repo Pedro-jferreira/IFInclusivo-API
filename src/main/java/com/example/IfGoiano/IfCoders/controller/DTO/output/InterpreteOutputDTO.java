@@ -13,17 +13,12 @@ public class InterpreteOutputDTO extends TutorOutputDTO{
     private Double salary;
 
 
-    public InterpreteOutputDTO() {    }
+    public InterpreteOutputDTO() { super();   }
 
-    public InterpreteOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
-                               ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios,
-                               List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config,
-                               String especialidade, Double salary) {
-        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities,
-                config, especialidade);
+    public InterpreteOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config,  String especialidade, Double salary) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config,  especialidade);
         this.salary = salary;
     }
-
 
     public Double getSalary() {
         return salary;

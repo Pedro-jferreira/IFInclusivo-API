@@ -28,7 +28,7 @@ public class PublicacaoEntity implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "topico_id")
-    private TopicoEntity topicoEntity;
+    private TopicoEntity topico;
 
     @OneToMany(mappedBy = "publicacaoEntity",cascade = CascadeType.ALL)
     private List<ComentarioEntity> comentarios = new ArrayList<>();
@@ -46,7 +46,7 @@ public class PublicacaoEntity implements Serializable {
         this.urlFoto = urlFoto;
         this.dataCriacao = dataCriacao;
         this.usuario = usuario;
-        this.topicoEntity = topicoEntity;
+        this.topico = topicoEntity;
         this.comentarios = comentarios;
         this.likeBy = likeBy;
     }
@@ -99,12 +99,12 @@ public class PublicacaoEntity implements Serializable {
         this.usuario = usuario;
     }
 
-    public TopicoEntity getTopicoEntity() {
-        return topicoEntity;
+    public TopicoEntity getTopico() {
+        return topico;
     }
 
-    public void setTopicoEntity(TopicoEntity topicoEntity) {
-        this.topicoEntity = topicoEntity;
+    public void setTopico(TopicoEntity topico) {
+        this.topico = topico;
     }
 
     public List<ComentarioEntity> getComentarios() {
@@ -134,5 +134,20 @@ public class PublicacaoEntity implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(id, usuario);
+    }
+
+    @Override
+    public String toString() {
+        return "PublicacaoEntity{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", urlVideo='" + urlVideo + '\'' +
+                ", urlFoto='" + urlFoto + '\'' +
+                ", dataCriacao=" + dataCriacao +
+                ", usuario=" + usuario +
+                ", topico=" + topico +
+                ", comentarios=" + comentarios +
+                ", likeBy=" + likeBy +
+                '}';
     }
 }

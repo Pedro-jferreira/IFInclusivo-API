@@ -24,7 +24,7 @@ public class AlunoNapneEntity extends AlunoEntity {
     private String situacao;
 
 
-    public AlunoNapneEntity() {    }
+    public AlunoNapneEntity() {  super();   }
 
 
     public AlunoNapneEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities,  List<PublicacaoEntity> likes, List<ComentarioEntity> useful, CursoEntity cursoEntity, String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento, String situacao) {

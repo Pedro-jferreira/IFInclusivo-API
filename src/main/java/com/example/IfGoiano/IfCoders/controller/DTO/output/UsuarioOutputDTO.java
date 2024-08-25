@@ -19,6 +19,7 @@ public class UsuarioOutputDTO {
     private String biografia;
 
 
+
     private ConfigAcessibilidadeEntity configAcessibilidadeEntity;
 
     private List<SimpleComentarioDTO> comentarios = new ArrayList<>();
@@ -27,12 +28,9 @@ public class UsuarioOutputDTO {
 
     private List<ConfigAcessibilidadeEntity> config = new ArrayList<>();
 
-
     public UsuarioOutputDTO() {    }
 
-    public UsuarioOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
-                            ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios,
-                            List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config) {
+    public UsuarioOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config) {
         this.id = id;
         this.nome = nome;
         this.login = login;
@@ -43,8 +41,8 @@ public class UsuarioOutputDTO {
         this.comentarios = comentarios;
         this.publicacaoEntities = publicacaoEntities;
         this.config = config;
-    }
 
+    }
 
     public Long getId() {
         return id;
@@ -126,6 +124,21 @@ public class UsuarioOutputDTO {
         this.config = config;
     }
 
+    public ConfigAcessibilidadeEntity getConfigAcessibilidadeEntity() {
+        return configAcessibilidadeEntity;
+    }
+
+    public void setConfigAcessibilidadeEntity(ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
+        this.configAcessibilidadeEntity = configAcessibilidadeEntity;
+    }
+
+    public List<SimplePublicacaoDTO> getPublicacaoEntities() {
+        return publicacaoEntities;
+    }
+
+    public void setPublicacaoEntities(List<SimplePublicacaoDTO> publicacaoEntities) {
+        this.publicacaoEntities = publicacaoEntities;
+    }
 
     @Override
     public boolean equals(Object o) {

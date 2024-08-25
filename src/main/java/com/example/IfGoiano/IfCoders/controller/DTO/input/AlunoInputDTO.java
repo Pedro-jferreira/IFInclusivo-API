@@ -1,43 +1,27 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.input;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleCursoDTO;
 import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
-import com.example.IfGoiano.IfCoders.entity.CursoEntity;
-
-import java.util.Objects;
 
 public class AlunoInputDTO extends UsuarioInputDTO{
-    private CursoEntity cursoEntity;
+    private SimpleCursoDTO cursoDTO;
 
 
     public AlunoInputDTO() {    }
 
-    public AlunoInputDTO(String nome, String login, String senha, Long matricula, String biografia,
-                         ConfigAcessibilidadeEntity configAcessibilidadeEntity, CursoEntity cursoEntity) {
-        super(nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
-        this.cursoEntity = cursoEntity;
+    public AlunoInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
+                         ConfigAcessibilidadeEntity configAcessibilidadeEntity, SimpleCursoDTO cursoEntity) {
+        super(id,nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
+        this.cursoDTO = cursoEntity;
     }
 
 
-    public CursoEntity getCurso() {
-        return cursoEntity;
+    public SimpleCursoDTO getCursoDTO() {
+        return cursoDTO;
     }
 
-    public void setCurso(CursoEntity cursoEntity) {
-        this.cursoEntity = cursoEntity;
+    public void setCursoDTO(SimpleCursoDTO cursoDTO) {
+        this.cursoDTO = cursoDTO;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        AlunoInputDTO that = (AlunoInputDTO) o;
-        return Objects.equals(cursoEntity, that.cursoEntity);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), cursoEntity);
-    }
 }

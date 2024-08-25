@@ -1,52 +1,77 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ProfessorInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ProfessorOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.ProfessorMapper;
 import com.example.IfGoiano.IfCoders.entity.ProfessorEntity;
 
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.ProfessorRepository;
+import com.example.IfGoiano.IfCoders.service.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class ProfessorServiceImpl {
+public class ProfessorServiceImpl implements ProfessorService {
 
     @Autowired
     ProfessorRepository professorRepository;
 
+    @Autowired
+    ProfessorMapper professorMapper;
 
+    public ProfessorOutputDTO save(ProfessorInputDTO professorInput) {
+        var professor = this.professorMapper.toProfessorEntity(professorInput);
+        this.professorRepository.save(professor);
 
-    public ProfessorEntity save(ProfessorEntity professorEntity){
-        return   professorRepository.save(professorEntity);
+        return this.professorMapper.toProfessorOutputDTO(professor);
     }
 
-    public List<ProfessorEntity> findAll(){
-        return professorRepository.findAll();
+    public List<ProfessorOutputDTO> findAll() {
+        List<ProfessorOutputDTO> listProfessorOutputDTO = new ArrayList<>();
+
+        this.professorRepository.findAll().forEach(professor -> listProfessorOutputDTO.add(professorMapper.toProfessorOutputDTO(professor))); // adicionar exeção caso esteja vazia
+
+        return listProfessorOutputDTO;
     }
 
-    public ProfessorEntity findById(Long id){
-        return professorRepository.findById(id).get();
+
+    public ProfessorOutputDTO findById(Long id) {
+        var profesor = professorRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        return this.professorMapper.toProfessorOutputDTO(profesor);
     }
 
-    public void delete(Long id){
-        professorRepository.deleteById(id);
-    }
-
-    public  ProfessorEntity update(ProfessorEntity professor){
-        var profe = professorRepository.findById(professor.getId())
+    public void delete(Long id) {
+        var profe = professorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Professor not found"));
 
-        profe.setId(professor.getId());//
-        profe.setNome(professor.getNome());//
-        profe.setBiografia(professor.getBiografia());//
-        profe.setComentarios(professor.getComentarios());//
-        profe.setFormacao(professor.getFormacao());//
-        profe.setMatricula(professor.getMatricula());//
-        profe.setLogin(professor.getLogin());//
-        profe.setSenha(professor.getSenha());
+        this.professorRepository.deleteById(id);
+    }
 
-        return  professorRepository.save(profe);
 
+
+
+    public ProfessorOutputDTO update(ProfessorInputDTO professor, Long id) {
+        var profe = professorRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Professor not found"));
+
+        this.updateProfessor(profe, professor);
+        this.professorRepository.save(profe);
+      return this.professorMapper.toProfessorOutputDTO(profe);
+
+    }
+
+    public void updateProfessor(ProfessorEntity professor, ProfessorInputDTO professorInput){
+        professor.setId(professorInput.getId());
+        professor.setNome(professorInput.getNome());
+        professor.setBiografia(professorInput.getBiografia());
+        //professor.setComentarios(professorInput.getComentarios());
+        professor.setFormacao(professorInput.getFormacao());
+        professor.setMatricula(professorInput.getMatricula());
+        professor.setLogin(professorInput.getLogin());
+        professor.setSenha(professorInput.getSenha());
     }
 }

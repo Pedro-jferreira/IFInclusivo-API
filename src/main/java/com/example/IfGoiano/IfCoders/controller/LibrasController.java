@@ -1,9 +1,8 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
-import com.example.IfGoiano.IfCoders.model.Libras;
-
-import com.example.IfGoiano.IfCoders.service.LibrasService;
+import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
+import com.example.IfGoiano.IfCoders.service.impl.LibrasServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,43 +21,43 @@ import java.util.List;
 public class LibrasController {
 
     @Autowired
-    LibrasService librasService;
+    LibrasServiceImpl librasService;
 
 
     @Operation(summary = "Criar uma nova Publicação")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "publication created",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Libras.class)) }),
+                            schema = @Schema(implementation = LibrasEntity.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping("/create")
-    public ResponseEntity<Libras> createLibras(@RequestBody Libras sinais){
+    public ResponseEntity<LibrasEntity> createLibras(@RequestBody LibrasEntity sinais){
 
-        return new ResponseEntity<>(librasService.createLibras(sinais), HttpStatus.CREATED);
+        return new ResponseEntity<>(librasService.save(sinais), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Libras> getByIdLibras(@PathVariable Long id){
+    public ResponseEntity<LibrasEntity> getByIdLibras(@PathVariable Long id){
 
-        return new ResponseEntity<>(librasService.findLibrasById(id), HttpStatus.OK);
+        return new ResponseEntity<>(librasService.findById(id), HttpStatus.OK);
     }
 
     @GetMapping()
-    public ResponseEntity<List<Libras>> getAllLibras(){
+    public ResponseEntity<List<LibrasEntity>> getAllLibras(){
 
-        return new ResponseEntity<>(librasService.findAllLibras(), HttpStatus.OK);
+        return new ResponseEntity<>(librasService.findAll(), HttpStatus.OK);
     }
 
 
     @PutMapping("/update")
-    public ResponseEntity<Libras> updateLibras(@RequestBody Libras sinais){
-        return new ResponseEntity<>(librasService.updateLibras(sinais), HttpStatus.NO_CONTENT);
+    public ResponseEntity<LibrasEntity> updateLibras(@RequestBody LibrasEntity sinais){
+        return new ResponseEntity<>(librasService.update(sinais), HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Libras> deleteLibras(@PathVariable Long id){
-        librasService.deleteLibras(id);
+    public ResponseEntity<LibrasEntity> deleteLibras(@PathVariable Long id){
+        librasService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

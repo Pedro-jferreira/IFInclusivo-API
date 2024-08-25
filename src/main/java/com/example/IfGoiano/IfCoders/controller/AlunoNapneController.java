@@ -1,8 +1,10 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
-import com.example.IfGoiano.IfCoders.model.AlunoNapne;
-import com.example.IfGoiano.IfCoders.service.AlunoNapneService;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
+import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
+import com.example.IfGoiano.IfCoders.service.impl.AlunoNapneServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -20,19 +22,19 @@ import java.util.List;
 public class AlunoNapneController {
 
     @Autowired
-    AlunoNapneService alunoNapneService;
+    AlunoNapneServiceImpl alunoNapneService;
 
     @Operation(summary = "Criar um novo Aluno")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Comment created",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoNapne.class))}),
+                            schema = @Schema(implementation = AlunoNapneEntity.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @PostMapping
-    public ResponseEntity<AlunoNapne> createAluno(@RequestBody AlunoNapne aluno) {
-        return new ResponseEntity<>(alunoNapneService.createdAlunoNapne(aluno), HttpStatus.CREATED);
+    public ResponseEntity<AlunoNapneOutputDTO> createAluno(@RequestBody AlunoNapneInputDTO aluno) {
+        return new ResponseEntity<>(alunoNapneService.save(aluno), HttpStatus.CREATED);
     }
 
 
@@ -40,13 +42,13 @@ public class AlunoNapneController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found all Publication",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoNapne.class))}),
+                            schema = @Schema(implementation = AlunoNapneEntity.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<AlunoNapne>> getAllAlunos() {
-        return new ResponseEntity<>(alunoNapneService.findAllAlunoNapne(), HttpStatus.OK);
+    public ResponseEntity<List<AlunoNapneOutputDTO>> getAllAlunos() {
+        return new ResponseEntity<>(alunoNapneService.findAll(), HttpStatus.OK);
     }
 
 
@@ -54,16 +56,14 @@ public class AlunoNapneController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the publication",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoNapne.class))}),
+                            schema = @Schema(implementation = AlunoNapneEntity.class))}),
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @GetMapping("/{id}")
-    public ResponseEntity<AlunoNapne> getAlunoById(@PathVariable Long id) {
-        AlunoNapne aluno = alunoNapneService.findByIdAlunoNapne(id);
-        return aluno != null ? new ResponseEntity<>(aluno, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<AlunoNapneOutputDTO> getAlunoById(@PathVariable Long id) {
+      return new ResponseEntity<>(alunoNapneService.findById(id), HttpStatus.OK);
     }
 
 
@@ -71,16 +71,14 @@ public class AlunoNapneController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "publication updated",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoNapne.class))}),
+                            schema = @Schema(implementation = AlunoNapneEntity.class))}),
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @PutMapping("/{id}")
-    public ResponseEntity<AlunoNapne> updateAluno(@RequestBody AlunoNapne aluno) {
-        AlunoNapne updatedAluno = alunoNapneService.updateAlunoNapne(aluno);
-        return updatedAluno != null ? new ResponseEntity<>(updatedAluno, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<AlunoNapneOutputDTO> updateAluno(@RequestBody AlunoNapneInputDTO aluno, @PathVariable Long id) {
+       return new ResponseEntity<>(alunoNapneService.update(aluno,id), HttpStatus.OK);
     }
 
 
@@ -94,7 +92,7 @@ public class AlunoNapneController {
                     content = @Content)})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAluno(@PathVariable Long id) {
-        alunoNapneService.deleteAlunoNapne(id);
+        alunoNapneService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }

@@ -3,7 +3,7 @@ package com.example.IfGoiano.IfCoders.repository;
 
 
 
-import com.example.IfGoiano.IfCoders.model.MessageEntity;
+import com.example.IfGoiano.IfCoders.entity.MessageEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

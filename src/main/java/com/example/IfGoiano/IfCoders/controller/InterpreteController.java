@@ -1,9 +1,10 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
-import com.example.IfGoiano.IfCoders.model.Interprete;
-
-import com.example.IfGoiano.IfCoders.service.InterpreteService;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
+import com.example.IfGoiano.IfCoders.entity.InterpreteEntity;
+import com.example.IfGoiano.IfCoders.service.impl.InterpreteServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,20 +22,20 @@ import java.util.List;
 public class InterpreteController {
 
     @Autowired
-    InterpreteService interpreteService;
+    InterpreteServiceImpl interpreteService;
 
 
     @Operation(summary = "Criar um novo interprete")
     @ApiResponses(value ={
             @ApiResponse(responseCode = "201", description = "Comment created",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Interprete.class)) }),
+                            schema = @Schema(implementation = InterpreteInputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @PostMapping
-    public ResponseEntity<Interprete> createInterprete(@RequestBody Interprete interprete) {
-        return new ResponseEntity<>(interpreteService.createdInterprete(interprete), HttpStatus.CREATED);
+    public ResponseEntity<InterpreteOutputDTO> createInterprete(@RequestBody InterpreteInputDTO interprete) {
+        return new ResponseEntity<>(interpreteService.save(interprete), HttpStatus.CREATED);
     }
 
 
@@ -43,13 +44,13 @@ public class InterpreteController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found all Comments",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Interprete.class)) }),
+                            schema = @Schema(implementation = InterpreteOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
 
     @GetMapping
-    public ResponseEntity<List<Interprete>> getAllInterpretes() {
-        return new ResponseEntity<>(interpreteService.findAllInterpretes(), HttpStatus.OK);
+    public ResponseEntity<List<InterpreteOutputDTO>> getAllInterpretes() {
+        return new ResponseEntity<>(interpreteService.findAll(), HttpStatus.OK);
     }
 
 
@@ -57,16 +58,14 @@ public class InterpreteController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the comment",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Interprete.class)) }),
+                            schema = @Schema(implementation = InterpreteInputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Comment not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<Interprete> getInterpreteById(@PathVariable Long id) {
-        Interprete interprete = interpreteService.findByIdInterprete(id);
-        return interprete != null ? new ResponseEntity<>(interprete, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<InterpreteOutputDTO> getInterpreteById(@PathVariable Long id) {
+        return new ResponseEntity<>(this.interpreteService.findById(id), HttpStatus.OK);
     }
 
 
@@ -75,16 +74,14 @@ public class InterpreteController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Comment updated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = Interprete.class)) }),
+                            schema = @Schema(implementation = InterpreteOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Comment not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<Interprete> updateInterprete(@RequestBody Interprete interprete) {
-        Interprete updatedInterprete = interpreteService.updateInterprete(interprete);
-        return updatedInterprete != null ? new ResponseEntity<>(updatedInterprete, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<InterpreteOutputDTO> updateInterprete(@RequestBody InterpreteInputDTO interprete, @PathVariable Long id) {
+        return new ResponseEntity<>(this.interpreteService.update(interprete, id), HttpStatus.NO_CONTENT);
     }
 
 
@@ -98,7 +95,7 @@ public class InterpreteController {
                     content = @Content) })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteInterprete(@PathVariable Long id) {
-        interpreteService.deleteInterprete(id);
+        interpreteService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
     }

@@ -16,18 +16,21 @@ public class PublicacaoOutputDTO {
     private String urlFoto;
     private LocalDateTime dataCriacao;
     private SimpleUsuarioDTO usuario;
-    private SimpleTopicoDTO topicoEntity;
+    private SimpleTopicoDTO topico;
     private List<SimpleComentarioDTO> comentarios;
     private List<SimpleUsuarioDTO> likeBy;
 
-    public PublicacaoOutputDTO(Long id, String text, String urlVideo, String urlFoto, LocalDateTime dataCriacao, SimpleUsuarioDTO usuario, SimpleTopicoDTO topicoEntity, List<SimpleComentarioDTO> comentarios, List<SimpleUsuarioDTO> likeBy) {
+    public PublicacaoOutputDTO() {
+    }
+
+    public PublicacaoOutputDTO(Long id, String text, String urlVideo, String urlFoto, LocalDateTime dataCriacao, SimpleUsuarioDTO usuario, SimpleTopicoDTO topico, List<SimpleComentarioDTO> comentarios, List<SimpleUsuarioDTO> likeBy) {
         this.id = id;
         this.text = text;
         this.urlVideo = urlVideo;
         this.urlFoto = urlFoto;
         this.dataCriacao = dataCriacao;
         this.usuario = usuario;
-        this.topicoEntity = topicoEntity;
+        this.topico = topico;
         this.comentarios = comentarios;
         this.likeBy = likeBy;
     }
@@ -80,12 +83,12 @@ public class PublicacaoOutputDTO {
         this.usuario = usuario;
     }
 
-    public SimpleTopicoDTO getTopicoEntity() {
-        return topicoEntity;
+    public SimpleTopicoDTO getTopico() {
+        return topico;
     }
 
-    public void setTopicoEntity(SimpleTopicoDTO topicoEntity) {
-        this.topicoEntity = topicoEntity;
+    public void setTopico(SimpleTopicoDTO topico) {
+        this.topico = topico;
     }
 
     public List<SimpleComentarioDTO> getComentarios() {
@@ -109,11 +112,26 @@ public class PublicacaoOutputDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PublicacaoOutputDTO that = (PublicacaoOutputDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(text, that.text) && Objects.equals(usuario, that.usuario);
+        return Objects.equals(id, that.id) && Objects.equals(usuario, that.usuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, text, usuario);
+        return Objects.hash(id, usuario);
+    }
+
+    @Override
+    public String toString() {
+        return "PublicacaoOutputDTO{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", urlVideo='" + urlVideo + '\'' +
+                ", urlFoto='" + urlFoto + '\'' +
+                ", dataCriacao=" + dataCriacao +
+                ", usuario=" + usuario +
+                ", topico=" + topico +
+                ", comentarios=" + comentarios +
+                ", likeBy=" + likeBy +
+                '}';
     }
 }

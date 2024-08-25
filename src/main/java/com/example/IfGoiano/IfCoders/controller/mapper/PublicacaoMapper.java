@@ -26,15 +26,24 @@ public class PublicacaoMapper {
         return modelMapper.map(publicacaoEntity, PublicacaoInputDTO.class);
     }
     public PublicacaoEntity toPublicacaoEntity(PublicacaoInputDTO inputDTO){
-        return modelMapper.map(inputDTO, PublicacaoEntity.class);
+        System.out.println("PublicacaoInputDTO: " + inputDTO);
+        PublicacaoEntity entity = modelMapper.map(inputDTO, PublicacaoEntity.class);
+        System.out.println("Mapped PublicacaoEntity: " + entity);
+        return entity;
     }
 
 
     public PublicacaoOutputDTO toPublicacaoOutputDTO(PublicacaoEntity publicacaoEntity){
-        return modelMapper.map(publicacaoEntity, PublicacaoOutputDTO.class);
+        System.out.println("PublicacaoInputDTO: " + publicacaoEntity);
+        PublicacaoOutputDTO entity =modelMapper.map(publicacaoEntity, PublicacaoOutputDTO.class);
+        System.out.println("Mapped PublicacaoOutputDTO: " + entity);
+        return entity;
     }
     public PublicacaoEntity toPublicacaoEntity(PublicacaoOutputDTO inputDTO){
-        return modelMapper.map(inputDTO, PublicacaoEntity.class);
+        System.out.println("PublicacaoOutputDTO: " + inputDTO);
+        PublicacaoEntity entity= modelMapper.map(inputDTO, PublicacaoEntity.class);
+        System.out.println("Mapped PublicacaoEntity: " + entity);
+        return entity;
     }
 
 

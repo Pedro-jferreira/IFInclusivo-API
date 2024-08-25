@@ -65,11 +65,11 @@ public class PublicacaoInputDTO {
         this.usuario = usuario;
     }
 
-    public SimpleTopicoDTO getTopicoEntity() {
+    public SimpleTopicoDTO getTopico() {
         return topico;
     }
 
-    public void setTopicoEntity(SimpleTopicoDTO topico) {
+    public void setTopico(SimpleTopicoDTO topico) {
         this.topico = topico;
     }
 
@@ -84,5 +84,17 @@ public class PublicacaoInputDTO {
     @Override
     public int hashCode() {
         return Objects.hash(id, usuario);
+    }
+
+    @Override
+    public String toString() {
+        return "PublicacaoInputDTO{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", urlVideo='" + urlVideo + '\'' +
+                ", urlFoto='" + urlFoto + '\'' +
+                ", usuario=" + usuario +
+                ", topico=" + topico +
+                '}';
     }
 }

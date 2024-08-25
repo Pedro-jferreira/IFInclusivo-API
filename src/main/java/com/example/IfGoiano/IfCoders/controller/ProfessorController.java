@@ -1,5 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ProfessorInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ProfessorOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.ProfessorEntity;
 import com.example.IfGoiano.IfCoders.service.impl.ProfessorServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -26,11 +28,11 @@ public class ProfessorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "publication created",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProfessorEntity.class)) }),
+                            schema = @Schema(implementation = ProfessorInputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping("/create")
-    public ResponseEntity<ProfessorEntity> createProfessor(@RequestBody ProfessorEntity professor) {
+    public ResponseEntity<ProfessorOutputDTO> createProfessor(@RequestBody ProfessorInputDTO professor) {
         return new ResponseEntity<>(professorService.save(professor), HttpStatus.CREATED);
     }
 
@@ -39,12 +41,12 @@ public class ProfessorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Found all Publication",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProfessorEntity.class))}),
+                            schema = @Schema(implementation = ProfessorOutputDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @GetMapping("/professores")
-    public ResponseEntity<List<ProfessorEntity>> getAllProfessor(){
+    public ResponseEntity<List<ProfessorOutputDTO>> getAllProfessor(){
         return ResponseEntity.ok(professorService.findAll());
     }
 
@@ -59,7 +61,7 @@ public class ProfessorController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<ProfessorEntity> findByIdProfessor(@PathVariable Long id){
+    public ResponseEntity<ProfessorOutputDTO> findByIdProfessor(@PathVariable Long id){
         return new ResponseEntity<>(professorService.findById(id),HttpStatus.OK);
     }
 
@@ -73,9 +75,9 @@ public class ProfessorController {
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PutMapping("/update")
-    public ResponseEntity<ProfessorEntity> updateProfessor(@RequestBody ProfessorEntity professor){
-        return new ResponseEntity<>(professorService.update(professor),HttpStatus.NO_CONTENT);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ProfessorOutputDTO> updateProfessor(@RequestBody ProfessorInputDTO professor, @PathVariable Long id){
+        return new ResponseEntity<>(professorService.update(professor, id),HttpStatus.NO_CONTENT);
     }
 
 

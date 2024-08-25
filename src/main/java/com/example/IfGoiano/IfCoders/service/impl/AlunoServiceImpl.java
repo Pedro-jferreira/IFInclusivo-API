@@ -71,6 +71,6 @@ public class AlunoServiceImpl {
         aluno.setSenha(alunoDetails.getSenha());
         aluno.setMatricula(alunoDetails.getMatricula());
         aluno.setBiografia(alunoDetails.getBiografia());
-        aluno.setConfigAcessibilidade(alunoDetails.getConfigAcessibilidade());
+      
     }
 }

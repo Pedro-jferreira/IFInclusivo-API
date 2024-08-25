@@ -1,47 +1,31 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
-import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleCursoDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
 import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
-import com.example.IfGoiano.IfCoders.entity.CursoEntity;
-import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
 
 import java.util.List;
 import java.util.Objects;
 
 public class AlunoOutputDTO extends UsuarioOutputDTO {
-    private CursoEntity cursoEntity;
+    private SimpleCursoDTO cursoDTO;
 
 
     public AlunoOutputDTO() {
     }
-    public AlunoOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
-                          ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios,
-                          List<PublicacaoEntity> publicacaoEntities, List<ConfigAcessibilidadeEntity> config,
-                          CursoEntity cursoEntity) {
+
+    public AlunoOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config, SimpleCursoDTO cursoDTO) {
         super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config);
-        this.cursoEntity = cursoEntity;
+        this.cursoDTO = cursoDTO;
     }
 
-
-    public CursoEntity getCurso() {
-        return cursoEntity;
+    public SimpleCursoDTO getCursoDTO() {
+        return cursoDTO;
     }
 
-    public void setCurso(CursoEntity cursoEntity) {
-        this.cursoEntity = cursoEntity;
+    public void setCursoDTO(SimpleCursoDTO cursoDTO) {
+        this.cursoDTO = cursoDTO;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        AlunoOutputDTO that = (AlunoOutputDTO) o;
-        return Objects.equals(cursoEntity, that.cursoEntity);
-    }
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), cursoEntity);
-    }
 }

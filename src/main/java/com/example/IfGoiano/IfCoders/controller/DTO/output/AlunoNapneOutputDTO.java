@@ -1,5 +1,8 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleCursoDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
 import com.example.IfGoiano.IfCoders.entity.*;
 
 import java.util.List;
@@ -17,9 +20,9 @@ public class AlunoNapneOutputDTO extends AlunoOutputDTO{
     public AlunoNapneOutputDTO() {    }
 
     public AlunoNapneOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
-                               ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios,
-                               List<PublicacaoEntity> publicacaoEntities, List<ConfigAcessibilidadeEntity> config,
-                               CursoEntity cursoEntity, String condicao, String laudo, String necessidadeEspecial,
+                               ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios,
+                               List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config,
+                               SimpleCursoDTO cursoEntity, String condicao, String laudo, String necessidadeEspecial,
                                String necessidadeEscolar, String acompanhamento, String situacao) {
         super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config, cursoEntity);
         this.condicao = condicao;

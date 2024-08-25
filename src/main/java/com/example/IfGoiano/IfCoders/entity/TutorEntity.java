@@ -16,7 +16,7 @@ public class TutorEntity extends UsuarioEntity {
     private String especialidade;
 
 
-    public TutorEntity() {    }
+    public TutorEntity() {   super();  }
 
     public TutorEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities, List<PublicacaoEntity> likes, List<ComentarioEntity> useful, String especialidade) {
         super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities,  likes, useful);

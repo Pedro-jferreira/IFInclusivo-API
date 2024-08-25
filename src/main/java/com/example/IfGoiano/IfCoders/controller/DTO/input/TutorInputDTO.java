@@ -9,14 +9,13 @@ public class TutorInputDTO extends UsuarioInputDTO {
 
 
     public TutorInputDTO() {
+        super();
     }
 
-    public TutorInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
-                         ConfigAcessibilidadeEntity configAcessibilidadeEntity, String especialidade) {
+    public TutorInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity,  String especialidade) {
         super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
         this.especialidade = especialidade;
     }
-
 
     public String getEspecialidade() {
         return especialidade;

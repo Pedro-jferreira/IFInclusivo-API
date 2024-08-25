@@ -8,13 +8,15 @@ public class SimpleUsuarioDTO {
     private Long matricula;
 
 
+
     public SimpleUsuarioDTO() {  }
 
     public SimpleUsuarioDTO(Long id, String nome, Long matricula) {
         this.id = id;
         this.nome = nome;
-        this.matricula = matricula;
+
     }
+
 
     public Long getId() {
         return id;

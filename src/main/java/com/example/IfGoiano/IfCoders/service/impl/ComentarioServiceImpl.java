@@ -7,6 +7,7 @@ import com.example.IfGoiano.IfCoders.controller.mapper.ComentarioMapper;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.ComentarioRepository;
+import com.example.IfGoiano.IfCoders.service.ComentarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class ComentarioServiceImpl {
+public class ComentarioServiceImpl implements ComentarioService {
 
     @Autowired
     private ComentarioRepository repository;

@@ -1,23 +1,24 @@
 package com.example.IfGoiano.IfCoders.controller.DTO;
 
-import java.util.Objects;
+import com.example.IfGoiano.IfCoders.entity.CursoEntity;
 
-public class AlunoNapneSimplificadoDTO extends AlunoSimplificadoDTO{
+public class SimpleAlunoNapneDTO extends SimpleAlunoDTO {
     private String condicao;
     private String necessidadeEspecial;
     private String necessidadeEscolar;
     private String acompanhamento;
 
 
-    public AlunoNapneSimplificadoDTO() {    }
+    public SimpleAlunoNapneDTO() {    }
 
-    public AlunoNapneSimplificadoDTO(String condicao, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento) {
+
+    public SimpleAlunoNapneDTO(Long id, String nome, Long matricula, SimpleCursoDTO cursoEntity, String condicao, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento) {
+        super(id, nome, matricula, cursoEntity);
         this.condicao = condicao;
         this.necessidadeEspecial = necessidadeEspecial;
         this.necessidadeEscolar = necessidadeEscolar;
         this.acompanhamento = acompanhamento;
     }
-
 
     public String getCondicao() {
         return condicao;
@@ -51,19 +52,4 @@ public class AlunoNapneSimplificadoDTO extends AlunoSimplificadoDTO{
         this.acompanhamento = acompanhamento;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        AlunoNapneSimplificadoDTO that = (AlunoNapneSimplificadoDTO) o;
-        return Objects.equals(condicao, that.condicao) && Objects.equals(necessidadeEspecial, that.necessidadeEspecial)
-                && Objects.equals(necessidadeEscolar, that.necessidadeEscolar) && Objects.equals(acompanhamento, that.acompanhamento);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), condicao, necessidadeEspecial, necessidadeEscolar, acompanhamento);
-    }
 }

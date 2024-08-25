@@ -1,20 +1,22 @@
-package com.example.IfGoiano.IfCoders.controller.DTO.output;
+package com.example.IfGoiano.IfCoders.controller.DTO.input;
 
-import org.springframework.hateoas.RepresentationModel;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleProfessorDTO;
 
 import java.util.Objects;
 
-public class TopicoDTO extends RepresentationModel<TopicoDTO> {
+public class TopicoInputDTO {
     private Long id;
+    private SimpleProfessorDTO professor;
     private String tema;
     private String descripcion;
     private String categoria;
 
-    public TopicoDTO() {
+    public TopicoInputDTO() {
     }
 
-    public TopicoDTO(Long id, String tema, String descripcion, String categoria) {
+    public TopicoInputDTO(Long id, SimpleProfessorDTO professor, String tema, String descripcion, String categoria) {
         this.id = id;
+        this.professor = professor;
         this.tema = tema;
         this.descripcion = descripcion;
         this.categoria = categoria;
@@ -26,6 +28,14 @@ public class TopicoDTO extends RepresentationModel<TopicoDTO> {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public SimpleProfessorDTO getProfessor() {
+        return professor;
+    }
+
+    public void setProfessor(SimpleProfessorDTO professor) {
+        this.professor = professor;
     }
 
     public String getTema() {
@@ -56,13 +66,12 @@ public class TopicoDTO extends RepresentationModel<TopicoDTO> {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        TopicoDTO topicoDTO = (TopicoDTO) o;
-        return Objects.equals(id, topicoDTO.id) && Objects.equals(tema, topicoDTO.tema);
+        TopicoInputDTO that = (TopicoInputDTO) o;
+        return Objects.equals(id, that.id) && Objects.equals(professor, that.professor);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), id, tema);
+        return Objects.hash(id, professor);
     }
 }

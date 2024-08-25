@@ -1,6 +1,6 @@
 package com.example.IfGoiano.IfCoders.controller;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.TopicoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -27,12 +27,12 @@ public class TopicoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200",description = "Found all topic",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TopicoDTO.class))}),
+                            schema = @Schema(implementation = TopicoOutputDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<TopicoDTO>> findAll() {
+    public ResponseEntity<List<TopicoOutputDTO>> findAll() {
             return ResponseEntity.ok().body(topicoServiceImpl.findAll());
     }
 
@@ -40,14 +40,14 @@ public class TopicoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the topic",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TopicoDTO.class)) }),
+                            schema = @Schema(implementation = TopicoOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "topic not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<TopicoDTO> findById(@PathVariable Long id) {
-        TopicoDTO topico = topicoServiceImpl.findById(id);
+    public ResponseEntity<TopicoOutputDTO> findById(@PathVariable Long id) {
+        TopicoOutputDTO topico = topicoServiceImpl.findById(id);
             return ResponseEntity.ok().body(topico);
     }
 
@@ -55,13 +55,13 @@ public class TopicoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "topic created",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TopicoDTO.class)) }),
+                            schema = @Schema(implementation = TopicoOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
-    public ResponseEntity<TopicoDTO> create(@RequestBody TopicoDTO topico) {
+    public ResponseEntity<TopicoOutputDTO> create(@RequestBody TopicoOutputDTO topico) {
 
-        TopicoDTO topico1 = topicoServiceImpl.save(topico);
+        TopicoOutputDTO topico1 = topicoServiceImpl.save(topico);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                     .buildAndExpand(topico1.getId()).toUri();
             return ResponseEntity.created(location).body(topico1);
@@ -71,13 +71,13 @@ public class TopicoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "topic updated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TopicoDTO.class)) }),
+                            schema = @Schema(implementation = TopicoOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "topic not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<TopicoDTO> update(@PathVariable Long id, @RequestBody TopicoDTO topicoDetails) {
+    public ResponseEntity<TopicoOutputDTO> update(@PathVariable Long id, @RequestBody TopicoOutputDTO topicoDetails) {
             return ResponseEntity.ok().body(topicoServiceImpl.update(id, topicoDetails));
     }
 

@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoDTO;
+
+import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.TopicoEntity;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
@@ -11,9 +12,9 @@ public interface TopicoMapper {
     TopicoMapper INSTANCE = Mappers.getMapper(TopicoMapper.class);
 
 
-    TopicoDTO topicoToTopicoDTO(TopicoEntity topicoEntity);
+    TopicoOutputDTO topicoToTopicoDTO(TopicoEntity topicoEntity);
 
-    TopicoEntity topicoDTOToTopico(TopicoDTO topicoDTO);
+    TopicoEntity topicoDTOToTopico(TopicoOutputDTO topicoDTO);
 
-    void updateTopicoFromDTO(TopicoDTO topicoDTO, @MappingTarget TopicoEntity topicoEntity);
+    void updateTopicoFromDTO(TopicoOutputDTO topicoDTO, @MappingTarget TopicoEntity topicoEntity);
 }

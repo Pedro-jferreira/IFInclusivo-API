@@ -1,45 +1,26 @@
-package com.example.IfGoiano.IfCoders.entity;
+package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleTopicoDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
+
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Table(name = "Publications")
-public class PublicacaoEntity implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class PublicacaoOutputDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String text;
     private String urlVideo;
     private String urlFoto;
-    private LocalDateTime dataCriacao = LocalDateTime.now();
+    private LocalDateTime dataCriacao;
+    private SimpleUsuarioDTO usuario;
+    private SimpleTopicoDTO topicoEntity;
+    private List<SimpleComentarioDTO> comentarios;
+    private List<SimpleUsuarioDTO> likeBy;
 
-
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
-    private UsuarioEntity usuario;
-
-    @ManyToOne
-    @JoinColumn(name = "topico_id")
-    private TopicoEntity topicoEntity;
-
-    @OneToMany(mappedBy = "publicacaoEntity",cascade = CascadeType.ALL)
-    private List<ComentarioEntity> comentarios = new ArrayList<>();
-
-    @ManyToMany(mappedBy = "likes")
-    private List<UsuarioEntity> likeBy = new ArrayList<>();
-
-    public PublicacaoEntity() {
-    }
-
-    public PublicacaoEntity(Long id, String text, String urlVideo, String urlFoto, LocalDateTime dataCriacao, UsuarioEntity usuario, TopicoEntity topicoEntity, List<ComentarioEntity> comentarios, List<UsuarioEntity> likeBy) {
+    public PublicacaoOutputDTO(Long id, String text, String urlVideo, String urlFoto, LocalDateTime dataCriacao, SimpleUsuarioDTO usuario, SimpleTopicoDTO topicoEntity, List<SimpleComentarioDTO> comentarios, List<SimpleUsuarioDTO> likeBy) {
         this.id = id;
         this.text = text;
         this.urlVideo = urlVideo;
@@ -91,35 +72,35 @@ public class PublicacaoEntity implements Serializable {
         this.dataCriacao = dataCriacao;
     }
 
-    public UsuarioEntity getUsuario() {
+    public SimpleUsuarioDTO getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(UsuarioEntity usuario) {
+    public void setUsuario(SimpleUsuarioDTO usuario) {
         this.usuario = usuario;
     }
 
-    public TopicoEntity getTopicoEntity() {
+    public SimpleTopicoDTO getTopicoEntity() {
         return topicoEntity;
     }
 
-    public void setTopicoEntity(TopicoEntity topicoEntity) {
+    public void setTopicoEntity(SimpleTopicoDTO topicoEntity) {
         this.topicoEntity = topicoEntity;
     }
 
-    public List<ComentarioEntity> getComentarios() {
+    public List<SimpleComentarioDTO> getComentarios() {
         return comentarios;
     }
 
-    public void setComentarios(List<ComentarioEntity> comentarios) {
+    public void setComentarios(List<SimpleComentarioDTO> comentarios) {
         this.comentarios = comentarios;
     }
 
-    public List<UsuarioEntity> getLikeBy() {
+    public List<SimpleUsuarioDTO> getLikeBy() {
         return likeBy;
     }
 
-    public void setLikeBy(List<UsuarioEntity> likeBy) {
+    public void setLikeBy(List<SimpleUsuarioDTO> likeBy) {
         this.likeBy = likeBy;
     }
 
@@ -127,12 +108,12 @@ public class PublicacaoEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PublicacaoEntity that = (PublicacaoEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(usuario, that.usuario);
+        PublicacaoOutputDTO that = (PublicacaoOutputDTO) o;
+        return Objects.equals(id, that.id) && Objects.equals(text, that.text) && Objects.equals(usuario, that.usuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, usuario);
+        return Objects.hash(id, text, usuario);
     }
 }

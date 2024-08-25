@@ -1,25 +1,46 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoDTO;
+
+import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Mapper( componentModel = "spring",uses = {TopicoMapper.class})
-public interface PublicacaoMapper {
-    PublicacaoMapper INSTANCE = Mappers.getMapper(PublicacaoMapper.class);
+@Component
+public class PublicacaoMapper {
+    @Autowired
+    ModelMapper modelMapper;
 
-    @Mapping(source = "topico", target = "topicoDTO")
-    @Mapping(source = "localDateTime", target = "localDateTime")
-    PublicacaoDTO publicacaoToPublicacaoDTO(PublicacaoEntity publicacaoEntity);
+    public SimplePublicacaoDTO toSimplePublicacaoDTO(PublicacaoEntity publicacao){
+        return modelMapper.map(publicacao, SimplePublicacaoDTO.class);
+    }
+    public PublicacaoEntity toPublicacaoEntity(SimplePublicacaoDTO simplePublicacaoDTO){
+        return modelMapper.map(simplePublicacaoDTO, PublicacaoEntity.class);
+    }
 
-    @Mapping(source = "topicoDTO", target = "topico")
-    @Mapping(source = "localDateTime", target = "localDateTime")
-    PublicacaoEntity publicacaoDTOToPublicacao(PublicacaoDTO publicacaoDTO);
 
-    @Mapping(source = "topicoDTO", target = "topico")
-    @Mapping(source = "localDateTime", target = "localDateTime")
-    void updatePublicacaoFromDTO(PublicacaoDTO publicacaoDTO, @MappingTarget PublicacaoEntity publicacaoEntity);
+    public PublicacaoInputDTO toPublicacaoInputDTO(PublicacaoEntity publicacaoEntity){
+        return modelMapper.map(publicacaoEntity, PublicacaoInputDTO.class);
+    }
+    public PublicacaoEntity toPublicacaoEntity(PublicacaoInputDTO inputDTO){
+        return modelMapper.map(inputDTO, PublicacaoEntity.class);
+    }
+
+
+    public PublicacaoOutputDTO toPublicacaoOutputDTO(PublicacaoEntity publicacaoEntity){
+        return modelMapper.map(publicacaoEntity, PublicacaoOutputDTO.class);
+    }
+    public PublicacaoEntity toPublicacaoEntity(PublicacaoOutputDTO inputDTO){
+        return modelMapper.map(inputDTO, PublicacaoEntity.class);
+    }
+
+
+    public void updatePublicacaoEntityFromDTO(PublicacaoInputDTO publicacaoDeitails, PublicacaoEntity publicacaoEntity){
+        modelMapper.map(publicacaoDeitails, publicacaoEntity);
+    }
+
+
 }

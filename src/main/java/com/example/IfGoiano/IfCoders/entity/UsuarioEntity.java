@@ -28,31 +28,43 @@ public abstract class UsuarioEntity {
     @OneToOne
     private ConfigAcessibilidadeEntity configAcessibilidadeEntity;
 
-
-
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<ComentarioEntity> comentarios = new ArrayList<>();
-
-
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<PublicacaoEntity> publicacaoEntities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<ConfigAcessibilidadeEntity> config = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_likes_publicacao",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns =@JoinColumn(name = "publicacao_id") )
+    private List<PublicacaoEntity> likes = new ArrayList<>();
 
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_useful_comentario",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "comentario_id")
+    )
+    private List<ComentarioEntity> useful = new ArrayList<>();
 
-    public UsuarioEntity() {    }
+    public UsuarioEntity() {
+    }
 
-    public UsuarioEntity(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
+    public UsuarioEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities, List<PublicacaoEntity> likes, List<ComentarioEntity> useful) {
+        this.id = id;
         this.nome = nome;
         this.login = login;
         this.senha = senha;
         this.matricula = matricula;
         this.biografia = biografia;
         this.configAcessibilidadeEntity = configAcessibilidadeEntity;
+        this.comentarios = comentarios;
+        this.publicacaoEntities = publicacaoEntities;
+        this.likes = likes;
+        this.useful = useful;
     }
-
 
     public Long getId() {
         return id;
@@ -62,35 +74,35 @@ public abstract class UsuarioEntity {
         this.id = id;
     }
 
-    public String getNome() {
+    public @NotNull String getNome() {
         return nome;
     }
 
-    public void setNome(String nome) {
+    public void setNome(@NotNull String nome) {
         this.nome = nome;
     }
 
-    public String getLogin() {
+    public @NotNull String getLogin() {
         return login;
     }
 
-    public void setLogin(String login) {
+    public void setLogin(@NotNull String login) {
         this.login = login;
     }
 
-    public String getSenha() {
+    public @NotNull String getSenha() {
         return senha;
     }
 
-    public void setSenha(String senha) {
+    public void setSenha(@NotNull String senha) {
         this.senha = senha;
     }
 
-    public Long getMatricula() {
+    public @NotNull Long getMatricula() {
         return matricula;
     }
 
-    public void setMatricula(Long matricula) {
+    public void setMatricula(@NotNull Long matricula) {
         this.matricula = matricula;
     }
 
@@ -102,14 +114,13 @@ public abstract class UsuarioEntity {
         this.biografia = biografia;
     }
 
-    public ConfigAcessibilidadeEntity getConfigAcessibilidade() {
+    public ConfigAcessibilidadeEntity getConfigAcessibilidadeEntity() {
         return configAcessibilidadeEntity;
     }
 
-    public void setConfigAcessibilidade(ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
+    public void setConfigAcessibilidadeEntity(ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
         this.configAcessibilidadeEntity = configAcessibilidadeEntity;
     }
-
 
     public List<ComentarioEntity> getComentarios() {
         return comentarios;
@@ -119,33 +130,43 @@ public abstract class UsuarioEntity {
         this.comentarios = comentarios;
     }
 
-
-    public List<PublicacaoEntity> getPublicacaos() {
+    public List<PublicacaoEntity> getPublicacaoEntities() {
         return publicacaoEntities;
     }
 
-    public void setPublicacaos(List<PublicacaoEntity> publicacaoEntities) {
+    public void setPublicacaoEntities(List<PublicacaoEntity> publicacaoEntities) {
         this.publicacaoEntities = publicacaoEntities;
     }
 
-    public List<ConfigAcessibilidadeEntity> getConfig() {
-        return config;
+
+    public List<PublicacaoEntity> getLikes() {
+        return likes;
     }
 
-    public void setConfig(List<ConfigAcessibilidadeEntity> config) {
-        this.config = config;
+    public void setLikes(List<PublicacaoEntity> likes) {
+        this.likes = likes;
+    }
+
+    public List<ComentarioEntity> getUseful() {
+        return useful;
+    }
+
+    public void setUseful(List<ComentarioEntity> useful) {
+        this.useful = useful;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        UsuarioEntity usuario = (UsuarioEntity) o;
-        return Objects.equals(id, usuario.id) && Objects.equals(nome, usuario.nome) && Objects.equals(login, usuario.login) && Objects.equals(senha, usuario.senha) && Objects.equals(matricula, usuario.matricula) && Objects.equals(biografia, usuario.biografia) && Objects.equals(configAcessibilidadeEntity, usuario.configAcessibilidadeEntity)  && Objects.equals(comentarios, usuario.comentarios)  && Objects.equals(publicacaoEntities, usuario.publicacaoEntities) && Objects.equals(config, usuario.config);
+        UsuarioEntity that = (UsuarioEntity) o;
+        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) &&
+                Objects.equals(login, that.login) && Objects.equals(senha, that.senha) &&
+                Objects.equals(matricula, that.matricula);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity,comentarios, publicacaoEntities, config);
+        return Objects.hash(id, nome, login, senha, matricula);
     }
 }

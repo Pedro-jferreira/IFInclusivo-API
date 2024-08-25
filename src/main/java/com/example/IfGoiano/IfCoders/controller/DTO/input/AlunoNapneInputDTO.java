@@ -1,34 +1,28 @@
-package com.example.IfGoiano.IfCoders.entity;
+package com.example.IfGoiano.IfCoders.controller.DTO.input;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleCursoDTO;
+import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
+import com.example.IfGoiano.IfCoders.entity.CursoEntity;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.List;
 import java.util.Objects;
 
-@Entity
-@Table(name = "Aluno_napne")
-public class AlunoNapneEntity extends AlunoEntity {
+public class AlunoNapneInputDTO extends AlunoInputDTO{
 
-    @NotNull   @Column(nullable = false)
     private String condicao;
-    @NotNull   @Column(nullable = false)
     private String laudo;
-    @NotNull   @Column(nullable = false)
     private String necessidadeEspecial;
-    @NotNull   @Column(nullable = false)
     private String necessidadeEscolar;
-    @NotNull   @Column(nullable = false)
     private String acompanhamento;
-    @NotNull   @Column(nullable = false)
     private String situacao;
 
 
-    public AlunoNapneEntity() {    }
+    public AlunoNapneInputDTO() {    }
 
-
-    public AlunoNapneEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities,  List<PublicacaoEntity> likes, List<ComentarioEntity> useful, CursoEntity cursoEntity, String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento, String situacao) {
-        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, likes, useful, cursoEntity);
+    public AlunoNapneInputDTO(Long id,String nome, String login, String senha, Long matricula, String biografia,
+                              ConfigAcessibilidadeEntity configAcessibilidadeEntity, SimpleCursoDTO cursoEntity,
+                              String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar,
+                              String acompanhamento, String situacao) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, cursoEntity);
         this.condicao = condicao;
         this.laudo = laudo;
         this.necessidadeEspecial = necessidadeEspecial;
@@ -84,6 +78,5 @@ public class AlunoNapneEntity extends AlunoEntity {
     public void setSituacao(String situacao) {
         this.situacao = situacao;
     }
-
 
 }

@@ -17,19 +17,23 @@ public class ComentarioEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
-    private LocalDateTime localDateTime = LocalDateTime.now();
 
     @NotNull
-    private String content;
-
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private UsuarioEntity usuario;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "publicacao_id", nullable = false)
     private PublicacaoEntity publicacaoEntity;
+
+
+    @NotNull
+    private String content;
+
+    @NotNull
+    private LocalDateTime dataCriacao = LocalDateTime.now();
 
     @ManyToOne
     @JoinColumn(name = "comentario_id")
@@ -38,18 +42,22 @@ public class ComentarioEntity implements Serializable {
     @OneToMany(mappedBy = "comentarioPai", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ComentarioEntity> comentariosFilhos = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "useful")
+    private List<UsuarioEntity> usefulBy  = new ArrayList<>();
+
 
     public ComentarioEntity() {
     }
 
-    public ComentarioEntity(Long id, LocalDateTime localDateTime, UsuarioEntity usuario, PublicacaoEntity publicacaoEntity, ComentarioEntity comentarioPai, String content,  List<ComentarioEntity> comentariosFilhos) {
+    public ComentarioEntity(Long id, UsuarioEntity usuario, PublicacaoEntity publicacaoEntity, String content, LocalDateTime dataCriacao, ComentarioEntity comentarioPai, List<ComentarioEntity> comentariosFilhos, List<UsuarioEntity> usefulBy) {
         this.id = id;
-        this.localDateTime = localDateTime;
         this.usuario = usuario;
         this.publicacaoEntity = publicacaoEntity;
-        this.comentarioPai = comentarioPai;
         this.content = content;
+        this.dataCriacao = dataCriacao;
+        this.comentarioPai = comentarioPai;
         this.comentariosFilhos = comentariosFilhos;
+        this.usefulBy = usefulBy;
     }
 
     public Long getId() {
@@ -60,36 +68,20 @@ public class ComentarioEntity implements Serializable {
         this.id = id;
     }
 
-    public @NotNull LocalDateTime getLocalDateTime() {
-        return localDateTime;
-    }
-
-    public void setLocalDateTime(@NotNull LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
-    }
-
-    public UsuarioEntity getUsuario() {
+    public @NotNull UsuarioEntity getUsuario() {
         return usuario;
     }
 
-    public void setUsuario(UsuarioEntity usuario) {
+    public void setUsuario(@NotNull UsuarioEntity usuario) {
         this.usuario = usuario;
     }
 
-    public PublicacaoEntity getPublicacao() {
+    public @NotNull PublicacaoEntity getPublicacaoEntity() {
         return publicacaoEntity;
     }
 
-    public void setPublicacao(PublicacaoEntity publicacaoEntity) {
+    public void setPublicacaoEntity(@NotNull PublicacaoEntity publicacaoEntity) {
         this.publicacaoEntity = publicacaoEntity;
-    }
-
-    public ComentarioEntity getComentarioPai() {
-        return comentarioPai;
-    }
-
-    public void setComentarioPai(ComentarioEntity comentarioPai) {
-        this.comentarioPai = comentarioPai;
     }
 
     public @NotNull String getContent() {
@@ -100,6 +92,22 @@ public class ComentarioEntity implements Serializable {
         this.content = content;
     }
 
+    public @NotNull LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public void setDataCriacao(@NotNull LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
+    }
+
+    public ComentarioEntity getComentarioPai() {
+        return comentarioPai;
+    }
+
+    public void setComentarioPai(ComentarioEntity comentarioPai) {
+        this.comentarioPai = comentarioPai;
+    }
+
     public List<ComentarioEntity> getComentariosFilhos() {
         return comentariosFilhos;
     }
@@ -108,12 +116,21 @@ public class ComentarioEntity implements Serializable {
         this.comentariosFilhos = comentariosFilhos;
     }
 
+    public List<UsuarioEntity> getUsefulBy() {
+        return usefulBy;
+    }
+
+    public void setUsefulBy(List<UsuarioEntity> usefulBy) {
+        this.usefulBy = usefulBy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof ComentarioEntity)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         ComentarioEntity that = (ComentarioEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(usuario, that.usuario) && Objects.equals(publicacaoEntity, that.publicacaoEntity);
+        return Objects.equals(id, that.id) && Objects.equals(usuario, that.usuario) &&
+                Objects.equals(publicacaoEntity, that.publicacaoEntity);
     }
 
     @Override

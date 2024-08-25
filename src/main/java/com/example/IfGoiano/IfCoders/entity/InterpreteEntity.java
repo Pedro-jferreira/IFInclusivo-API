@@ -11,9 +11,8 @@ import java.util.Objects;
 @Table
 public class InterpreteEntity extends TutorEntity {
 
-    @NotNull
-    @Column(nullable = false)
-    private Double salary; // procura outro atributo para diferencia o interprete
+    @NotNull    @Column(nullable = false)
+    private Double salary;
 
     @ManyToMany
     @JoinTable(name = "interprete_libras", joinColumns = @JoinColumn(name = "interprete_id"), inverseJoinColumns = @JoinColumn(name= "libras_id"))
@@ -23,9 +22,8 @@ public class InterpreteEntity extends TutorEntity {
     public InterpreteEntity() {
     }
 
-    public InterpreteEntity(String nome, String login, String senha, Long matricula, String biografia,
-                            ConfigAcessibilidadeEntity configAcessibilidadeEntity, String especialidade, Double salary) {
-        super(nome, login, senha, matricula, biografia, configAcessibilidadeEntity, especialidade);
+    public InterpreteEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities,  List<PublicacaoEntity> likes, List<ComentarioEntity> useful, String especialidade, Double salary, List<LibrasEntity> libras) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities,  likes, useful, especialidade);
         this.salary = salary;
    }
 
@@ -42,21 +40,5 @@ public class InterpreteEntity extends TutorEntity {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), salary, libras);
-    }
-
-    public Double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }
-
-    public List<LibrasEntity> getLibras() {
-        return libras;
-    }
-
-    public void setLibras(List<LibrasEntity> libras) {
-        this.libras = libras;
     }
 }

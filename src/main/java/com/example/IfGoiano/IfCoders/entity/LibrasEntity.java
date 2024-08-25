@@ -112,31 +112,5 @@ public class LibrasEntity {
         this.justificativa = justificativa;
     }
 
-    @Override
-    public String toString() {
-        return "LibrasEntity{" +
-                "justificativa='" + justificativa + '\'' +
-                ", status=" + status +
-                ", interpreteAnalise=" + interpreteAnalise +
-                ", foto='" + foto + '\'' +
-                ", video='" + video + '\'' +
-                ", url='" + url + '\'' +
-                ", palavra='" + palavra + '\'' +
-                ", id=" + id +
-                ", descricao='" + descricao + '\'' +
-                '}';
-    }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LibrasEntity that = (LibrasEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(palavra, that.palavra) && Objects.equals(descricao, that.descricao) && Objects.equals(url, that.url) && Objects.equals(video, that.video) && Objects.equals(foto, that.foto) && Objects.equals(justificativa, that.justificativa) && status == that.status && Objects.equals(interpreteAnalise, that.interpreteAnalise);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, palavra, descricao, url, video, foto, justificativa, status, interpreteAnalise);
-    }
 }

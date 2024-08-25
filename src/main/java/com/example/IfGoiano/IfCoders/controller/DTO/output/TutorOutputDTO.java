@@ -13,15 +13,12 @@ public class TutorOutputDTO extends UsuarioOutputDTO{
     private String especialidade;
 
 
-    public TutorOutputDTO() {    }
+    public TutorOutputDTO() {   super(); }
 
-    public TutorOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
-                          ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios,
-                          List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config, String especialidade) {
+    public TutorOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config,  String especialidade) {
         super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config);
         this.especialidade = especialidade;
     }
-
 
     public String getEspecialidade() {
         return especialidade;

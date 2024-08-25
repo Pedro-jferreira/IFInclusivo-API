@@ -13,10 +13,10 @@ public class UsuarioInputDTO {
     private ConfigAcessibilidadeEntity configAcessibilidadeEntity;
 
 
+
     public UsuarioInputDTO() {    }
 
-    public UsuarioInputDTO(Long id,String nome, String login, String senha, Long matricula, String biografia,
-                           ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
+    public UsuarioInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
         this.id = id;
         this.nome = nome;
         this.login = login;
@@ -24,6 +24,7 @@ public class UsuarioInputDTO {
         this.matricula = matricula;
         this.biografia = biografia;
         this.configAcessibilidadeEntity = configAcessibilidadeEntity;
+
     }
 
     public Long getId() {
@@ -89,6 +90,7 @@ public class UsuarioInputDTO {
     public void setConfigAcessibilidade(ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
         this.configAcessibilidadeEntity = configAcessibilidadeEntity;
     }
+
 
     @Override
     public boolean equals(Object o) {

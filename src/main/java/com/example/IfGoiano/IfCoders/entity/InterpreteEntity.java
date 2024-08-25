@@ -11,10 +11,12 @@ import java.util.Objects;
 @Table
 public class InterpreteEntity extends TutorEntity {
 
-    @NotNull    @Column(nullable = false)
-    private Double salary;
+    @NotNull
+    @Column(nullable = false)
+    private Double salary; // procura outro atributo para diferencia o interprete
 
     @ManyToMany
+    @JoinTable(name = "interprete_libras", joinColumns = @JoinColumn(name = "interprete_id"), inverseJoinColumns = @JoinColumn(name= "libras_id"))
     private List<LibrasEntity> libras = new ArrayList<>();
 
 
@@ -40,5 +42,21 @@ public class InterpreteEntity extends TutorEntity {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), salary, libras);
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    public List<LibrasEntity> getLibras() {
+        return libras;
+    }
+
+    public void setLibras(List<LibrasEntity> libras) {
+        this.libras = libras;
     }
 }

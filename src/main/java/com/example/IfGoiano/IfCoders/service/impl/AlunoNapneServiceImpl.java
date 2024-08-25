@@ -1,51 +1,75 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.AlunoNapneMapper;
 import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.AlunoNapneRepository;
+import com.example.IfGoiano.IfCoders.service.AlunoNapneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class AlunoNapneServiceImpl {
+public class AlunoNapneServiceImpl implements AlunoNapneService {
 
     @Autowired
     AlunoNapneRepository alunoNapneRepository;
 
+    @Autowired
+    private AlunoNapneMapper alunoNapneMapper;
 
-    public AlunoNapneEntity save(AlunoNapneEntity alunoNapneEntity) {
-        return alunoNapneRepository.save(alunoNapneEntity);
+    public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput) {
+        var entity = alunoNapneMapper.toAlunoNapneEntity(alunoNapneInput);
+        alunoNapneRepository.save(entity);
+
+        return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
     }
 
-    public AlunoNapneEntity findById(Long id){
-        return alunoNapneRepository.findById(id).get();
-    }
+    @Override
+    public AlunoNapneOutputDTO update(AlunoNapneInputDTO alunoNapne, Long id) {
+        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
 
-    public List<AlunoNapneEntity> findAll(){
-        return alunoNapneRepository.findAll();
-    }
+        updateAlunoNapneDetails(entity, alunoNapne);
 
-    public AlunoNapneEntity updateAlunoNapne(AlunoNapneEntity alunoNapneEntity){
-        var aluno = alunoNapneRepository.findById(alunoNapneEntity.getId())
-                .orElseThrow(() -> new ResourceNotFoundException("AlunoNapne not found"));
-
-        aluno.setAcompanhamento(alunoNapneEntity.getAcompanhamento());
-        aluno.setId(alunoNapneEntity.getId());
-        aluno.setCondicao(alunoNapneEntity.getCondicao());
-        aluno.setNecessidadeEscolar(alunoNapneEntity.getNecessidadeEscolar());
-        aluno.setNecessidadeEspecial(alunoNapneEntity.getNecessidadeEspecial());
-
-        return alunoNapneRepository.save(aluno);
+        return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
 
     }
 
-    public void delete(Long id){
-        var aluno = alunoNapneRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("AlunoNapne not found"));
 
-        alunoNapneRepository.delete(aluno);
+
+    @Override
+    public void delete(Long id) {
+        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+        alunoNapneRepository.delete(entity);
+    }
+
+    @Override
+    public AlunoNapneOutputDTO findById(Long id){
+        var aluno  = alunoNapneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        return alunoNapneMapper.toAlunoNapneOutputDTO(aluno);
+    }
+
+    @Override
+    public List<AlunoNapneOutputDTO> findAll(){
+        List<AlunoNapneOutputDTO> listAlunos = new ArrayList<>();
+        alunoNapneRepository.findAll().stream().forEach(alunoNapneEntity -> listAlunos.add(alunoNapneMapper.toAlunoNapneOutputDTO(alunoNapneEntity)));
+
+        return listAlunos;
+    }
+
+
+    public void updateAlunoNapneDetails(AlunoNapneEntity alunoNapneEntity, AlunoNapneInputDTO alunoDTO){
+        alunoNapneEntity.setNome(alunoDTO.getNome());
+        alunoNapneEntity.setAcompanhamento(alunoDTO.getAcompanhamento());
+        alunoNapneEntity.setId(alunoDTO.getId());
+        alunoNapneEntity.setLaudo(alunoDTO.getLaudo());
+        alunoNapneEntity.setCondicao(alunoDTO.getCondicao());
+        alunoNapneEntity.setSenha(alunoDTO.getSenha());
+        alunoNapneEntity.setBiografia(alunoDTO.getBiografia()); // não a todas as informações a ser atualizadas.
     }
 
 

@@ -41,4 +41,20 @@ public class InterpreteEntity extends TutorEntity {
     public int hashCode() {
         return Objects.hash(super.hashCode(), salary, libras);
     }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
+    }
+
+    public List<LibrasEntity> getLibras() {
+        return libras;
+    }
+
+    public void setLibras(List<LibrasEntity> libras) {
+        this.libras = libras;
+    }
 }

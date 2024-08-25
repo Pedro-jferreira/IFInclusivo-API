@@ -1,6 +1,8 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
 import com.example.IfGoiano.IfCoders.service.impl.AlunoNapneServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -31,7 +33,7 @@ public class AlunoNapneController {
                     content = @Content)
     })
     @PostMapping
-    public ResponseEntity<AlunoNapneEntity> createAluno(@RequestBody AlunoNapneEntity aluno) {
+    public ResponseEntity<AlunoNapneOutputDTO> createAluno(@RequestBody AlunoNapneInputDTO aluno) {
         return new ResponseEntity<>(alunoNapneService.save(aluno), HttpStatus.CREATED);
     }
 
@@ -45,7 +47,7 @@ public class AlunoNapneController {
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<AlunoNapneEntity>> getAllAlunos() {
+    public ResponseEntity<List<AlunoNapneOutputDTO>> getAllAlunos() {
         return new ResponseEntity<>(alunoNapneService.findAll(), HttpStatus.OK);
     }
 
@@ -60,10 +62,8 @@ public class AlunoNapneController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @GetMapping("/{id}")
-    public ResponseEntity<AlunoNapneEntity> getAlunoById(@PathVariable Long id) {
-        AlunoNapneEntity aluno = alunoNapneService.findById(id);
-        return aluno != null ? new ResponseEntity<>(aluno, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<AlunoNapneOutputDTO> getAlunoById(@PathVariable Long id) {
+      return new ResponseEntity<>(alunoNapneService.findById(id), HttpStatus.OK);
     }
 
 
@@ -77,10 +77,8 @@ public class AlunoNapneController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @PutMapping("/{id}")
-    public ResponseEntity<AlunoNapneEntity> updateAluno(@RequestBody AlunoNapneEntity aluno) {
-        AlunoNapneEntity updatedAluno = alunoNapneService.updateAlunoNapne(aluno);
-        return updatedAluno != null ? new ResponseEntity<>(updatedAluno, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<AlunoNapneOutputDTO> updateAluno(@RequestBody AlunoNapneInputDTO aluno, @PathVariable Long id) {
+       return new ResponseEntity<>(alunoNapneService.update(aluno,id), HttpStatus.OK);
     }
 
 

@@ -44,7 +44,6 @@ public class ProfessorServiceImpl {
         profe.setFormacao(professor.getFormacao());//
         profe.setMatricula(professor.getMatricula());//
         profe.setLogin(professor.getLogin());//
-        profe.setPublicacaos(professor.getPublicacaos());//
         profe.setSenha(professor.getSenha());
 
         return  professorRepository.save(profe);

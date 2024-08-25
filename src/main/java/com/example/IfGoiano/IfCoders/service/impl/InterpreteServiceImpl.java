@@ -40,7 +40,6 @@ public class InterpreteServiceImpl {
         interprete.setLogin(interpreteEntity.getLogin());
         interprete.setMatricula(interpreteEntity.getMatricula());
         interprete.setNome(interpreteEntity.getNome());
-        interprete.setPublicacaos(interpreteEntity.getPublicacaos());
         interprete.setSenha(interpreteEntity.getSenha());
         return interpreteRepository.save(interprete);
     }

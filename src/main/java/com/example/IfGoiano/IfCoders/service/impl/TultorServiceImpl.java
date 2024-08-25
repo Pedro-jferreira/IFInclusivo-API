@@ -40,7 +40,6 @@ public class TultorServiceImpl {
         tultor.setBiografia(tultorEntity.getBiografia());
         tultor.setComentarios(tultorEntity.getComentarios());
         tultor.setMatricula(tultorEntity.getMatricula());
-        tultor.setPublicacaos(tultorEntity.getPublicacaos());
         tultor.setLogin(tultorEntity.getLogin());
         tultor.setSenha(tultorEntity.getSenha());
         return tultorRepository.save(tultor);

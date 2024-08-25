@@ -4,13 +4,12 @@ public class SimpleProfessorDTO extends SimpleUsuarioDTO {
     private String formacao;
 
 
-    public SimpleProfessorDTO() {    }
+    public SimpleProfessorDTO() {     super();}
 
-    public SimpleProfessorDTO(Long id, String nome, Long matricula, String formacao) {
-        super(id,nome, matricula);
+    public SimpleProfessorDTO(Long id, String nome, Long matricula,  String formacao) {
+        super(id, nome, matricula);
         this.formacao = formacao;
     }
-
 
     public String getFormacao() {
         return formacao;

@@ -9,11 +9,11 @@ public class SimpleAlunoNapneDTO extends SimpleAlunoDTO {
     private String acompanhamento;
 
 
-    public SimpleAlunoNapneDTO() {    }
+    public SimpleAlunoNapneDTO() {  super();   }
 
 
-    public SimpleAlunoNapneDTO(Long id, String nome, Long matricula, SimpleCursoDTO cursoEntity, String condicao, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento) {
-        super(id, nome, matricula, cursoEntity);
+    public SimpleAlunoNapneDTO(Long id, String nome, Long matricula,  SimpleCursoDTO cursoDTO, String condicao, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento) {
+        super(id, nome, matricula,  cursoDTO);
         this.condicao = condicao;
         this.necessidadeEspecial = necessidadeEspecial;
         this.necessidadeEscolar = necessidadeEscolar;

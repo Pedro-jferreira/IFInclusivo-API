@@ -7,11 +7,10 @@ import java.util.Objects;
 public class ProfessorInputDTO extends UsuarioInputDTO{
     private String formacao;
 
-    public ProfessorInputDTO() {    }
+    public ProfessorInputDTO() {   super();  }
 
-    public ProfessorInputDTO(Long id,String nome, String login, String senha, Long matricula, String biografia,
-                             ConfigAcessibilidadeEntity configAcessibilidadeEntity, String formacao) {
-        super(id,nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
+    public ProfessorInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity,  String formacao) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
         this.formacao = formacao;
     }
 

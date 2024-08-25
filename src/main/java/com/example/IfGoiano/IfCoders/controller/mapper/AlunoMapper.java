@@ -1,53 +1,47 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
+
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleAlunoDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+@Component
+public class AlunoMapper {
 
-@Mapper(componentModel = "spring",uses = {CursoMapper.class})
-public interface AlunoMapper {
+    @Autowired
+    private ModelMapper modelMapper;
 
-    // Mapeamento de AlunoEntity para DTO
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "nome", target = "nome")
-    @Mapping(source = "matricula", target = "matricula")
-    @Mapping(source = "curso", target = "cursoDTO")
-    SimpleAlunoDTO toSimpleAlunoDTO(AlunoEntity alunoEntity);
+    // Métodos de mapeamento
+    public SimpleAlunoDTO toSimpleAlunoDTO(AlunoEntity alunoEntity) {
+        return modelMapper.map(alunoEntity, SimpleAlunoDTO.class);
+    }
 
-    // Mapeamento de DTO para AlunoEntity
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "nome", target = "nome")
-    @Mapping(source = "matricula", target = "matricula")
-    @Mapping(source = "cursoDTO", target = "curso")
-    AlunoEntity toAlunoEntity(SimpleAlunoDTO dto);
+    public AlunoEntity toAlunoEntity(SimpleAlunoDTO simpleAlunoDTO) {
+        return modelMapper.map(simpleAlunoDTO, AlunoEntity.class);
+    }
 
+    public AlunoInputDTO toAlunoInputDTO(AlunoEntity alunoEntity) {
+        return modelMapper.map(alunoEntity, AlunoInputDTO.class);
+    }
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "nome", target = "nome")
-    @Mapping(source = "matricula", target = "matricula")
-    @Mapping(source = "curso", target = "cursoDTO")
-    AlunoInputDTO toAlunoInputDTO(AlunoEntity entity);
+    public AlunoEntity toAlunoEntity(AlunoInputDTO alunoInputDTO) {
+        return modelMapper.map(alunoInputDTO, AlunoEntity.class);
+    }
 
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "nome", target = "nome")
-    @Mapping(source = "matricula", target = "matricula")
-    @Mapping(source = "cursoDTO", target = "curso")
-    AlunoEntity toAlunoEntity(AlunoInputDTO alunoInputDTO);
-//
-//    @Mapping(source = "id", target = "id")
-//    @Mapping(source = "nome", target = "nome")
-//    @Mapping(source = "matricula", target = "matricula")
-//    @Mapping(source = "curso", target = "cursoDTO")
-//    AlunoOutputDTO toAlunoOutputDTO(AlunoEntity entity);
-//
-//    // Mapeamento de AlunoOutputDTO para AlunoEntity
-//    @Mapping(source = "id", target = "id")
-//    @Mapping(source = "nome", target = "nome")
-//    @Mapping(source = "matricula", target = "matricula")
-//    @Mapping(source = "cursoDTO", target = "curso")
-//    AlunoEntity toAlunoEntity(AlunoOutputDTO alunoOutputDTO);
+    public AlunoOutputDTO toAlunoOutputDTO(AlunoEntity alunoEntity) {
+        return modelMapper.map(alunoEntity, AlunoOutputDTO.class);
+    }
 
+    public AlunoEntity toAlunoEntity(AlunoOutputDTO alunoOutputDTO) {
+        return modelMapper.map(alunoOutputDTO, AlunoEntity.class);
+    }
+
+    public void updateAlunoEntityFromDTO(AlunoInputDTO alunoDetails, AlunoEntity alunoEntity) {
+        modelMapper.map(alunoDetails, alunoEntity);
+    }
 }
+
+

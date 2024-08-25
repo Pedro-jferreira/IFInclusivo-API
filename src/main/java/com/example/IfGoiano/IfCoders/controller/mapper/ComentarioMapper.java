@@ -5,43 +5,43 @@ import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring", uses = {PublicacaoMapper.class, ComentarioMapper.class})
-public interface ComentarioMapper {
+@Component
+public class ComentarioMapper {
 
-    // Mapeamento de ComentarioEntity para SimpleComentarioDTO
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "content", target = "content")
-    SimpleComentarioDTO toSimpleComentarioDTO(ComentarioEntity entity);
+    @Autowired
+    private ModelMapper modelMapper;
 
-    // Mapeamento de SimpleComentarioDTO para ComentarioEntity
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "content", target = "content")
-    ComentarioEntity toEntity(SimpleComentarioDTO dto);
+    public SimpleComentarioDTO toSimpleComentarioDTO(ComentarioEntity comentarioEntity) {
+        return modelMapper.map(comentarioEntity, SimpleComentarioDTO.class);
+    }
+    public ComentarioEntity toComentarioEntity(SimpleComentarioDTO simpleComentarioDTO) {
+        return modelMapper.map(simpleComentarioDTO, ComentarioEntity.class);
+    }
 
-    // Mapeamento de ComentarioEntity para ComentarioInputDTO
-    @Mapping(source = "id", target = "id")
-    @Mapping(source = "usuario", target = "usuario")
-    @Mapping(source = "publicacaoEntity", target = "publicacao")
-    @Mapping(source = "content", target = "content")
-    @Mapping(source = "comentarioPai", target = "comentarioPai")
-    ComentarioInputDTO toComentarioInputDTO(ComentarioEntity entity);
 
-//    @Mapping(source = "id", target = "id")
-//    @Mapping(source = "usuario", target = "usuario")
-//    @Mapping(source = "publicacao", target = "publicacaoEntity")
-//    @Mapping(source = "content", target = "content")
-//    @Mapping(source = "publicacao", target = "comentarioPai")
-//    ComentarioEntity toComentarioEntity(ComentarioInputDTO dto);
-//
-//    @Mapping(source = "usuario",target = "usuario")
-//    @Mapping(source = "publicacaoEntity",target = "publicacaoEntity")
-//    @Mapping(source = "comentarioPai",target = "comentarioPai")
-//    @Mapping(source = "comentariosFilhos",target = "comentariosFilhos")
-//    @Mapping(source = "usefulBy",target = "usefulBy")
-//    ComentarioOutputDTO toComentarioOutputDTO(ComentarioEntity entity);
+    public ComentarioInputDTO toComentarioInputDTO(ComentarioEntity comentarioEntity) {
+        return modelMapper.map(comentarioEntity, ComentarioInputDTO.class);
+    }
+    public ComentarioEntity toComentarioEntity(ComentarioInputDTO comentarioInputDTO) {
+        return modelMapper.map(comentarioInputDTO, ComentarioEntity.class);
+    }
 
+
+    public ComentarioOutputDTO toComentarioOutputDTO(ComentarioEntity comentarioEntity) {
+        return modelMapper.map(comentarioEntity, ComentarioOutputDTO.class);
+    }
+    public ComentarioEntity toComentarioEntity(ComentarioOutputDTO comentarioOutputDTO) {
+        return modelMapper.map(comentarioOutputDTO, ComentarioEntity.class);
+    }
+
+
+
+    public void updateComentarioEntityFromDTO(ComentarioInputDTO comentarioDeitals, ComentarioEntity comentarioEntity) {
+        modelMapper.map(comentarioDeitals, comentarioEntity);
+    }
 
 }

@@ -9,9 +9,9 @@ public class ProfessorInputDTO extends UsuarioInputDTO{
 
     public ProfessorInputDTO() {    }
 
-    public ProfessorInputDTO(String nome, String login, String senha, Long matricula, String biografia,
+    public ProfessorInputDTO(Long id,String nome, String login, String senha, Long matricula, String biografia,
                              ConfigAcessibilidadeEntity configAcessibilidadeEntity, String formacao) {
-        super(nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
+        super(id,nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
         this.formacao = formacao;
     }
 
@@ -23,18 +23,4 @@ public class ProfessorInputDTO extends UsuarioInputDTO{
         this.formacao = formacao;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        ProfessorInputDTO that = (ProfessorInputDTO) o;
-        return Objects.equals(formacao, that.formacao);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), formacao);
-    }
 }

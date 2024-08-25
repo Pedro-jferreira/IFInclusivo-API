@@ -1,6 +1,8 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.TutorInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.TutorOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.TutorEntity;
 import com.example.IfGoiano.IfCoders.service.impl.TultorServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,11 +29,11 @@ public class TultorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "publication created",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TutorEntity.class))}),
+                            schema = @Schema(implementation = TutorInputDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @PostMapping
-    public ResponseEntity<TutorEntity> createTutor(@RequestBody TutorEntity tultor) {
+    public ResponseEntity<TutorOutputDTO> createTutor(@RequestBody TutorInputDTO tultor) {
         return new ResponseEntity<>(service.save(tultor), HttpStatus.CREATED);
     }
 
@@ -40,12 +42,12 @@ public class TultorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found all Publication",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TutorEntity.class))}),
+                            schema = @Schema(implementation = TutorOutputDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<TutorEntity>> getAllTutors() {
+    public ResponseEntity<List<TutorOutputDTO>> getAllTutors() {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
@@ -54,16 +56,14 @@ public class TultorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the publication",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TutorEntity.class))}),
+                            schema = @Schema(implementation = TutorOutputDTO.class))}),
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @GetMapping("/{id}")
-    public ResponseEntity<TutorEntity> getTutorById(@PathVariable Long id) {
-        TutorEntity tutor = service.findById(id);
-        return tutor != null ? new ResponseEntity<>(tutor, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<TutorOutputDTO> getTutorById(@PathVariable Long id) {
+        return new ResponseEntity<>(service.findById(id), HttpStatus.OK);
     }
 
 
@@ -71,16 +71,14 @@ public class TultorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "publication updated",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = TutorEntity.class))}),
+                            schema = @Schema(implementation = TutorOutputDTO.class))}),
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @PutMapping("/{id}")
-    public ResponseEntity<TutorEntity> updateTutor(@RequestBody TutorEntity tultor) {
-        TutorEntity updatedTutor = service.update(tultor);
-        return updatedTutor != null ? new ResponseEntity<>(updatedTutor, HttpStatus.OK)
-                : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    public ResponseEntity<TutorOutputDTO> updateTutor(@RequestBody TutorInputDTO tultor, Long id) {
+        return new ResponseEntity<>(this.service.update(tultor, id), HttpStatus.OK);
     }
 
 

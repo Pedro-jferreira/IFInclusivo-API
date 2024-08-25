@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.controller;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.TopicoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.TopicoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -59,7 +60,7 @@ public class TopicoController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
-    public ResponseEntity<TopicoOutputDTO> create(@RequestBody TopicoOutputDTO topico) {
+    public ResponseEntity<TopicoOutputDTO> create(@RequestBody TopicoInputDTO topico) {
 
         TopicoOutputDTO topico1 = topicoServiceImpl.save(topico);
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
@@ -77,7 +78,7 @@ public class TopicoController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<TopicoOutputDTO> update(@PathVariable Long id, @RequestBody TopicoOutputDTO topicoDetails) {
+    public ResponseEntity<TopicoOutputDTO> update(@PathVariable Long id, @RequestBody TopicoInputDTO topicoDetails) {
             return ResponseEntity.ok().body(topicoServiceImpl.update(id, topicoDetails));
     }
 

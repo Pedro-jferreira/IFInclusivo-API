@@ -4,13 +4,14 @@ package com.example.IfGoiano.IfCoders.entity;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "libras")
-public class LibrasEntity {
+public class LibrasEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -112,6 +113,7 @@ public class LibrasEntity {
         this.justificativa = justificativa;
     }
 
+
     @Override
     public String toString() {
         return "LibrasEntity{" +
@@ -139,4 +141,5 @@ public class LibrasEntity {
     public int hashCode() {
         return Objects.hash(id, palavra, descricao, url, video, foto, justificativa, status, interpreteAnalise);
     }
+
 }

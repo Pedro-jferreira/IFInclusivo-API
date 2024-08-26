@@ -1,26 +1,47 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
 
-import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.factory.Mappers;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
-@Mapper(componentModel = "spring",uses = {PublicacaoMapper.class})
-public interface ComentarioMapper {
-    ComentarioMapper INSTANCE = Mappers.getMapper(ComentarioMapper.class);
+@Component
+public class ComentarioMapper {
 
-    @Mapping(source = "publicacao", target = "publicacaoDTO")
-    @Mapping(source = "comentarioPai", target = "comentarioPaiDTO")
-    ComentarioDTO comentarioToComentarioDTO(ComentarioEntity comentario);
+    @Autowired
+    private ModelMapper modelMapper;
 
-    @Mapping(source = "publicacaoDTO", target = "publicacao")
-    @Mapping(source = "comentarioPaiDTO", target = "comentarioPai")
-    ComentarioEntity comentarioDTOToComentario(ComentarioDTO comentarioDTO);
+    public SimpleComentarioDTO toSimpleComentarioDTO(ComentarioEntity comentarioEntity) {
+        return modelMapper.map(comentarioEntity, SimpleComentarioDTO.class);
+    }
+    public ComentarioEntity toComentarioEntity(SimpleComentarioDTO simpleComentarioDTO) {
+        return modelMapper.map(simpleComentarioDTO, ComentarioEntity.class);
+    }
 
-    @Mapping(source = "publicacaoDTO", target = "publicacao")
-    @Mapping(source = "comentarioPaiDTO", target = "comentarioPai")
-    void updateComentarioFromDTO(ComentarioDTO comentarioDTO, @MappingTarget ComentarioEntity comentario);
+
+    public ComentarioInputDTO toComentarioInputDTO(ComentarioEntity comentarioEntity) {
+        return modelMapper.map(comentarioEntity, ComentarioInputDTO.class);
+    }
+    public ComentarioEntity toComentarioEntity(ComentarioInputDTO comentarioInputDTO) {
+        return modelMapper.map(comentarioInputDTO, ComentarioEntity.class);
+    }
+
+
+    public ComentarioOutputDTO toComentarioOutputDTO(ComentarioEntity comentarioEntity) {
+        return modelMapper.map(comentarioEntity, ComentarioOutputDTO.class);
+    }
+    public ComentarioEntity toComentarioEntity(ComentarioOutputDTO comentarioOutputDTO) {
+        return modelMapper.map(comentarioOutputDTO, ComentarioEntity.class);
+    }
+
+
+
+    public void updateComentarioEntityFromDTO(ComentarioInputDTO comentarioDeitals, ComentarioEntity comentarioEntity) {
+        modelMapper.map(comentarioDeitals, comentarioEntity);
+    }
+
 }

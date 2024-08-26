@@ -1,48 +1,30 @@
 package com.example.IfGoiano.IfCoders.entity;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.List;
 
 @Entity
 public class AlunoEntity extends UsuarioEntity {
 
     @ManyToOne
     @JoinColumn(name = "curso_id")
-    private CursoEntity cursoEntity;
+    private CursoEntity curso;
 
 
-    public AlunoEntity() {    }
+    public AlunoEntity() { super();   }
 
-    public AlunoEntity(String nome, String login, String senha, Long matricula, String biografia,
-                       ConfigAcessibilidadeEntity configAcessibilidadeEntity, CursoEntity cursoEntity) {
-        super(nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
-        this.cursoEntity = cursoEntity;
+    public AlunoEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities, List<PublicacaoEntity> likes, List<ComentarioEntity> useful, CursoEntity curso) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, likes, useful);
+        this.curso = curso;
     }
 
-
     public CursoEntity getCurso() {
-        return cursoEntity;
+        return curso;
     }
 
     public void setCurso(CursoEntity cursoEntity) {
-        this.cursoEntity = cursoEntity;
+        this.curso = cursoEntity;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o)
-            return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o))
-            return false;
-        AlunoEntity aluno = (AlunoEntity) o;
-        return Objects.equals(cursoEntity, aluno.cursoEntity);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), cursoEntity);
-    }
 }
 

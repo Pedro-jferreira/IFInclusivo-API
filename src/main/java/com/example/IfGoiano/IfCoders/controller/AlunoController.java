@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
-import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.AlunoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,13 +26,13 @@ public class AlunoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found all students",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoEntity.class))}),
+                            schema = @Schema(implementation = AlunoOutputDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<AlunoEntity>> findAll() {
-        List<AlunoEntity> alunos = alunoServiceImpl.findAll();
+    public ResponseEntity<List<AlunoOutputDTO>> findAll() {
+        var alunos = alunoServiceImpl.findAll();
         return ResponseEntity.ok().body(alunos);
     }
 
@@ -39,14 +40,14 @@ public class AlunoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the student",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoEntity.class)) }),
+                            schema = @Schema(implementation = AlunoOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Student not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<AlunoEntity> findById(@PathVariable Long id) {
-        AlunoEntity aluno = alunoServiceImpl.findById(id);
+    public ResponseEntity<AlunoOutputDTO> findById(@PathVariable Long id) {
+        var aluno = alunoServiceImpl.findById(id);
         return ResponseEntity.ok().body(aluno);
     }
 
@@ -54,12 +55,12 @@ public class AlunoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Student created",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoEntity.class)) }),
+                            schema = @Schema(implementation = AlunoOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
-    public ResponseEntity<AlunoEntity> save(@RequestBody AlunoEntity aluno) {
-        AlunoEntity savedAluno = alunoServiceImpl.save(aluno);
+    public ResponseEntity<AlunoOutputDTO> save(@RequestBody AlunoInputDTO aluno) {
+        var savedAluno = alunoServiceImpl.save(aluno);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedAluno.getId()).toUri();
         return ResponseEntity.created(location).body(savedAluno);
@@ -69,13 +70,13 @@ public class AlunoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Student updated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoEntity.class)) }),
+                            schema = @Schema(implementation = AlunoOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Student not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<AlunoEntity> update(@PathVariable Long id, @RequestBody AlunoEntity alunoDetails) {
+    public ResponseEntity<AlunoOutputDTO> update(@PathVariable Long id, @RequestBody AlunoInputDTO alunoDetails) {
         return ResponseEntity.ok().body(alunoServiceImpl.update(id, alunoDetails));
     }
 

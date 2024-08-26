@@ -19,37 +19,36 @@ public class PublicacaoEntity implements Serializable {
     private String text;
     private String urlVideo;
     private String urlFoto;
-    private LocalDateTime localDateTime = LocalDateTime.now();
+    private LocalDateTime dataCriacao = LocalDateTime.now();
 
 
     @ManyToOne
     @JoinColumn(name = "usuario_id")
     private UsuarioEntity usuario;
 
-
     @ManyToOne
     @JoinColumn(name = "topico_id")
-    private TopicoEntity topicoEntity;
-
-
-
-
+    private TopicoEntity topico;
 
     @OneToMany(mappedBy = "publicacaoEntity",cascade = CascadeType.ALL)
     private List<ComentarioEntity> comentarios = new ArrayList<>();
 
+    @ManyToMany(mappedBy = "likes")
+    private List<UsuarioEntity> likeBy = new ArrayList<>();
+
     public PublicacaoEntity() {
     }
 
-    public PublicacaoEntity(Long id, String text, String urlVideo, String urlFoto, LocalDateTime localDateTime, UsuarioEntity usuario, TopicoEntity topicoEntity, List<ComentarioEntity> comentarios) {
+    public PublicacaoEntity(Long id, String text, String urlVideo, String urlFoto, LocalDateTime dataCriacao, UsuarioEntity usuario, TopicoEntity topicoEntity, List<ComentarioEntity> comentarios, List<UsuarioEntity> likeBy) {
         this.id = id;
         this.text = text;
         this.urlVideo = urlVideo;
         this.urlFoto = urlFoto;
-        this.localDateTime = localDateTime;
+        this.dataCriacao = dataCriacao;
         this.usuario = usuario;
-        this.topicoEntity = topicoEntity;
+        this.topico = topicoEntity;
         this.comentarios = comentarios;
+        this.likeBy = likeBy;
     }
 
     public Long getId() {
@@ -84,12 +83,12 @@ public class PublicacaoEntity implements Serializable {
         this.urlFoto = urlFoto;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setDataCriacao(LocalDateTime dataCriacao) {
+        this.dataCriacao = dataCriacao;
     }
 
     public UsuarioEntity getUsuario() {
@@ -101,13 +100,12 @@ public class PublicacaoEntity implements Serializable {
     }
 
     public TopicoEntity getTopico() {
-        return topicoEntity;
+        return topico;
     }
 
-    public void setTopico(TopicoEntity topicoEntity) {
-        this.topicoEntity = topicoEntity;
+    public void setTopico(TopicoEntity topico) {
+        this.topico = topico;
     }
-
 
     public List<ComentarioEntity> getComentarios() {
         return comentarios;
@@ -117,16 +115,39 @@ public class PublicacaoEntity implements Serializable {
         this.comentarios = comentarios;
     }
 
+    public List<UsuarioEntity> getLikeBy() {
+        return likeBy;
+    }
+
+    public void setLikeBy(List<UsuarioEntity> likeBy) {
+        this.likeBy = likeBy;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof PublicacaoEntity)) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         PublicacaoEntity that = (PublicacaoEntity) o;
-        return Objects.equals(getId(), that.getId()) && Objects.equals(getText(), that.getText()) && Objects.equals(getUrlVideo(), that.getUrlVideo()) && Objects.equals(getUrlFoto(), that.getUrlFoto()) && Objects.equals(getLocalDateTime(), that.getLocalDateTime()) && Objects.equals(getUsuario(), that.getUsuario()) && Objects.equals(getTopico(), that.getTopico())  && Objects.equals(getComentarios(), that.getComentarios());
+        return Objects.equals(id, that.id) && Objects.equals(usuario, that.usuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getText(), getUrlVideo(), getUrlFoto(), getLocalDateTime(), getUsuario(), getTopico(),  getComentarios());
+        return Objects.hash(id, usuario);
+    }
+
+    @Override
+    public String toString() {
+        return "PublicacaoEntity{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", urlVideo='" + urlVideo + '\'' +
+                ", urlFoto='" + urlFoto + '\'' +
+                ", dataCriacao=" + dataCriacao +
+                ", usuario=" + usuario +
+                ", topico=" + topico +
+                ", comentarios=" + comentarios +
+                ", likeBy=" + likeBy +
+                '}';
     }
 }

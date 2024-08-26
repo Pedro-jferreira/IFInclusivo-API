@@ -1,17 +1,20 @@
 package com.example.IfGoiano.IfCoders.service;
 
-import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.TopicoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.UsuarioInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 
 import java.util.List;
 
 public interface UsuarioService {
-    public List<UsuarioEntity> findAll();
+    List<UsuarioOutputDTO> findAll();
 
-    public UsuarioEntity findById(Long id);
+    UsuarioOutputDTO findById(Long id);
 
-    public UsuarioEntity save(UsuarioEntity usuario);
+    UsuarioOutputDTO save(UsuarioInputDTO usuario);
 
-    public UsuarioEntity update(Long id, UsuarioEntity usuarioDetails);
+    UsuarioOutputDTO update(Long id, UsuarioInputDTO usuarioDetails);
 
     void delete(Long id);
 }

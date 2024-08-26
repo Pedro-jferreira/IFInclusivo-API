@@ -16,6 +16,10 @@ public class TopicoEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private ProfessorEntity professorEntity;
+
     @NotNull
     private String tema;
 
@@ -25,17 +29,22 @@ public class TopicoEntity implements Serializable {
     @NotNull
     private String categoria;
 
-    @OneToMany(mappedBy = "topicoEntity")
+    @OneToMany(mappedBy = "topico")
     private List<PublicacaoEntity> publicacoes = new ArrayList<>();
+
+
 
 
     public TopicoEntity() {
     }
 
-    public TopicoEntity(String tema, String descripcion, String categoria) {
+    public TopicoEntity(Long id, ProfessorEntity professorEntity, String tema, String descripcion, String categoria, List<PublicacaoEntity> publicacoes) {
+        this.id = id;
+        this.professorEntity = professorEntity;
         this.tema = tema;
         this.descripcion = descripcion;
         this.categoria = categoria;
+        this.publicacoes = publicacoes;
     }
 
     public Long getId() {
@@ -76,6 +85,14 @@ public class TopicoEntity implements Serializable {
 
     public void setPublicacoes(List<PublicacaoEntity> publicacoes) {
         this.publicacoes = publicacoes;
+    }
+
+    public ProfessorEntity getProfessorEntity() {
+        return professorEntity;
+    }
+
+    public void setProfessorEntity(ProfessorEntity professorEntity) {
+        this.professorEntity = professorEntity;
     }
 
     @Override

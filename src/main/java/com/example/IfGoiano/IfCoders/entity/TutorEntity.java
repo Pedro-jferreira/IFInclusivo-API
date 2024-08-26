@@ -5,6 +5,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,13 +16,12 @@ public class TutorEntity extends UsuarioEntity {
     private String especialidade;
 
 
-    public TutorEntity() {    }
+    public TutorEntity() {   super();  }
 
-    public TutorEntity(String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, String especialidade) {
-        super(nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
+    public TutorEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities, List<PublicacaoEntity> likes, List<ComentarioEntity> useful, String especialidade) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities,  likes, useful);
         this.especialidade = especialidade;
     }
-
 
     public String getEspecialidade() {
         return especialidade;
@@ -31,18 +31,4 @@ public class TutorEntity extends UsuarioEntity {
         this.especialidade = especialidade;
     }
 
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        TutorEntity tutor = (TutorEntity) o;
-        return Objects.equals(especialidade, tutor.especialidade);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), especialidade);
-    }
 }

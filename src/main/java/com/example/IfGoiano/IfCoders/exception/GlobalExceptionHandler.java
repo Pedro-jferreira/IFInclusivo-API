@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.exception;
 
+import org.apache.catalina.connector.ClientAbortException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -49,5 +50,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleGenericException(Exception ex) {
         ExceptionResponse response = new ExceptionResponse(new Date(), "Something went wrong. Please try again later.", ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    @ExceptionHandler(ClientAbortException.class)
+    public ResponseEntity<String> handleClientAbortException(ClientAbortException ex) {
+
+        return ResponseEntity.status(HttpStatus.OK).body("Conexão abortada pelo cliente.");
     }
 }

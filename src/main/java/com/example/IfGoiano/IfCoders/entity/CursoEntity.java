@@ -11,7 +11,7 @@ public class CursoEntity {
     private Long id;
     private String nome;
 
-    @OneToMany(mappedBy = "cursoEntity",cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "curso",cascade = CascadeType.ALL)
     private List<AlunoEntity> alunos;
 
     public CursoEntity() {

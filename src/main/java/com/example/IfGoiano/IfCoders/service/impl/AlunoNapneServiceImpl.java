@@ -32,9 +32,7 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
     @Override
     public AlunoNapneOutputDTO update(AlunoNapneInputDTO alunoNapne, Long id) {
         var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
-
-        updateAlunoNapneDetails(entity, alunoNapne);
-
+        alunoNapneMapper.updateAlunoNapneEntiryFromDTO(alunoNapne,entity);
         return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
 
     }
@@ -59,17 +57,6 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
         alunoNapneRepository.findAll().stream().forEach(alunoNapneEntity -> listAlunos.add(alunoNapneMapper.toAlunoNapneOutputDTO(alunoNapneEntity)));
 
         return listAlunos;
-    }
-
-
-    public void updateAlunoNapneDetails(AlunoNapneEntity alunoNapneEntity, AlunoNapneInputDTO alunoDTO){
-        alunoNapneEntity.setNome(alunoDTO.getNome());
-        alunoNapneEntity.setAcompanhamento(alunoDTO.getAcompanhamento());
-        alunoNapneEntity.setId(alunoDTO.getId());
-        alunoNapneEntity.setLaudo(alunoDTO.getLaudo());
-        alunoNapneEntity.setCondicao(alunoDTO.getCondicao());
-        alunoNapneEntity.setSenha(alunoDTO.getSenha());
-        alunoNapneEntity.setBiografia(alunoDTO.getBiografia()); // não a todas as informações a ser atualizadas.
     }
 
 

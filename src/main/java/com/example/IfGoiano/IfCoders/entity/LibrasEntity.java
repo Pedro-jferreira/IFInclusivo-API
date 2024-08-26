@@ -4,13 +4,14 @@ package com.example.IfGoiano.IfCoders.entity;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "libras")
-public class Libras {
+public class LibrasEntity implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,11 +25,11 @@ public class Libras {
     private Status status;
     //private Usuario usuarioSugere;
     @ManyToMany
-    private List<Interprete> interpreteAnalise = new ArrayList<>();
+    private List<InterpreteEntity> interpreteAnalise = new ArrayList<>();
 
-    public Libras() {}
+    public LibrasEntity() {}
 
-    public Libras(Long id, String palavra, String descricao, String url, String video, String foto, String justificativa, Status status) {
+    public LibrasEntity(Long id, String palavra, String descricao, String url, String video, String foto, String justificativa, Status status) {
         this.id = id;
         this.palavra = palavra;
         this.descricao = descricao;
@@ -92,11 +93,11 @@ public class Libras {
         this.status = status;
     }
 
-    public List<Interprete> getInterpreteAnalise() {
+    public List<InterpreteEntity> getInterpreteAnalise() {
         return interpreteAnalise;
     }
 
-    public void setInterpreteAnalise(List<Interprete> interpreteAnalise) {
+    public void setInterpreteAnalise(List<InterpreteEntity> interpreteAnalise) {
         this.interpreteAnalise = interpreteAnalise;
     }
 
@@ -112,10 +113,10 @@ public class Libras {
         this.justificativa = justificativa;
     }
 
-<<<<<<<< HEAD:src/main/java/com/example/IfGoiano/IfCoders/entity/Libras.java
+
     @Override
     public String toString() {
-        return "Libras{" +
+        return "LibrasEntity{" +
                 "justificativa='" + justificativa + '\'' +
                 ", status=" + status +
                 ", interpreteAnalise=" + interpreteAnalise +
@@ -132,7 +133,7 @@ public class Libras {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Libras that = (Libras) o;
+        LibrasEntity that = (LibrasEntity) o;
         return Objects.equals(id, that.id) && Objects.equals(palavra, that.palavra) && Objects.equals(descricao, that.descricao) && Objects.equals(url, that.url) && Objects.equals(video, that.video) && Objects.equals(foto, that.foto) && Objects.equals(justificativa, that.justificativa) && status == that.status && Objects.equals(interpreteAnalise, that.interpreteAnalise);
     }
 
@@ -140,7 +141,5 @@ public class Libras {
     public int hashCode() {
         return Objects.hash(id, palavra, descricao, url, video, foto, justificativa, status, interpreteAnalise);
     }
-========
 
->>>>>>>> develop:src/main/java/com/example/IfGoiano/IfCoders/entity/LibrasEntity.java
 }

@@ -1,12 +1,13 @@
 package com.example.IfGoiano.IfCoders.service;
 
-import com.example.IfGoiano.IfCoders.model.Libras;;
+import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
+import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
-import com.example.IfGoiano.IfCoders.service.Exception.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 
 @Service
 public class LibrasService {
@@ -15,11 +16,11 @@ public class LibrasService {
     LibrasRepository librasRepository;
 
 
-    public Libras createLibras(Libras libras) {
+    public LibrasEntity createLibras(LibrasEntity libras) {
         return librasRepository.save(libras);
     }
 
-    public Libras findLibrasById(Long id) {
+    public LibrasEntity findLibrasById(Long id) {
         var libras = librasRepository.findById(id)
                 .orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
 
@@ -27,7 +28,7 @@ public class LibrasService {
     }
 
 
-    public Libras updateLibras(Libras libras) {
+    public LibrasEntity updateLibras(LibrasEntity libras) {
         var libraAux = librasRepository.findById(libras.getId())
                 .orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
 
@@ -43,7 +44,7 @@ public class LibrasService {
         return librasRepository.save(libraAux);
     }
 
-    public List<Libras> findAllLibras() {
+    public List<LibrasEntity> findAllLibras() {
         return librasRepository.findAll();
     }
 

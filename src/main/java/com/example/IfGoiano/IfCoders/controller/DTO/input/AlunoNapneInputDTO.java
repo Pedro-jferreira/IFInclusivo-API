@@ -16,13 +16,10 @@ public class AlunoNapneInputDTO extends AlunoInputDTO{
     private String situacao;
 
 
-    public AlunoNapneInputDTO() {    }
+    public AlunoNapneInputDTO() {   super();  }
 
-    public AlunoNapneInputDTO(Long id,String nome, String login, String senha, Long matricula, String biografia,
-                              ConfigAcessibilidadeEntity configAcessibilidadeEntity, SimpleCursoDTO cursoEntity,
-                              String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar,
-                              String acompanhamento, String situacao) {
-        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, cursoEntity);
+    public AlunoNapneInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, SimpleCursoDTO cursoDTO, String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento, String situacao) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, cursoDTO);
         this.condicao = condicao;
         this.laudo = laudo;
         this.necessidadeEspecial = necessidadeEspecial;

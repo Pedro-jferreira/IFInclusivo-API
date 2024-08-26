@@ -13,12 +13,14 @@ public class AlunoOutputDTO extends UsuarioOutputDTO {
 
 
     public AlunoOutputDTO() {
+        super();
     }
 
-    public AlunoOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config, SimpleCursoDTO cursoDTO) {
+    public AlunoOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config,  SimpleCursoDTO cursoDTO) {
         super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config);
         this.cursoDTO = cursoDTO;
     }
+
 
     public SimpleCursoDTO getCursoDTO() {
         return cursoDTO;

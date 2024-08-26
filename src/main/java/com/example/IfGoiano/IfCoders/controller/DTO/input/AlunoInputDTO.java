@@ -7,14 +7,13 @@ public class AlunoInputDTO extends UsuarioInputDTO{
     private SimpleCursoDTO cursoDTO;
 
 
-    public AlunoInputDTO() {    }
+    public AlunoInputDTO() {   super();  }
 
-    public AlunoInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia,
-                         ConfigAcessibilidadeEntity configAcessibilidadeEntity, SimpleCursoDTO cursoEntity) {
-        super(id,nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
-        this.cursoDTO = cursoEntity;
+
+    public AlunoInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, SimpleCursoDTO cursoDTO) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity);
+        this.cursoDTO = cursoDTO;
     }
-
 
     public SimpleCursoDTO getCursoDTO() {
         return cursoDTO;

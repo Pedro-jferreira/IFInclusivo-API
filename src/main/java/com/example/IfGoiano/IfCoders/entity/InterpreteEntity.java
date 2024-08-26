@@ -19,7 +19,7 @@ public class InterpreteEntity extends TutorEntity {
     private List<LibrasEntity> libras = new ArrayList<>();
 
 
-    public InterpreteEntity() {
+    public InterpreteEntity() { super();
     }
 
     public InterpreteEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities,  List<PublicacaoEntity> likes, List<ComentarioEntity> useful, String especialidade, Double salary, List<LibrasEntity> libras) {

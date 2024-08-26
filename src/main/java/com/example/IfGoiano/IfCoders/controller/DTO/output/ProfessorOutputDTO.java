@@ -15,10 +15,10 @@ public class ProfessorOutputDTO extends UsuarioOutputDTO {
     private List<SimpleTopicoDTO> topicos;
 
 
-    public ProfessorOutputDTO() {    }
+    public ProfessorOutputDTO() {super();    }
 
 
-    public ProfessorOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config, String formacao, List<SimpleTopicoDTO> topicos) {
+    public ProfessorOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config,  String formacao, List<SimpleTopicoDTO> topicos) {
         super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config);
         this.formacao = formacao;
         this.topicos = topicos;

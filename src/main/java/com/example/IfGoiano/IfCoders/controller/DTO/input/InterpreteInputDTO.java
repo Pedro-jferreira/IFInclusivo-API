@@ -8,14 +8,13 @@ public class InterpreteInputDTO extends TutorInputDTO{
     private Double salary;
 
 
-    public InterpreteInputDTO() {    }
+    public InterpreteInputDTO() {  super();   }
 
-    public InterpreteInputDTO(Long id,String nome, String login, String senha, Long matricula, String biografia,
-                              ConfigAcessibilidadeEntity configAcessibilidadeEntity, String especialidade, Double salary) {
-        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, especialidade);
+
+    public InterpreteInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity,  String especialidade, Double salary) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity,  especialidade);
         this.salary = salary;
     }
-
 
     public Double getSalary() {
         return salary;

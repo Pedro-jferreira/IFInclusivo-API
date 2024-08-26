@@ -4,7 +4,6 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.InterpreteMapper;
-import com.example.IfGoiano.IfCoders.entity.InterpreteEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.InterpreteRepository;
 
@@ -43,7 +42,7 @@ public class InterpreteServiceImpl implements InterpreteService {
                 .orElseThrow(() -> new ResourceNotFoundException("Interprete not found Id :"+ id));
 
 
-        updateIntrepreDetails(interprete, interpreteInputDTO);
+        interpreteMapper.updateInterpreteEntityFromDTO(interpreteInputDTO, interprete);
 
 
         return interpreteMapper.toInterpreteOutputDTO(interpreteRepository.save(interprete));
@@ -65,17 +64,6 @@ public class InterpreteServiceImpl implements InterpreteService {
     }
 
 
-    public void updateIntrepreDetails(InterpreteEntity interprete, InterpreteInputDTO interpreteOutputDTO) {
-        interprete.setId(interpreteOutputDTO.getId());
-        // interprete.setLibras(interpreteOutputDTO.getLibras());
-        interprete.setBiografia(interpreteOutputDTO.getBiografia());
-        interprete.setSalary(interpreteOutputDTO.getSalary());
-        interprete.setEspecialidade(interpreteOutputDTO.getEspecialidade());
-        //interprete.setComentarios(interpreteOutputDTO.getComentarios());
-        interprete.setLogin(interpreteOutputDTO.getLogin());
-        interprete.setMatricula(interpreteOutputDTO.getMatricula());
-        interprete.setNome(interpreteOutputDTO.getNome());
-        interprete.setSenha(interpreteOutputDTO.getSenha());
-    }
+
 
 }

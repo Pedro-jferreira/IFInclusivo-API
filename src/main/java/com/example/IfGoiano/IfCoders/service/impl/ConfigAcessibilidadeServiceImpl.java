@@ -1,5 +1,8 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ConfigAcblInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ConfigAcblOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
 import com.example.IfGoiano.IfCoders.exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
@@ -10,45 +13,48 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ConfigAcessibilidadeServiceImpl {
     @Autowired
-    private ConfigAcessibilidadeRepository configAcessibilidadeRepository;
+    private ConfigAcessibilidadeRepository repository;
+    @Autowired
+    ConfigAcblMapper mapper;
 
-    public List<ConfigAcessibilidadeEntity> findAll() {
+    public List<ConfigAcblOutputDTO> findAll() {
         try {
-            return configAcessibilidadeRepository.findAll();
+            return repository.findAll().stream().map(mapper::toConfigAcblOutputDTO).collect(Collectors.toList());
         } catch (DataBaseException e) {
             throw new DataBaseException("Database error occurred while fetching all config acessibilidades: " + e);
         }
     }
 
-    public ConfigAcessibilidadeEntity findById(Long id) {
+    public ConfigAcblOutputDTO findById(Long id) {
         try {
-            Optional<ConfigAcessibilidadeEntity> configAcessibilidade = configAcessibilidadeRepository.findById(id);
-            return configAcessibilidade.orElseThrow(() -> new ResourceNotFoundException(id));
+            var configAcessibilidade = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+            return mapper.toConfigAcblOutputDTO(configAcessibilidade);
         } catch (DataBaseException e) {
             throw new DataBaseException("Database error occurred while fetching config acessibilidade: " + e);
         }
     }
 
     @Transactional
-    public ConfigAcessibilidadeEntity save(ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
+    public ConfigAcblOutputDTO save(ConfigAcblInputDTO configAcessibilidadeEntity) {
         try {
-            return configAcessibilidadeRepository.save(configAcessibilidadeEntity);
+             repository.save(mapper.toConfigAcblEntity(configAcessibilidadeEntity));
+             return findById(configAcessibilidadeEntity.getId());
         } catch (DataBaseException e) {
             throw new DataBaseException("Database error occurred while saving new config acessibilidade: " + e);
         }
     }
 
     @Transactional
-    public ConfigAcessibilidadeEntity update(Long id, ConfigAcessibilidadeEntity configAcessibilidadeEntityDetails) {
+    public ConfigAcblOutputDTO update(Long id, ConfigAcblInputDTO configAcessibilidadeEntityDetails) {
         try {
-            ConfigAcessibilidadeEntity configAcessibilidadeEntity = configAcessibilidadeRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-            updateConfigAcessibilidadeDetails(configAcessibilidadeEntity, configAcessibilidadeEntityDetails);
-            return configAcessibilidadeRepository.save(configAcessibilidadeEntity);
+            var configAcbl = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+            mapper.updateConfigAcblEntityFromDTO(configAcessibilidadeEntityDetails, configAcbl);
+            return mapper.toConfigAcblOutputDTO(repository.save(configAcbl));
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while updating the config acessibilidade: " + e);
         }
@@ -56,16 +62,10 @@ public class ConfigAcessibilidadeServiceImpl {
 
     public void delete(Long id) {
         try {
-            ConfigAcessibilidadeEntity configAcessibilidadeEntity = findById(id);
-            configAcessibilidadeRepository.delete(configAcessibilidadeEntity);
+            repository.delete(mapper.toConfigAcblEntity(findById(id)));
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while deleting the config acessibilidade: " + e);
         }
     }
 
-    public void updateConfigAcessibilidadeDetails (ConfigAcessibilidadeEntity configAcessibilidadeEntity, ConfigAcessibilidadeEntity configAcessibilidadeEntityDetails){
-        configAcessibilidadeEntity.setAudicao(configAcessibilidadeEntityDetails.getAudicao());
-        configAcessibilidadeEntity.setTema(configAcessibilidadeEntityDetails.getTema());
-        configAcessibilidadeEntity.setZoom(configAcessibilidadeEntityDetails.getZoom());
-    }
 }

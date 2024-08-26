@@ -2,7 +2,6 @@ package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ProfessorInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ProfessorOutputDTO;
-import com.example.IfGoiano.IfCoders.entity.ProfessorEntity;
 import com.example.IfGoiano.IfCoders.service.impl.ProfessorServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -55,7 +54,7 @@ public class ProfessorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the publication",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProfessorEntity.class)) }),
+                            schema = @Schema(implementation = ProfessorOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
@@ -70,7 +69,7 @@ public class ProfessorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "publication updated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ProfessorEntity.class)) }),
+                            schema = @Schema(implementation = ProfessorOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
@@ -91,7 +90,7 @@ public class ProfessorController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @DeleteMapping("/delete")
-    public ResponseEntity<ProfessorEntity> deleteProfessor(Long id){
+    public ResponseEntity<ProfessorOutputDTO> deleteProfessor(Long id){
         professorService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

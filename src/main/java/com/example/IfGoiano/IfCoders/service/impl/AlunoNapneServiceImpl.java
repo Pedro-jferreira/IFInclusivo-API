@@ -3,7 +3,6 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.AlunoNapneMapper;
-import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.AlunoNapneRepository;
 import com.example.IfGoiano.IfCoders.service.AlunoNapneService;

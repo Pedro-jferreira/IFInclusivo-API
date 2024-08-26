@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
-import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ConfigAcblInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ConfigAcblOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.ConfigAcessibilidadeServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,13 +26,13 @@ public class ConfigAcessibilidadeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found all accessibility configurations",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ConfigAcessibilidadeEntity.class))}),
+                            schema = @Schema(implementation = ConfigAcblOutputDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<ConfigAcessibilidadeEntity>> findAll() {
-        List<ConfigAcessibilidadeEntity> configAcessibilidadeEntity = configAcessibilidadeServiceImpl.findAll();
+    public ResponseEntity<List<ConfigAcblOutputDTO>> findAll() {
+        var configAcessibilidadeEntity = configAcessibilidadeServiceImpl.findAll();
         return ResponseEntity.ok().body(configAcessibilidadeEntity);
     }
 
@@ -39,14 +40,14 @@ public class ConfigAcessibilidadeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the accessibility configuration",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ConfigAcessibilidadeEntity.class)) }),
+                            schema = @Schema(implementation = ConfigAcblOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Accessibility configuration not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<ConfigAcessibilidadeEntity> findById(@PathVariable Long id) {
-        ConfigAcessibilidadeEntity configAcessibilidadeEntity = configAcessibilidadeServiceImpl.findById(id);
+    public ResponseEntity<ConfigAcblOutputDTO> findById(@PathVariable Long id) {
+        var configAcessibilidadeEntity = configAcessibilidadeServiceImpl.findById(id);
         return ResponseEntity.ok().body(configAcessibilidadeEntity);
     }
 
@@ -54,12 +55,12 @@ public class ConfigAcessibilidadeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Accessibility configuration created",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ConfigAcessibilidadeEntity.class)) }),
+                            schema = @Schema(implementation = ConfigAcblOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
-    public ResponseEntity<ConfigAcessibilidadeEntity> save(@RequestBody ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
-        ConfigAcessibilidadeEntity savedConfigAcessibilidadeEntity = configAcessibilidadeServiceImpl.save(configAcessibilidadeEntity);
+    public ResponseEntity<ConfigAcblOutputDTO> save(@RequestBody ConfigAcblInputDTO configAcessibilidadeEntity) {
+        var savedConfigAcessibilidadeEntity = configAcessibilidadeServiceImpl.save(configAcessibilidadeEntity);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedConfigAcessibilidadeEntity.getId()).toUri();
         return ResponseEntity.created(location).body(savedConfigAcessibilidadeEntity);
@@ -69,13 +70,13 @@ public class ConfigAcessibilidadeController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Accessibility configuration updated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ConfigAcessibilidadeEntity.class)) }),
+                            schema = @Schema(implementation = ConfigAcblOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Accessibility configuration not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<ConfigAcessibilidadeEntity> update(@PathVariable Long id, @RequestBody ConfigAcessibilidadeEntity configAcessibilidadeEntityDetails) {
+    public ResponseEntity<ConfigAcblOutputDTO> update(@PathVariable Long id, @RequestBody ConfigAcblInputDTO configAcessibilidadeEntityDetails) {
         return ResponseEntity.ok().body(configAcessibilidadeServiceImpl.update(id, configAcessibilidadeEntityDetails));
     }
 

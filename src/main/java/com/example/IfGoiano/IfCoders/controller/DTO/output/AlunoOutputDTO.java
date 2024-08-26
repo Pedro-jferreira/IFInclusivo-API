@@ -1,32 +1,32 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleCursoDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ConfigAcblInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.CursoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
-import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
+
 
 import java.util.List;
-import java.util.Objects;
 
 public class AlunoOutputDTO extends UsuarioOutputDTO {
-    private SimpleCursoDTO cursoDTO;
+    private CursoInputDTO cursoDTO;
 
 
     public AlunoOutputDTO() {
         super();
     }
 
-    public AlunoOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config,  SimpleCursoDTO cursoDTO) {
-        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config);
+    public AlunoOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcblInputDTO configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities,  CursoInputDTO cursoDTO) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities);
         this.cursoDTO = cursoDTO;
     }
 
 
-    public SimpleCursoDTO getCursoDTO() {
+    public CursoInputDTO getCursoDTO() {
         return cursoDTO;
     }
 
-    public void setCursoDTO(SimpleCursoDTO cursoDTO) {
+    public void setCursoDTO(CursoInputDTO cursoDTO) {
         this.cursoDTO = cursoDTO;
     }
 

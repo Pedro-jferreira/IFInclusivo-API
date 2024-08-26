@@ -3,7 +3,6 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TutorInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TutorOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.TutorMapper;
-import com.example.IfGoiano.IfCoders.entity.TutorEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.TutorRepository;
 import com.example.IfGoiano.IfCoders.service.TutorService;
@@ -52,7 +51,7 @@ public class TultorServiceImpl implements TutorService {
         var tultor = tultorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Tultor not found"));
 
-       this.updateTutorDetails(tultor, tutorDTO );
+       tutorMapper.updateTutorEntityFromDTO(tutorDTO,tultor);
 
        tultorRepository.save(tultor);
 
@@ -65,14 +64,5 @@ public class TultorServiceImpl implements TutorService {
 
     }
 
-    public void updateTutorDetails(TutorEntity tutor, TutorInputDTO tutorInputDTO){
-        tutor.setId(tutorInputDTO.getId());
-        tutor.setEspecialidade(tutorInputDTO.getEspecialidade());
-        tutor.setNome(tutorInputDTO.getNome());
-        tutor.setBiografia(tutorInputDTO.getBiografia());
-        //tutor.setComentarios(tutorInputDTO.getComentarios());
-        tutor.setMatricula(tutorInputDTO.getMatricula());
-        tutor.setLogin(tutorInputDTO.getLogin());
-        tutor.setSenha(tutorInputDTO.getSenha());
-    }
+
 }

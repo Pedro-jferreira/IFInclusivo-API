@@ -24,6 +24,7 @@ public class PublicacaoServiceImpl implements PublicacaoService {
     private PublicacaoMapper mapper;
 
 
+
     @Transactional
     public PublicacaoOutputDTO save(PublicacaoInputDTO publicacao){
             return mapper.toPublicacaoOutputDTO(repositoy.save(mapper.toPublicacaoEntity(publicacao))) ;

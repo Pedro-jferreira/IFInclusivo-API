@@ -2,9 +2,8 @@ package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
-import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
-import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
-import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ConfigAcblInputDTO;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,17 +19,16 @@ public class UsuarioOutputDTO {
 
 
 
-    private ConfigAcessibilidadeEntity configAcessibilidadeEntity;
+    private ConfigAcblInputDTO configAcessibilidadeEntity;
 
     private List<SimpleComentarioDTO> comentarios = new ArrayList<>();
 
     private List<SimplePublicacaoDTO> publicacaoEntities = new ArrayList<>();
 
-    private List<ConfigAcessibilidadeEntity> config = new ArrayList<>();
 
     public UsuarioOutputDTO() {    }
 
-    public UsuarioOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config) {
+    public UsuarioOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcblInputDTO configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities) {
         this.id = id;
         this.nome = nome;
         this.login = login;
@@ -40,8 +38,6 @@ public class UsuarioOutputDTO {
         this.configAcessibilidadeEntity = configAcessibilidadeEntity;
         this.comentarios = comentarios;
         this.publicacaoEntities = publicacaoEntities;
-        this.config = config;
-
     }
 
     public Long getId() {
@@ -92,11 +88,11 @@ public class UsuarioOutputDTO {
         this.biografia = biografia;
     }
 
-    public ConfigAcessibilidadeEntity getConfigAcessibilidade() {
+    public ConfigAcblInputDTO getConfigAcessibilidadeEntity() {
         return configAcessibilidadeEntity;
     }
 
-    public void setConfigAcessibilidade(ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
+    public void setConfigAcessibilidadeEntity(ConfigAcblInputDTO configAcessibilidadeEntity) {
         this.configAcessibilidadeEntity = configAcessibilidadeEntity;
     }
 
@@ -106,30 +102,6 @@ public class UsuarioOutputDTO {
 
     public void setComentarios(List<SimpleComentarioDTO> comentarios) {
         this.comentarios = comentarios;
-    }
-
-    public List<SimplePublicacaoDTO> getPublicacaos() {
-        return publicacaoEntities;
-    }
-
-    public void setPublicacaos(List<SimplePublicacaoDTO> publicacaoEntities) {
-        this.publicacaoEntities = publicacaoEntities;
-    }
-
-    public List<ConfigAcessibilidadeEntity> getConfig() {
-        return config;
-    }
-
-    public void setConfig(List<ConfigAcessibilidadeEntity> config) {
-        this.config = config;
-    }
-
-    public ConfigAcessibilidadeEntity getConfigAcessibilidadeEntity() {
-        return configAcessibilidadeEntity;
-    }
-
-    public void setConfigAcessibilidadeEntity(ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
-        this.configAcessibilidadeEntity = configAcessibilidadeEntity;
     }
 
     public List<SimplePublicacaoDTO> getPublicacaoEntities() {
@@ -145,15 +117,11 @@ public class UsuarioOutputDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UsuarioOutputDTO that = (UsuarioOutputDTO) o;
-        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(login, that.login) &&
-                Objects.equals(senha, that.senha) && Objects.equals(matricula, that.matricula) &&
-                Objects.equals(biografia, that.biografia) &&
-                Objects.equals(configAcessibilidadeEntity, that.configAcessibilidadeEntity) &&
-                Objects.equals(comentarios, that.comentarios) &&
-                Objects.equals(publicacaoEntities, that.publicacaoEntities) && Objects.equals(config, that.config);
+        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome);
     }
+
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config);
+        return Objects.hash(id, nome);
     }
 }

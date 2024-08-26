@@ -1,6 +1,5 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.input;
 
-import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
 import java.util.Objects;
 
 public class UsuarioInputDTO {
@@ -10,13 +9,13 @@ public class UsuarioInputDTO {
     private String senha;
     private Long matricula;
     private String biografia;
-    private ConfigAcessibilidadeEntity configAcessibilidadeEntity;
+    private ConfigAcblInputDTO configAcessibilidadeEntity;
 
 
 
     public UsuarioInputDTO() {    }
 
-    public UsuarioInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
+    public UsuarioInputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcblInputDTO configAcessibilidadeEntity) {
         this.id = id;
         this.nome = nome;
         this.login = login;
@@ -33,14 +32,6 @@ public class UsuarioInputDTO {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public ConfigAcessibilidadeEntity getConfigAcessibilidadeEntity() {
-        return configAcessibilidadeEntity;
-    }
-
-    public void setConfigAcessibilidadeEntity(ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
-        this.configAcessibilidadeEntity = configAcessibilidadeEntity;
     }
 
     public String getNome() {
@@ -83,14 +74,13 @@ public class UsuarioInputDTO {
         this.biografia = biografia;
     }
 
-    public ConfigAcessibilidadeEntity getConfigAcessibilidade() {
+    public ConfigAcblInputDTO getConfigAcessibilidadeEntity() {
         return configAcessibilidadeEntity;
     }
 
-    public void setConfigAcessibilidade(ConfigAcessibilidadeEntity configAcessibilidadeEntity) {
+    public void setConfigAcessibilidadeEntity(ConfigAcblInputDTO configAcessibilidadeEntity) {
         this.configAcessibilidadeEntity = configAcessibilidadeEntity;
     }
-
 
     @Override
     public boolean equals(Object o) {

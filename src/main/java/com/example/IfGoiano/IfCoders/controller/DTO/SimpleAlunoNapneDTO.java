@@ -1,6 +1,6 @@
 package com.example.IfGoiano.IfCoders.controller.DTO;
 
-import com.example.IfGoiano.IfCoders.entity.CursoEntity;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.CursoInputDTO;
 
 public class SimpleAlunoNapneDTO extends SimpleAlunoDTO {
     private String condicao;
@@ -12,7 +12,7 @@ public class SimpleAlunoNapneDTO extends SimpleAlunoDTO {
     public SimpleAlunoNapneDTO() {  super();   }
 
 
-    public SimpleAlunoNapneDTO(Long id, String nome, Long matricula,  SimpleCursoDTO cursoDTO, String condicao, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento) {
+    public SimpleAlunoNapneDTO(Long id, String nome, Long matricula, CursoInputDTO cursoDTO, String condicao, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento) {
         super(id, nome, matricula,  cursoDTO);
         this.condicao = condicao;
         this.necessidadeEspecial = necessidadeEspecial;

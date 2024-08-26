@@ -3,8 +3,6 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ProfessorInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ProfessorOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.ProfessorMapper;
-import com.example.IfGoiano.IfCoders.entity.ProfessorEntity;
-
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.ProfessorRepository;
 import com.example.IfGoiano.IfCoders.service.ProfessorService;
@@ -58,20 +56,10 @@ public class ProfessorServiceImpl implements ProfessorService {
         var profe = professorRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Professor not found"));
 
-        this.updateProfessor(profe, professor);
+        professorMapper.updateProfessorEntityFromDTO(professor,profe);
         this.professorRepository.save(profe);
       return this.professorMapper.toProfessorOutputDTO(profe);
 
     }
 
-    public void updateProfessor(ProfessorEntity professor, ProfessorInputDTO professorInput){
-        professor.setId(professorInput.getId());
-        professor.setNome(professorInput.getNome());
-        professor.setBiografia(professorInput.getBiografia());
-        //professor.setComentarios(professorInput.getComentarios());
-        professor.setFormacao(professorInput.getFormacao());
-        professor.setMatricula(professorInput.getMatricula());
-        professor.setLogin(professorInput.getLogin());
-        professor.setSenha(professorInput.getSenha());
-    }
 }

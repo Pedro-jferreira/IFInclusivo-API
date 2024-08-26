@@ -1,8 +1,11 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.AlunoMapper;
 import com.example.IfGoiano.IfCoders.exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
-import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
+
 import com.example.IfGoiano.IfCoders.repository.AlunoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -10,46 +13,49 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class AlunoServiceImpl {
 
     @Autowired
     private AlunoRepository alunoRepository;
+    @Autowired
+    private AlunoMapper mapper;
 
-    public List<AlunoEntity> findAll() {
+    public List<AlunoOutputDTO> findAll() {
         try {
-            return alunoRepository.findAll();
+            return alunoRepository.findAll().stream().map(mapper::toAlunoOutputDTO).collect(Collectors.toList());
         } catch (DataBaseException e) {
             throw new DataBaseException("Database error occurred while fetching all alunos: " + e);
         }
     }
 
-    public AlunoEntity findById(Long id) {
+    public AlunoOutputDTO findById(Long id) {
         try {
-            Optional<AlunoEntity> aluno = alunoRepository.findById(id);
-            return aluno.orElseThrow(() -> new ResourceNotFoundException(id));
+            var aluno = alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+            return mapper.toAlunoOutputDTO(aluno);
         } catch (DataBaseException e) {
             throw new DataBaseException("Database error occurred while fetching user: " + e);
         }
     }
 
     @Transactional
-    public AlunoEntity save(AlunoEntity aluno) {
+    public AlunoOutputDTO save(AlunoInputDTO aluno) {
         try {
-            return alunoRepository.save(aluno);
+             alunoRepository.save(mapper.toAlunoEntity(aluno));
+             return findById(aluno.getId());
         } catch (DataBaseException e) {
             throw new DataBaseException("Database error occurred while saving new aluno: " + e);
         }
     }
 
     @Transactional
-    public AlunoEntity update(Long id, AlunoEntity alunoDetails) {
+    public AlunoOutputDTO update(Long id, AlunoInputDTO alunoDetails) {
         try {
-            AlunoEntity aluno = alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-            updateAlunoDetails(aluno, alunoDetails);
-            return alunoRepository.save(aluno);
+            var aluno = alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+            mapper.updateAlunoEntityFromDTO( alunoDetails,aluno);
+            return mapper.toAlunoOutputDTO(alunoRepository.save(aluno));
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while updating the aluno: " + e);
         }
@@ -58,19 +64,11 @@ public class AlunoServiceImpl {
     @Transactional
     public void delete(Long id) {
         try {
-            AlunoEntity aluno = findById(id);
-            alunoRepository.delete(aluno);
+            alunoRepository.delete(mapper.toAlunoEntity(findById(id)));
         } catch (DataAccessException e) {
             throw new DataBaseException("Database error occurred while deleting the aluno: " + e);
         }
     }
 
-    public void updateAlunoDetails (AlunoEntity aluno, AlunoEntity alunoDetails){
-        aluno.setNome(alunoDetails.getNome());
-        aluno.setLogin(alunoDetails.getLogin());
-        aluno.setSenha(alunoDetails.getSenha());
-        aluno.setMatricula(alunoDetails.getMatricula());
-        aluno.setBiografia(alunoDetails.getBiografia());
-      
-    }
+
 }

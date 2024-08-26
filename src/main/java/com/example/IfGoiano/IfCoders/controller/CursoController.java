@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
-import com.example.IfGoiano.IfCoders.entity.CursoEntity;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.CursoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.CursoOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.CursoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,13 +26,13 @@ public class CursoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found all courses",
                     content = {@Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CursoEntity.class))}),
+                            schema = @Schema(implementation = CursoOutputDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
     @GetMapping
-    public ResponseEntity<List<CursoEntity>> findAll() {
-        List<CursoEntity> cursoEntities = cursoServiceImpl.findAll();
+    public ResponseEntity<List<CursoOutputDTO>> findAll() {
+        var cursoEntities = cursoServiceImpl.findAll();
         return ResponseEntity.ok().body(cursoEntities);
     }
 
@@ -39,14 +40,14 @@ public class CursoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the course",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CursoEntity.class)) }),
+                            schema = @Schema(implementation = CursoOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Course not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @GetMapping("/{id}")
-    public ResponseEntity<CursoEntity> findById(@PathVariable Long id) {
-        CursoEntity cursoEntity = cursoServiceImpl.findById(id);
+    public ResponseEntity<CursoOutputDTO> findById(@PathVariable Long id) {
+        var cursoEntity = cursoServiceImpl.findById(id);
         return ResponseEntity.ok().body(cursoEntity);
     }
 
@@ -54,12 +55,12 @@ public class CursoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Course created",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CursoEntity.class)) }),
+                            schema = @Schema(implementation = CursoOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
-    public ResponseEntity<CursoEntity> save(@RequestBody CursoEntity cursoEntity) {
-        CursoEntity savedCursoEntity = cursoServiceImpl.save(cursoEntity);
+    public ResponseEntity<CursoOutputDTO> save(@RequestBody CursoInputDTO cursoEntity) {
+        var savedCursoEntity = cursoServiceImpl.save(cursoEntity);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedCursoEntity.getId()).toUri();
         return ResponseEntity.created(location).body(savedCursoEntity);
@@ -69,13 +70,13 @@ public class CursoController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Course updated",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = CursoEntity.class)) }),
+                            schema = @Schema(implementation = CursoOutputDTO.class)) }),
             @ApiResponse(responseCode = "404", description = "Course not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<CursoEntity> update(@PathVariable Long id, @RequestBody CursoEntity cursoEntityDetails) {
+    public ResponseEntity<CursoOutputDTO> update(@PathVariable Long id, @RequestBody CursoInputDTO cursoEntityDetails) {
         return ResponseEntity.ok().body(cursoServiceImpl.update(id, cursoEntityDetails));
     }
 

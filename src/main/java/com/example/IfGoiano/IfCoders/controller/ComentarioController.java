@@ -89,7 +89,7 @@ public class ComentarioController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found all Comments",
                     content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ComentarioInputDTO.class)) }),
+                            schema = @Schema(implementation = ComentarioOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @GetMapping

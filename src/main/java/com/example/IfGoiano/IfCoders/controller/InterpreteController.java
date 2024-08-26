@@ -3,7 +3,6 @@ package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
-import com.example.IfGoiano.IfCoders.entity.InterpreteEntity;
 import com.example.IfGoiano.IfCoders.service.impl.InterpreteServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;

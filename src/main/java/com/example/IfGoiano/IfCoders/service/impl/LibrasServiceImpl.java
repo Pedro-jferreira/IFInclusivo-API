@@ -1,12 +1,15 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
-import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 ;
 
@@ -14,44 +17,35 @@ import java.util.List;
 public class LibrasServiceImpl {
 
     @Autowired
-    LibrasRepository librasRepository;
+    LibrasRepository repository;
+    @Autowired
+    LibrasMapper mapper;
 
 
-    public LibrasEntity save(LibrasEntity libras) {
-        return librasRepository.save(libras);
+    public LibrasOutputDTO save(LibrasInputDTO libras) {
+        repository.save(mapper.toLibrasEntity(libras));
+        return findById(libras.getId());
     }
 
-    public LibrasEntity findById(Long id) {
-        var libras = librasRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
-
-        return libras;
+    public LibrasOutputDTO findById(Long id) {
+        var libras = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
+        return mapper.toLibrasOutputDTO(libras);
     }
 
 
-    public LibrasEntity update(LibrasEntity libras) {
-        var libraAux = librasRepository.findById(libras.getId())
-                .orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
-
-        libraAux.setId(libras.getId());
-        libraAux.setDescricao(libras.getDescricao());
-        libraAux.setFoto(libras.getFoto());
-        libraAux.setPalavra(libras.getPalavra());
-        libraAux.setStatus(libras.getStatus());
-        libraAux.setUrl(libras.getUrl().toString());
-        libraAux.setInterpreteAnalise(libras.getInterpreteAnalise());
-        libraAux.setJustificativa(libras.getJustificativa());
-        libraAux.setVideo(libras.getVideo());
-        return librasRepository.save(libraAux);
+    public LibrasOutputDTO update(long id, LibrasInputDTO libras) {
+        var libraAux = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
+        mapper.updateLibrasEntityFromDTO(libras,libraAux);
+        return mapper.toLibrasOutputDTO(repository.save(libraAux));
     }
 
-    public List<LibrasEntity> findAll() {
-        return librasRepository.findAll();
+    public List<LibrasOutputDTO> findAll() {
+        return repository.findAll().stream().map(mapper::toLibrasOutputDTO).collect(Collectors.toList());
     }
 
 
     public void delete(Long id) {
-        librasRepository.deleteById(id);
+        repository.deleteById(id);
     }
 
 }

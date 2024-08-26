@@ -1,6 +1,6 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleInterpreteDTOSimple;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleInterpreteDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.InterpreteEntity;
@@ -15,8 +15,8 @@ public class InterpreteMapper {
     ModelMapper modelMapper;
 
 
-    public SimpleInterpreteDTOSimple toSimpleInterpreteDTO(InterpreteEntity interpreteEntity){
-        return modelMapper.map(interpreteEntity, SimpleInterpreteDTOSimple.class);
+    public SimpleInterpreteDTO toSimpleInterpreteDTO(InterpreteEntity interpreteEntity){
+        return modelMapper.map(interpreteEntity, SimpleInterpreteDTO.class);
     }
 
     public InterpreteEntity toInterpreteEntity(InterpreteInputDTO inputInterpreteDTO){
@@ -29,6 +29,9 @@ public class InterpreteMapper {
 
     public InterpreteOutputDTO toInterpreteOutputDTO(InterpreteEntity interpreteEntity){
         return modelMapper.map(interpreteEntity, InterpreteOutputDTO.class);
+    }
+    public void updateInterpreteEntityFromDTO(InterpreteInputDTO inputInterpreteDTO, InterpreteEntity interpreteEntity){
+        modelMapper.map(inputInterpreteDTO, interpreteEntity);
     }
 
 }

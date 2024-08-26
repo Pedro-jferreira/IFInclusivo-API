@@ -1,13 +1,13 @@
 package com.example.IfGoiano.IfCoders.controller.DTO;
 
-public class SimpleInterpreteDTOSimple extends SimpleTutorDTO {
+public class SimpleInterpreteDTO extends SimpleTutorDTO {
     private Double salary;
 
 
-    public SimpleInterpreteDTOSimple() {    super(); }
+    public SimpleInterpreteDTO() {    super(); }
 
 
-    public SimpleInterpreteDTOSimple(Long id, String nome, Long matricula,  String especialidade, Double salary) {
+    public SimpleInterpreteDTO(Long id, String nome, Long matricula, String especialidade, Double salary) {
         super(id, nome, matricula,  especialidade);
         this.salary = salary;
     }

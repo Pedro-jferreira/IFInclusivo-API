@@ -5,7 +5,6 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 
 import com.example.IfGoiano.IfCoders.controller.mapper.TopicoMapper;
-import com.example.IfGoiano.IfCoders.entity.TopicoEntity;
 import com.example.IfGoiano.IfCoders.repository.TopicoRepositoy;
 import com.example.IfGoiano.IfCoders.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,12 +29,10 @@ public class TopicoServiceImpl  implements TopicoService {
 
     @Transactional
     public TopicoOutputDTO update(Long id, TopicoInputDTO topicoDetails) {
-            Optional<TopicoEntity> topicoOpt = topicoRepository.findById(id);
-            if (topicoOpt.isPresent()) {
-                TopicoEntity topicoEntity = topicoOpt.get();
-                mapper.updateTopicoEntityFromDTO(topicoDetails, topicoEntity);
-                return mapper.toTopicoOutputDTO(topicoEntity);
-            }else throw  new ResourceNotFoundException(id);
+            var topico = topicoRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+                mapper.updateTopicoEntityFromDTO(topicoDetails,topico );
+                return mapper.toTopicoOutputDTO(topico);
+
     }
 
     @Transactional
@@ -46,9 +42,8 @@ public class TopicoServiceImpl  implements TopicoService {
 
     @Transactional
     public TopicoOutputDTO findById(Long id) {
-        Optional<TopicoEntity> topico = topicoRepository.findById(id);
-        if (topico.isPresent()) return mapper.toTopicoOutputDTO(topico.get());
-        else throw new ResourceNotFoundException(id);
+        var topico = topicoRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+        return mapper.toTopicoOutputDTO(topico);
     }
 
     @Transactional

@@ -1,15 +1,15 @@
-package com.example.IfGoiano.IfCoders.controller.DTO;
+package com.example.IfGoiano.IfCoders.controller.DTO.input;
 
 import java.util.Objects;
 
-public class SimpleCursoDTO {
+public class CursoInputDTO {
     private Long id;
     private String nome;
 
-    public SimpleCursoDTO() {
+    public CursoInputDTO() {
     }
 
-    public SimpleCursoDTO(Long id, String nome) {
+    public CursoInputDTO(Long id, String nome) {
         this.id = id;
         this.nome = nome;
     }
@@ -34,7 +34,7 @@ public class SimpleCursoDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SimpleCursoDTO that = (SimpleCursoDTO) o;
+        CursoInputDTO that = (CursoInputDTO) o;
         return Objects.equals(id, that.id) && Objects.equals(nome, that.nome);
     }
 

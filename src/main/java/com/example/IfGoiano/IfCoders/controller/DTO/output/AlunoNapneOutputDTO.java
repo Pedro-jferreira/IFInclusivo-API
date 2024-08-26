@@ -1,9 +1,10 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleCursoDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ConfigAcblInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.CursoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
-import com.example.IfGoiano.IfCoders.entity.*;
+
 
 import java.util.List;
 import java.util.Objects;
@@ -19,8 +20,8 @@ public class AlunoNapneOutputDTO extends AlunoOutputDTO{
     public AlunoNapneOutputDTO() {super();
     }
 
-    public AlunoNapneOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities, List<ConfigAcessibilidadeEntity> config, SimpleCursoDTO cursoDTO, String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento, String situacao) {
-        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, config, cursoDTO);
+    public AlunoNapneOutputDTO(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcblInputDTO configAcessibilidadeEntity, List<SimpleComentarioDTO> comentarios, List<SimplePublicacaoDTO> publicacaoEntities,  CursoInputDTO cursoDTO, String condicao, String laudo, String necessidadeEspecial, String necessidadeEscolar, String acompanhamento, String situacao) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, cursoDTO);
         this.condicao = condicao;
         this.laudo = laudo;
         this.necessidadeEspecial = necessidadeEspecial;

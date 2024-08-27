@@ -5,6 +5,7 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
+import com.example.IfGoiano.IfCoders.service.LibrasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 ;
 
 @Service
-public class LibrasServiceImpl {
+public class LibrasServiceImpl implements LibrasService {
 
     @Autowired
     LibrasRepository repository;
@@ -33,7 +34,7 @@ public class LibrasServiceImpl {
     }
 
 
-    public LibrasOutputDTO update(long id, LibrasInputDTO libras) {
+    public LibrasOutputDTO update(LibrasInputDTO libras, Long id) {
         var libraAux = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
         mapper.updateLibrasEntityFromDTO(libras,libraAux);
         return mapper.toLibrasOutputDTO(repository.save(libraAux));

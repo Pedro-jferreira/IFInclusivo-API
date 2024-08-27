@@ -23,6 +23,20 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
     private AlunoNapneMapper alunoNapneMapper;
 
     @Override
+    public List<AlunoNapneOutputDTO> findAll(){
+        List<AlunoNapneOutputDTO> listAlunos = new ArrayList<>();
+        alunoNapneRepository.findAll().stream().forEach(alunoNapneEntity -> listAlunos.add(alunoNapneMapper.toAlunoNapneOutputDTO(alunoNapneEntity)));
+
+        return listAlunos;
+    }
+
+    @Override
+    public AlunoNapneOutputDTO findById(Long id){
+        var aluno  = alunoNapneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        return alunoNapneMapper.toAlunoNapneOutputDTO(aluno);
+    }
+
+    @Override
     @Transactional
     public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput) {
         var entity = alunoNapneMapper.toAlunoNapneEntity(alunoNapneInput);
@@ -45,19 +59,5 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
     public void delete(Long id) {
         var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
         alunoNapneRepository.delete(entity);
-    }
-
-    @Override
-    public AlunoNapneOutputDTO findById(Long id){
-        var aluno  = alunoNapneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-        return alunoNapneMapper.toAlunoNapneOutputDTO(aluno);
-    }
-
-    @Override
-    public List<AlunoNapneOutputDTO> findAll(){
-        List<AlunoNapneOutputDTO> listAlunos = new ArrayList<>();
-        alunoNapneRepository.findAll().stream().forEach(alunoNapneEntity -> listAlunos.add(alunoNapneMapper.toAlunoNapneOutputDTO(alunoNapneEntity)));
-
-        return listAlunos;
     }
 }

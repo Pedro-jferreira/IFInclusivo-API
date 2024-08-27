@@ -1,17 +1,19 @@
 package com.example.IfGoiano.IfCoders.service;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.CursoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.CursoOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.CursoEntity;
 
 import java.util.List;
 
 public interface CursoService {
-    List<CursoEntity> findAll();
+    List<CursoOutputDTO> findAll();
 
-    CursoEntity findById(Long id);
+    CursoOutputDTO findById(Long id);
 
-    CursoEntity save(CursoEntity curso);
+    CursoOutputDTO save(CursoInputDTO cursoEntity);
 
-    CursoEntity update(Long id, CursoEntity cursoDetails);
+    CursoOutputDTO update(Long id, CursoInputDTO cursoEntityDetails);
 
     void delete(Long id);
 }

@@ -1,17 +1,19 @@
 package com.example.IfGoiano.IfCoders.service;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ConfigAcblInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ConfigAcblOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
 
 import java.util.List;
 
 public interface ConfigAcessibilidadeService {
-    List<ConfigAcessibilidadeEntity> findAll();
+    List<ConfigAcblOutputDTO> findAll();
 
-    ConfigAcessibilidadeEntity findById(Long id);
+    ConfigAcblOutputDTO findById(Long id);
 
-    ConfigAcessibilidadeEntity save(ConfigAcessibilidadeEntity configAcessibilidade);
+    ConfigAcblOutputDTO save(ConfigAcblInputDTO configAcessibilidadeEntity);
 
-    ConfigAcessibilidadeEntity update(Long id, ConfigAcessibilidadeEntity configAcessibilidadeDetails);
+    ConfigAcblOutputDTO update(Long id, ConfigAcblInputDTO configAcessibilidadeEntityDetails);
 
     void delete(Long id);
 }

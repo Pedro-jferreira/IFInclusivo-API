@@ -7,6 +7,7 @@ import com.example.IfGoiano.IfCoders.exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 
 import com.example.IfGoiano.IfCoders.repository.AlunoRepository;
+import com.example.IfGoiano.IfCoders.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -16,59 +17,42 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class AlunoServiceImpl {
+public class AlunoServiceImpl implements AlunoService {
 
     @Autowired
     private AlunoRepository alunoRepository;
     @Autowired
     private AlunoMapper mapper;
 
+    @Override
     public List<AlunoOutputDTO> findAll() {
-        try {
-            return alunoRepository.findAll().stream().map(mapper::toAlunoOutputDTO).collect(Collectors.toList());
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while fetching all alunos: " + e);
-        }
+        return alunoRepository.findAll().stream().map(mapper::toAlunoOutputDTO).collect(Collectors.toList());
     }
 
+    @Override
     public AlunoOutputDTO findById(Long id) {
-        try {
-            var aluno = alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-            return mapper.toAlunoOutputDTO(aluno);
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while fetching user: " + e);
-        }
+        var aluno = alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        return mapper.toAlunoOutputDTO(aluno);
     }
 
+    @Override
     @Transactional
     public AlunoOutputDTO save(AlunoInputDTO aluno) {
-        try {
-             alunoRepository.save(mapper.toAlunoEntity(aluno));
-             return findById(aluno.getId());
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while saving new aluno: " + e);
-        }
+         alunoRepository.save(mapper.toAlunoEntity(aluno));
+         return findById(aluno.getId());
     }
 
+    @Override
     @Transactional
     public AlunoOutputDTO update(Long id, AlunoInputDTO alunoDetails) {
-        try {
-            var aluno = alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-            mapper.updateAlunoEntityFromDTO( alunoDetails,aluno);
-            return mapper.toAlunoOutputDTO(alunoRepository.save(aluno));
-        } catch (DataAccessException e) {
-            throw new DataBaseException("Database error occurred while updating the aluno: " + e);
-        }
+        var aluno = alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        mapper.updateAlunoEntityFromDTO( alunoDetails,aluno);
+        return mapper.toAlunoOutputDTO(alunoRepository.save(aluno));
     }
 
+    @Override
     @Transactional
     public void delete(Long id) {
-        try {
-            alunoRepository.delete(mapper.toAlunoEntity(findById(id)));
-        } catch (DataAccessException e) {
-            throw new DataBaseException("Database error occurred while deleting the aluno: " + e);
-        }
+        alunoRepository.delete(mapper.toAlunoEntity(findById(id)));
     }
-
-
 }

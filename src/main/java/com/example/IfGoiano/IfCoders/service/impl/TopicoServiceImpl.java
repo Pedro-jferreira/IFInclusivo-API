@@ -18,15 +18,30 @@ import java.util.stream.Collectors;
 public class TopicoServiceImpl  implements TopicoService {
     @Autowired
     private TopicoRepositoy topicoRepository;
+
     @Autowired
     private TopicoMapper mapper;
 
+    @Override
+    @Transactional
+    public List<TopicoOutputDTO> findAll(){
+        return topicoRepository.findAll().stream().map(mapper::toTopicoOutputDTO).collect(Collectors.toList());
+    }
 
+    @Override
+    @Transactional
+    public TopicoOutputDTO findById(Long id) {
+        var topico = topicoRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+        return mapper.toTopicoOutputDTO(topico);
+    }
+
+    @Override
     @Transactional
     public TopicoOutputDTO save(TopicoInputDTO topico){
             return mapper.toTopicoOutputDTO(topicoRepository.save(mapper.toTopicoEntity(topico)));
     }
 
+    @Override
     @Transactional
     public TopicoOutputDTO update(Long id, TopicoInputDTO topicoDetails) {
             var topico = topicoRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
@@ -35,19 +50,9 @@ public class TopicoServiceImpl  implements TopicoService {
 
     }
 
+    @Override
     @Transactional
     public void delete(Long id) {
-            topicoRepository.delete(mapper.toTopicoEntity(findById(id)));
-    }
-
-    @Transactional
-    public TopicoOutputDTO findById(Long id) {
-        var topico = topicoRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
-        return mapper.toTopicoOutputDTO(topico);
-    }
-
-    @Transactional
-    public List<TopicoOutputDTO> findAll(){
-        return topicoRepository.findAll().stream().map(mapper::toTopicoOutputDTO).collect(Collectors.toList());
+        topicoRepository.delete(mapper.toTopicoEntity(findById(id)));
     }
 }

@@ -9,9 +9,9 @@ public interface TutorService {
 
     List<TutorOutputDTO> findAll();
 
-    TutorOutputDTO save(TutorInputDTO tutorInputDTO);
-
     TutorOutputDTO findById(Long id);
+
+    TutorOutputDTO save(TutorInputDTO tutorInputDTO);
 
     TutorOutputDTO update(TutorInputDTO tutorInputDTO, Long id);
 

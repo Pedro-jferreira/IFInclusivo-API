@@ -28,12 +28,6 @@ public class AlunoServiceImpl implements AlunoService {
     private AlunoRepository alunoRepository;
     @Autowired
     private AlunoMapper mapper;
-    @Autowired
-    PublicacaoService publicacaoService;
-    @Autowired
-    ComentarioRepository comentarioRepository;
-    @Autowired
-    PublicacaoMapper publicacaomapper;
 
 
     @Override

@@ -8,6 +8,7 @@ import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.PublicacaoRepositoy;
 import com.example.IfGoiano.IfCoders.service.PublicacaoService;
+import com.example.IfGoiano.IfCoders.utils.UsuarioFinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,8 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
     @Autowired
     private PublicacaoMapper mapper;
+    @Autowired
+    private UsuarioFinder usuarioFinder;
 
     @Override
     @Transactional
@@ -40,8 +43,12 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
     @Override
     @Transactional
-    public PublicacaoOutputDTO save(PublicacaoInputDTO publicacao){
-        return findById(repositoy.save(mapper.toPublicacaoEntity(publicacao)).getId()) ;
+    public PublicacaoOutputDTO save(Long idUser,PublicacaoInputDTO publicacao){
+        var user = usuarioFinder.findUsuarioById(idUser);
+        PublicacaoEntity publicacaoEntity = mapper.toPublicacaoEntity(publicacao);
+        publicacaoEntity.setUsuario(user);
+
+        return findById(repositoy.save(publicacaoEntity).getId()) ;
     }
 
     @Override

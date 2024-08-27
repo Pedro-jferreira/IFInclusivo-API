@@ -9,6 +9,7 @@ import com.example.IfGoiano.IfCoders.service.AlunoNapneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,27 +22,12 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
     @Autowired
     private AlunoNapneMapper alunoNapneMapper;
 
-    public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput) {
-        var entity = alunoNapneMapper.toAlunoNapneEntity(alunoNapneInput);
-        alunoNapneRepository.save(entity);
-
-        return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
-    }
-
     @Override
-    public AlunoNapneOutputDTO update(AlunoNapneInputDTO alunoNapne, Long id) {
-        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
-        alunoNapneMapper.updateAlunoNapneEntiryFromDTO(alunoNapne,entity);
-        return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
+    public List<AlunoNapneOutputDTO> findAll(){
+        List<AlunoNapneOutputDTO> listAlunos = new ArrayList<>();
+        alunoNapneRepository.findAll().stream().forEach(alunoNapneEntity -> listAlunos.add(alunoNapneMapper.toAlunoNapneOutputDTO(alunoNapneEntity)));
 
-    }
-
-
-
-    @Override
-    public void delete(Long id) {
-        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
-        alunoNapneRepository.delete(entity);
+        return listAlunos;
     }
 
     @Override
@@ -51,12 +37,27 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
     }
 
     @Override
-    public List<AlunoNapneOutputDTO> findAll(){
-        List<AlunoNapneOutputDTO> listAlunos = new ArrayList<>();
-        alunoNapneRepository.findAll().stream().forEach(alunoNapneEntity -> listAlunos.add(alunoNapneMapper.toAlunoNapneOutputDTO(alunoNapneEntity)));
+    @Transactional
+    public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput) {
+        var entity = alunoNapneMapper.toAlunoNapneEntity(alunoNapneInput);
+        alunoNapneRepository.save(entity);
 
-        return listAlunos;
+        return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
     }
 
+    @Override
+    @Transactional
+    public AlunoNapneOutputDTO update(AlunoNapneInputDTO alunoNapne, Long id) {
+        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+        alunoNapneMapper.updateAlunoNapneEntiryFromDTO(alunoNapne,entity);
+        return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
 
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+        alunoNapneRepository.delete(entity);
+    }
 }

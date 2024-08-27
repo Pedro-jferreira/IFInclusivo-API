@@ -20,31 +20,17 @@ import java.util.stream.Collectors;
 public class PublicacaoServiceImpl implements PublicacaoService {
     @Autowired
     private PublicacaoRepositoy repositoy;
+
     @Autowired
     private PublicacaoMapper mapper;
 
-
-
+    @Override
     @Transactional
-    public PublicacaoOutputDTO save(PublicacaoInputDTO publicacao){
-            return mapper.toPublicacaoOutputDTO(repositoy.save(mapper.toPublicacaoEntity(publicacao))) ;
+    public List<PublicacaoOutputDTO> findAll(){
+        return repositoy.findAll().stream().map(mapper::toPublicacaoOutputDTO).collect(Collectors.toList());
     }
 
-    @Transactional
-    public PublicacaoOutputDTO update(Long id, PublicacaoInputDTO publicacaoDetails) {
-            Optional<PublicacaoEntity> publicacaoOpt = repositoy.findById(id);
-            if (publicacaoOpt.isPresent()) {
-                PublicacaoEntity publicacaoEntity = publicacaoOpt.get();
-                mapper.updatePublicacaoEntityFromDTO(publicacaoDetails, publicacaoEntity);
-                return mapper.toPublicacaoOutputDTO(repositoy.save(publicacaoEntity));
-            }else throw new ResourceNotFoundException("Publication not found");
-    }
-
-    @Transactional
-    public void delete(Long id) {
-            repositoy.delete(mapper.toPublicacaoEntity(findById(id)));
-    }
-
+    @Override
     @Transactional
     public PublicacaoOutputDTO findById(Long id){
         Optional<PublicacaoEntity> publicacao = repositoy.findById(id);
@@ -52,8 +38,26 @@ public class PublicacaoServiceImpl implements PublicacaoService {
         else throw new ResourceNotFoundException("Publication not found");
     }
 
+    @Override
     @Transactional
-    public List<PublicacaoOutputDTO> findAll(){
-        return repositoy.findAll().stream().map(mapper::toPublicacaoOutputDTO).collect(Collectors.toList());
+    public PublicacaoOutputDTO save(PublicacaoInputDTO publicacao){
+        return mapper.toPublicacaoOutputDTO(repositoy.save(mapper.toPublicacaoEntity(publicacao))) ;
+    }
+
+    @Override
+    @Transactional
+    public PublicacaoOutputDTO update(Long id, PublicacaoInputDTO publicacaoDetails) {
+        Optional<PublicacaoEntity> publicacaoOpt = repositoy.findById(id);
+        if (publicacaoOpt.isPresent()) {
+            PublicacaoEntity publicacaoEntity = publicacaoOpt.get();
+            mapper.updatePublicacaoEntityFromDTO(publicacaoDetails, publicacaoEntity);
+            return mapper.toPublicacaoOutputDTO(repositoy.save(publicacaoEntity));
+        }else throw new ResourceNotFoundException("Publication not found");
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        repositoy.delete(mapper.toPublicacaoEntity(findById(id)));
     }
 }

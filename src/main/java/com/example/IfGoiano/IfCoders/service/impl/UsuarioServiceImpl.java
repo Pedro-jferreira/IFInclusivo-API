@@ -13,64 +13,45 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-public class UsuarioServiceImpl  implements UsuarioService {
+public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     private UsuarioRepository usuarioRepository;
     @Autowired
     UsuarioMapper mapper;
 
+    @Override
     public List<UsuarioOutputDTO> findAll() {
-        try {
-            return usuarioRepository.findAll().stream().map(mapper::toUsuarioOutputDTO).collect(Collectors.toList());
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while fetching all users: " + e);
-        }
-
+        return usuarioRepository.findAll().stream().map(mapper::toUsuarioOutputDTO).collect(Collectors.toList());
     }
 
+    @Override
     public UsuarioOutputDTO findById(Long id) {
-        try {
-            var usuario = usuarioRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
-            return mapper.toUsuarioOutputDTO(usuario);
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while fetching user: " + e);
-        }
+        var usuario = usuarioRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+        return mapper.toUsuarioOutputDTO(usuario);
     }
 
+    @Override
     @Transactional
     public UsuarioOutputDTO save(UsuarioInputDTO usuario) {
-        try {
-            usuarioRepository.save(mapper.toUsuarioEntity(usuario));
-            return findById(usuario.getId());
-        } catch (DataBaseException e) {
-            throw new DataBaseException("Database error occurred while saving new user: " + e);
-        }
+        usuarioRepository.save(mapper.toUsuarioEntity(usuario));
+        return findById(usuario.getId());
     }
 
+    @Override
     @Transactional
     public UsuarioOutputDTO update(Long id, UsuarioInputDTO usuarioDetails) {
-        try {
-            var usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-            mapper.updateUsuarioEntityFromDTO(usuarioDetails,usuario);
-            return mapper.toUsuarioOutputDTO(usuarioRepository.save(usuario));
-        } catch (DataAccessException e) {
-            throw new DataBaseException("Database error occurred while updating the user: " + e);
-        }
+        var usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        mapper.updateUsuarioEntityFromDTO(usuarioDetails,usuario);
+        return mapper.toUsuarioOutputDTO(usuarioRepository.save(usuario));
     }
 
+    @Override
     @Transactional
     public void delete(Long id) {
-        try {
-            usuarioRepository.delete(mapper.toUsuarioEntity(findById(id)));
-        } catch (DataAccessException e) {
-            throw new DataBaseException("Database error occurred while deleting the user: " + e);
-        }
+        usuarioRepository.delete(mapper.toUsuarioEntity(findById(id)));
     }
-
-
 }

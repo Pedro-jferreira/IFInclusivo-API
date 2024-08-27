@@ -25,12 +25,27 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Autowired
     private ComentarioMapper mapper;
 
+    @Override
+    @Transactional
+    public List<ComentarioOutputDTO> findAll() {
+        return repository.findAll().stream().map(mapper::toComentarioOutputDTO).collect(Collectors.toList());
+    }
 
+    @Override
+    @Transactional
+    public ComentarioOutputDTO findById(Long id) {
+        Optional<ComentarioEntity> comentario = repository.findById(id);
+        if (comentario.isPresent()) return mapper.toComentarioOutputDTO(comentario.get());
+        else throw  new ResourceNotFoundException(id);
+    }
+
+    @Override
     @Transactional
     public ComentarioOutputDTO save(ComentarioInputDTO comentario) {
         return mapper.toComentarioOutputDTO(repository.save(mapper.toComentarioEntity(comentario)));
     }
 
+    @Override
     @Transactional
     public ComentarioOutputDTO update(Long id, ComentarioInputDTO comentarioDetails) {
         Optional<ComentarioEntity> comentario = repository.findById(id);
@@ -41,25 +56,9 @@ public class ComentarioServiceImpl implements ComentarioService {
         }else throw  new ResourceNotFoundException(id);
     }
 
+    @Override
     @Transactional
     public void delete(Long id) {
         repository.delete(mapper.toComentarioEntity(findById(id)));
     }
-
-    @Transactional
-    public ComentarioOutputDTO findById(Long id) {
-        Optional<ComentarioEntity> comentario = repository.findById(id);
-        if (comentario.isPresent()) return mapper.toComentarioOutputDTO(comentario.get());
-        else throw  new ResourceNotFoundException(id);
-    }
-
-    @Transactional
-    public List<ComentarioOutputDTO> findAll() {
-        try {
-            return repository.findAll().stream().map(mapper::toComentarioOutputDTO).collect(Collectors.toList());
-        } catch (DataAccessException e) {
-            throw new DataBaseException("Database error occurred while fetching all comments"+ e);
-        }
-    }
-
 }

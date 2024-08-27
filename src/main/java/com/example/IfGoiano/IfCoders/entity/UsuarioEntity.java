@@ -34,6 +34,9 @@ public  abstract class UsuarioEntity {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<PublicacaoEntity> publicacaoEntities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<LibrasEntity> librasEntities = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(
             name = "usuario_likes_publicacao",
@@ -64,6 +67,14 @@ public  abstract class UsuarioEntity {
         this.publicacaoEntities = publicacaoEntities;
         this.likes = likes;
         this.useful = useful;
+    }
+
+    public List<LibrasEntity> getLibrasEntities() {
+        return librasEntities;
+    }
+
+    public void setLibrasEntities(List<LibrasEntity> librasEntities) {
+        this.librasEntities = librasEntities;
     }
 
     public Long getId() {

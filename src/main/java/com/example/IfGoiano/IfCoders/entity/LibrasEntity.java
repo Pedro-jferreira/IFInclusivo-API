@@ -23,9 +23,14 @@ public class LibrasEntity implements Serializable {
     private String foto;
     private String justificativa;
     private Status status;
-    //private Usuario usuarioSugere;
+
+
     @ManyToMany
-    private List<InterpreteEntity> interpreteAnalise = new ArrayList<>();
+    private List<InterpreteEntity> interprete = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "usuario_id", nullable = false)
+    private UsuarioEntity usuario;
 
     public LibrasEntity() {}
 
@@ -93,12 +98,12 @@ public class LibrasEntity implements Serializable {
         this.status = status;
     }
 
-    public List<InterpreteEntity> getInterpreteAnalise() {
-        return interpreteAnalise;
+    public List<InterpreteEntity> getInterprete() {
+        return interprete;
     }
 
-    public void setInterpreteAnalise(List<InterpreteEntity> interpreteAnalise) {
-        this.interpreteAnalise = interpreteAnalise;
+    public void setInterprete(List<InterpreteEntity> interprete) {
+        this.interprete = interprete;
     }
 
     public Long getId() {
@@ -114,32 +119,41 @@ public class LibrasEntity implements Serializable {
     }
 
 
+    public UsuarioEntity getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(UsuarioEntity usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public String toString() {
         return "LibrasEntity{" +
-                "justificativa='" + justificativa + '\'' +
-                ", status=" + status +
-                ", interpreteAnalise=" + interpreteAnalise +
-                ", foto='" + foto + '\'' +
-                ", video='" + video + '\'' +
-                ", url='" + url + '\'' +
+                "id=" + id +
                 ", palavra='" + palavra + '\'' +
-                ", id=" + id +
                 ", descricao='" + descricao + '\'' +
+                ", url='" + url + '\'' +
+                ", video='" + video + '\'' +
+                ", foto='" + foto + '\'' +
+                ", justificativa='" + justificativa + '\'' +
+                ", status=" + status +
+                ", interprete=" + interprete +
+                ", usuario=" + usuario +
                 '}';
     }
+
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         LibrasEntity that = (LibrasEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(palavra, that.palavra) && Objects.equals(descricao, that.descricao) && Objects.equals(url, that.url) && Objects.equals(video, that.video) && Objects.equals(foto, that.foto) && Objects.equals(justificativa, that.justificativa) && status == that.status && Objects.equals(interpreteAnalise, that.interpreteAnalise);
+        return Objects.equals(id, that.id) && Objects.equals(palavra, that.palavra) && Objects.equals(descricao, that.descricao) && Objects.equals(url, that.url) && Objects.equals(video, that.video) && Objects.equals(foto, that.foto) && Objects.equals(justificativa, that.justificativa) && status == that.status && Objects.equals(interprete, that.interprete) && Objects.equals(usuario, that.usuario);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, palavra, descricao, url, video, foto, justificativa, status, interpreteAnalise);
+        return Objects.hash(id, palavra, descricao, url, video, foto, justificativa, status, interprete, usuario);
     }
-
 }

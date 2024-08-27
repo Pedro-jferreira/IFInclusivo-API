@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 
@@ -38,6 +39,13 @@ public class LibrasController {
         return new ResponseEntity<>(librasService.save(sinais), HttpStatus.CREATED);
     }
 
+
+    @PostMapping("/sugere/{id}")
+    public ResponseEntity<LibrasOutputDTO> sugereLibras(@RequestBody LibrasInputDTO sinais,Long id){
+
+        return new ResponseEntity<>(librasService.sugereLibras(sinais,id), HttpStatus.CREATED);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<LibrasOutputDTO> getByIdLibras(@PathVariable Long id){
 
@@ -53,7 +61,7 @@ public class LibrasController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<LibrasOutputDTO> updateLibras(@PathVariable Long id,@RequestBody LibrasInputDTO sinais){
-        return new ResponseEntity<>(librasService.update(id,sinais), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(librasService.update(sinais,id), HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete")

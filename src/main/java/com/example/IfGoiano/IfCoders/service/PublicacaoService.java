@@ -10,7 +10,7 @@ public interface PublicacaoService {
 
     PublicacaoOutputDTO findById(Long id);
 
-    PublicacaoOutputDTO save(Long idUser,PublicacaoInputDTO publicacao);
+    PublicacaoOutputDTO save(Long IdUser,PublicacaoInputDTO publicacao);
 
     PublicacaoOutputDTO update(Long id, PublicacaoInputDTO publicacaoDetails);
 

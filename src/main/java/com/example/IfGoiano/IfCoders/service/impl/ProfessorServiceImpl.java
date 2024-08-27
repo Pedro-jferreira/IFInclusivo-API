@@ -60,4 +60,9 @@ public class ProfessorServiceImpl implements ProfessorService {
 
         this.professorRepository.deleteById(id);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return professorRepository.existsById(id);
+    }
 }

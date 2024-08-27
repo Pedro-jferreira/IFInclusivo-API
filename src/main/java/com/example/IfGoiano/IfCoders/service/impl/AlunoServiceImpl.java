@@ -1,13 +1,9 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleAlunoDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.AlunoMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.PublicacaoMapper;
-import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 
 import com.example.IfGoiano.IfCoders.repository.AlunoRepository;
@@ -68,41 +64,9 @@ public class AlunoServiceImpl implements AlunoService {
     }
 
     @Override
-    @Transactional
-    public ComentarioOutputDTO createComentario(Long idUsuario , Long idPublicacao, ComentarioInputDTO comentarioInputDTO) {
-        var usuario = mapper.toAlunoEntity(findById(idUsuario));
-        var publicacao = publicacaomapper.toPublicacaoEntity(publicacaoService.findById(idPublicacao));
-        ComentarioEntity comentarioEntity = toComentarioEntity(comentarioInputDTO);
-        comentarioEntity.setUsuario(usuario);
-        comentarioEntity.setPublicacaoEntity(publicacao);
-        ComentarioEntity savedComentario = comentarioRepository.save(comentarioEntity);
-        return toComentarioOutputDTO(savedComentario);
+    public boolean existsById(Long id) {
+        return alunoRepository.existsById(id);
     }
 
-    private ComentarioEntity toComentarioEntity(ComentarioInputDTO comentarioInputDTO) {
-        ComentarioEntity comentarioEntity = new ComentarioEntity();
-        comentarioEntity.setId(comentarioInputDTO.getId());
-        comentarioEntity.setContent(comentarioInputDTO.getContent());
-        if (comentarioInputDTO.getComentarioPai() != null && comentarioInputDTO.getComentarioPai().getId() != null){
-            ComentarioEntity simpleComentarioDTO = new ComentarioEntity();
-            simpleComentarioDTO.setId(comentarioInputDTO.getComentarioPai().getId());
-            simpleComentarioDTO.setContent(comentarioInputDTO.getComentarioPai().getContent());
-            comentarioEntity.setComentarioPai(simpleComentarioDTO);
-        }
-        return comentarioEntity;
-    }
-
-    private ComentarioOutputDTO toComentarioOutputDTO(ComentarioEntity comentarioEntity) {
-        ComentarioOutputDTO comentarioOutputDTO = new ComentarioOutputDTO();
-        comentarioOutputDTO.setId(comentarioEntity.getId());
-        comentarioOutputDTO.setContent(comentarioEntity.getContent());
-        comentarioOutputDTO.setDataCriacao(comentarioEntity.getDataCriacao());
-        SimpleAlunoDTO simpleAlunoDTO = new SimpleAlunoDTO();
-        simpleAlunoDTO.setId(comentarioEntity.getUsuario().getId());
-        simpleAlunoDTO.setNome(comentarioEntity.getUsuario().getNome());
-        simpleAlunoDTO.setMatricula(comentarioEntity.getUsuario().getMatricula());
-        comentarioOutputDTO.setUsuario(simpleAlunoDTO);
-        return comentarioOutputDTO;
-    }
 
 }

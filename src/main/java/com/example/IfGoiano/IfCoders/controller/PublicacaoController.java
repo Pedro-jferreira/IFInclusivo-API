@@ -1,7 +1,6 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
-import com.example.IfGoiano.IfCoders.controller.DTO.input.ProfessorInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
 import com.example.IfGoiano.IfCoders.service.PublicacaoService;
@@ -64,10 +63,10 @@ public class PublicacaoController {
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PostMapping
-    public ResponseEntity<PublicacaoOutputDTO> save(@RequestBody(description = "Dados para criar uma publicação", required = true,
-            content = @Content(schema = @Schema(implementation = PublicacaoInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody PublicacaoInputDTO publicacao) {
-        var savedPublicacao = service.save(publicacao);
+    @PostMapping("/{idUser}")
+    public ResponseEntity<PublicacaoOutputDTO> save(@PathVariable Long idUser,@RequestBody(description = "informações para criar uma publicação",
+                    required = true) @org.springframework.web.bind.annotation.RequestBody PublicacaoInputDTO publicacao) {
+        var savedPublicacao = service.save(idUser,publicacao);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPublicacao);
     }
 

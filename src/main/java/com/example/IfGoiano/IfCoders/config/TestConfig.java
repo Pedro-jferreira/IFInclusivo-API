@@ -1,7 +1,10 @@
 package com.example.IfGoiano.IfCoders.config;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
 import com.example.IfGoiano.IfCoders.service.AlunoService;
+import com.example.IfGoiano.IfCoders.service.PublicacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
@@ -12,18 +15,25 @@ import org.springframework.context.annotation.Profile;
 public class TestConfig implements CommandLineRunner {
 
     @Autowired
-    private AlunoService alunoService;
+    AlunoService alunoService;
+    @Autowired
+    PublicacaoService publicacaoService;
 
     @Override
     public void run(String... args) throws Exception {
-        AlunoInputDTO a = new AlunoInputDTO();
-        a.setNome("Aluno");
-        a.setMatricula(12345L);
-        a.setLogin("pedrogay");
-        a.setSenha("pedrogay123");
-        a.setBiografia("uma linda biografia");
+        AlunoInputDTO alunoInputDTO = new AlunoInputDTO();
+        alunoInputDTO.setNome("Aluno");
+        alunoInputDTO.setLogin("kjfjfhbvgjfn");
+        alunoInputDTO.setSenha("jjdhdhdhd");
+        alunoInputDTO.setBiografia("uma biografia");
+        alunoInputDTO.setMatricula(564465L);
 
-        alunoService.save(a);
+        AlunoOutputDTO alunoOutputDTO= alunoService.save(alunoInputDTO);
+
+        PublicacaoInputDTO publicacaoInputDTO  = new PublicacaoInputDTO();
+        publicacaoInputDTO.setText("fgsgsgsgs");
+
+        publicacaoService.save(alunoOutputDTO.getId(),publicacaoInputDTO);
 
 
 

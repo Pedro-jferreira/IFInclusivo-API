@@ -22,11 +22,10 @@ import java.util.stream.Collectors;
 public class PublicacaoServiceImpl implements PublicacaoService {
     @Autowired
     private PublicacaoRepositoy repositoy;
-    @Autowired
-    private PublicacaoMapper mapper;
 
     @Autowired
-    @Lazy
+    private PublicacaoMapper mapper;
+    @Autowired
     private UsuarioFinder usuarioFinder;
 
     @Override
@@ -45,10 +44,11 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
     @Override
     @Transactional
-    public PublicacaoOutputDTO save(Long idUser, PublicacaoInputDTO publicacao){
+    public PublicacaoOutputDTO save(Long idUser,PublicacaoInputDTO publicacao){
         var user = usuarioFinder.findUsuarioById(idUser);
         PublicacaoEntity publicacaoEntity = mapper.toPublicacaoEntity(publicacao);
         publicacaoEntity.setUsuario(user);
+
         return findById(repositoy.save(publicacaoEntity).getId()) ;
     }
 

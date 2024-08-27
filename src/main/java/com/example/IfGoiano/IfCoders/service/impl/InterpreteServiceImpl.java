@@ -60,4 +60,9 @@ public class InterpreteServiceImpl implements InterpreteService {
         var interprete = interpreteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Interprete not found"));
         interpreteRepository.delete(interprete);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return interpreteRepository.existsById(id);
+    }
 }

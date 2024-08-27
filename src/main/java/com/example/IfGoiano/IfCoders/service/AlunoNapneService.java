@@ -17,4 +17,5 @@ public interface AlunoNapneService {
     AlunoNapneOutputDTO update(AlunoNapneInputDTO alunoNapne, Long id);
 
     void delete(Long id);
+    boolean existsById(Long id);
 }

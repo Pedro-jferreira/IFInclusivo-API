@@ -60,4 +60,9 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
         var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
         alunoNapneRepository.delete(entity);
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return alunoNapneRepository.existsById(id);
+    }
 }

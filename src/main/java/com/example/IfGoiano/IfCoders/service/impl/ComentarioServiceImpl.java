@@ -8,6 +8,7 @@ import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.ComentarioRepository;
 import com.example.IfGoiano.IfCoders.service.*;
+import com.example.IfGoiano.IfCoders.utils.UsuarioFinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -55,6 +56,8 @@ public class ComentarioServiceImpl implements ComentarioService {
     private AlunoNapneService alunoNapneService;
     @Autowired
     private AlunoNapneMapper alunoNapneMapper;
+    @Autowired
+    private UsuarioFinder usuarioFinder;
 
 
 
@@ -76,24 +79,14 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Transactional
     public ComentarioOutputDTO save(Long idUser,Long idPublicacao, ComentarioInputDTO comentario) {
         var publicacao = publicacaoService.findById(idPublicacao);
-
-        var aluno = alunoService.findById(idUser);
-        var tutor = tutorService.findById(idUser);
-        var professor = professorService.findById(idUser);
-        var interprete = interpreteService.findById(idUser);
-        var alunoNapne = alunoNapneService.findById(idUser);
+        var usuario = usuarioFinder.findUsuarioById(idUser);
 
         ComentarioEntity comentarioEntity = mapper.toComentarioEntity(comentario);
-        if (publicacao.getId() == null) throw new ResourceNotFoundException(idPublicacao);
-        else if (publicacao.getId() != null) comentarioEntity.setPublicacaoEntity(publicacaoMapper.toPublicacaoEntity(publicacao));
-        else if (aluno.getId()!= null) comentarioEntity.setUsuario(alunoMapper.toAlunoEntity(aluno));
-        else if (tutor.getId()!= null) comentarioEntity.setUsuario(tutorMapper.toTutorEntity(tutor));
-        else if (professor.getId()!= null) comentarioEntity.setUsuario(professorMapper.toProfessorEntity(professor));
-        else if (interprete.getId() != null) comentarioEntity.setUsuario(interpreteMapper.toInterpreteEntity(interprete));
-        else if (alunoNapne.getId()!= null) comentarioEntity.setUsuario(alunoNapneMapper.toAlunoNapneEntity(alunoNapne));
-        else throw  new ResourceNotFoundException(idPublicacao);
+        comentarioEntity.setUsuario(usuario);
+        comentarioEntity.setPublicacaoEntity(publicacaoMapper.toPublicacaoEntity(publicacao));
+        comentarioEntity=repository.save(comentarioEntity);
 
-        return mapper.toComentarioOutputDTO(repository.save(comentarioEntity));
+        return findById(comentarioEntity.getId());
     }
 
     @Override

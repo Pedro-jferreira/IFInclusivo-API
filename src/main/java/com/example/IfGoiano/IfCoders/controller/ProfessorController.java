@@ -33,7 +33,7 @@ public class ProfessorController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @GetMapping("/professores")
+    @GetMapping
     public ResponseEntity<List<ProfessorOutputDTO>> findAll(){
         return ResponseEntity.ok(professorService.findAll());
     }
@@ -59,7 +59,7 @@ public class ProfessorController {
                             schema = @Schema(implementation = ProfessorOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<ProfessorOutputDTO> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do professor a ser cadastrado", required = true,
             content = @Content(schema = @Schema(implementation = ProfessorInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody ProfessorInputDTO professor) {
         return new ResponseEntity<>(professorService.save(professor), HttpStatus.CREATED);
@@ -76,7 +76,7 @@ public class ProfessorController {
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ProfessorOutputDTO> update(@PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do professor a ser atualizado", required = true,
             content = @Content(schema = @Schema(implementation = ProfessorInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody ProfessorInputDTO professor){
         return new ResponseEntity<>(professorService.update(professor, id),HttpStatus.NO_CONTENT);
@@ -90,10 +90,9 @@ public class ProfessorController {
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ProfessorOutputDTO> delete(Long id){
         professorService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
-
 }

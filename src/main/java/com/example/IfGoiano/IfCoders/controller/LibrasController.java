@@ -63,7 +63,7 @@ public class LibrasController {
                             schema = @Schema(implementation = LibrasOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PostMapping("/create")
+    @PostMapping
     public ResponseEntity<LibrasOutputDTO> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do sinal a ser cadastrado", required = true,
             content = @Content(schema = @Schema(implementation = LibrasInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody LibrasInputDTO sinais){
         return new ResponseEntity<>(librasService.save(sinais), HttpStatus.CREATED);
@@ -81,7 +81,7 @@ public class LibrasController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<LibrasOutputDTO> update(@PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do sinal a ser atualizado", required = true,
             content = @Content(schema = @Schema(implementation = LibrasInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody LibrasInputDTO sinais){
         return new ResponseEntity<>(librasService.update(id,sinais), HttpStatus.NO_CONTENT);
@@ -96,7 +96,7 @@ public class LibrasController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @DeleteMapping("/delete")
+    @DeleteMapping("/{id}")
     public ResponseEntity<LibrasOutputDTO> delete(@PathVariable Long id){
         librasService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -25,7 +25,7 @@ public class CursoController {
     @Autowired
     private CursoServiceImpl cursoServiceImpl;
 
-    @Operation(summary = "Buscar todos os cursos", tags = "curso")
+    @Operation(summary = "Buscar todos os cursos", tags = "Curso")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found all courses",
                     content = {@Content(mediaType = "application/json",
@@ -39,7 +39,7 @@ public class CursoController {
         return ResponseEntity.ok().body(cursoEntities);
     }
 
-    @Operation(summary = "Buscar curso por ID", tags = "curso")
+    @Operation(summary = "Buscar curso por ID", tags = "Curso")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the course",
                     content = { @Content(mediaType = "application/json",
@@ -54,7 +54,7 @@ public class CursoController {
         return ResponseEntity.ok().body(cursoEntity);
     }
 
-    @Operation(summary = "Cadastrar um novo curso", tags = "curso")
+    @Operation(summary = "Cadastrar um novo curso", tags = "Curso")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Course created",
                     content = { @Content(mediaType = "application/json",
@@ -70,7 +70,7 @@ public class CursoController {
         return ResponseEntity.created(location).body(savedCursoEntity);
     }
 
-    @Operation(summary = "Atualizar um curso por ID", tags = "curso")
+    @Operation(summary = "Atualizar um curso por ID", tags = "Curso")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Course updated",
                     content = { @Content(mediaType = "application/json",
@@ -87,7 +87,7 @@ public class CursoController {
         return ResponseEntity.ok().body(cursoServiceImpl.update(id, cursoEntityDetails));
     }
 
-    @Operation(summary = "Excluir curso por ID", tags = "curso")
+    @Operation(summary = "Excluir curso por ID", tags = "Curso")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Course deleted",
                     content = @Content),

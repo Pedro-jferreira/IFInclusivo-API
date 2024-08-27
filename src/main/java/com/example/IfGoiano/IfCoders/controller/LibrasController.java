@@ -33,10 +33,17 @@ public class LibrasController {
                             schema = @Schema(implementation = LibrasOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PostMapping("/create/{idUser}")
-    public ResponseEntity<LibrasOutputDTO> createLibras(@RequestBody LibrasInputDTO sinais, @PathVariable Long idUser){
+    @PostMapping("/create")
+    public ResponseEntity<LibrasOutputDTO> createLibras(@RequestBody LibrasInputDTO sinais){
 
-        return new ResponseEntity<>(librasService.save(sinais, idUser), HttpStatus.CREATED);
+        return new ResponseEntity<>(librasService.save(sinais), HttpStatus.CREATED);
+    }
+
+
+    @PostMapping("/sugere/{id}")
+    public ResponseEntity<LibrasOutputDTO> sugereLibras(@RequestBody LibrasInputDTO sinais,Long id){
+
+        return new ResponseEntity<>(librasService.sugereLibras(sinais,id), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

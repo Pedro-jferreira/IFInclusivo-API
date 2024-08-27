@@ -59,10 +59,10 @@ public class PublicacaoController {
                             schema = @Schema(implementation = PublicacaoOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PostMapping
-    public ResponseEntity<PublicacaoOutputDTO> create(@RequestBody(description = "informações para criar uma publicação",
+    @PostMapping("/{idUser}")
+    public ResponseEntity<PublicacaoOutputDTO> create(@PathVariable Long idUser,@RequestBody(description = "informações para criar uma publicação",
                     required = true) @org.springframework.web.bind.annotation.RequestBody PublicacaoInputDTO publicacao) {
-        var savedPublicacao = service.save(publicacao);
+        var savedPublicacao = service.save(idUser,publicacao);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPublicacao);
     }
 

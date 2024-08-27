@@ -53,13 +53,19 @@ public class LibrasServiceImpl implements LibrasService {
         repository.deleteById(id);
     }
 
-    public LibrasOutputDTO save(LibrasInputDTO libras, Long idUser){
-      var usuario =  usuarioFinder.findUsuarioById(idUser);
+    public LibrasOutputDTO save(LibrasInputDTO libras){
+
+        LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
+        this.repository.save(librasEntity);
+        return mapper.toLibrasOutputDTO(librasEntity);
+    }
+
+    public LibrasOutputDTO sugereLibras(LibrasInputDTO libras, Long idUser){
+        var usuario =  usuarioFinder.findUsuarioById(idUser);
 
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
         librasEntity.setUsuario(usuario);
-        this.repository.save(librasEntity);
-        return mapper.toLibrasOutputDTO(librasEntity);
+        return findById(repository.save(librasEntity).getId());
     }
 
 }

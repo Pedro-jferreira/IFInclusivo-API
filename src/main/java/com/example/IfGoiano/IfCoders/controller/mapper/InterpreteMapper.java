@@ -21,8 +21,12 @@ public class InterpreteMapper {
 
     public InterpreteEntity toInterpreteEntity(InterpreteInputDTO inputInterpreteDTO){
         return modelMapper.map(inputInterpreteDTO, InterpreteEntity.class);
+
     }
 
+    public InterpreteEntity toInterpreteEntity(InterpreteOutputDTO inputInterpreteOutputDTO){
+        return modelMapper.map(inputInterpreteOutputDTO, InterpreteEntity.class);
+    }
     public InterpreteInputDTO toInterpreteInputDTO(InterpreteEntity interpreteEntity){
         return modelMapper.map(interpreteEntity, InterpreteInputDTO.class);
     }

@@ -17,6 +17,9 @@ public class TutorMapper {
 
         return modelMapper.map(tutorInput, TutorEntity.class);
     }
+    public TutorEntity toTutorEntity(TutorOutputDTO tutorOutput) {
+        return modelMapper.map(tutorOutput, TutorEntity.class);
+    }
 
     public TutorInputDTO toTutorInputDTO(TutorEntity tutorEntity) {
         return modelMapper.map(tutorEntity, TutorInputDTO.class);

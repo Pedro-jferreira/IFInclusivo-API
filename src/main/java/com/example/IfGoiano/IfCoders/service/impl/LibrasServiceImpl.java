@@ -23,8 +23,7 @@ public class LibrasServiceImpl {
 
 
     public LibrasOutputDTO save(LibrasInputDTO libras) {
-        repository.save(mapper.toLibrasEntity(libras));
-        return findById(libras.getId());
+        return findById(repository.save(mapper.toLibrasEntity(libras)).getId());
     }
 
     public LibrasOutputDTO findById(Long id) {

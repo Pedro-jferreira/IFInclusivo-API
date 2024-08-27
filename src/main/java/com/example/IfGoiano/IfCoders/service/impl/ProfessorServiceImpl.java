@@ -40,10 +40,7 @@ public class ProfessorServiceImpl implements ProfessorService {
     @Override
     @Transactional
     public ProfessorOutputDTO save(ProfessorInputDTO professorInput) {
-        var professor = this.professorMapper.toProfessorEntity(professorInput);
-        this.professorRepository.save(professor);
-
-        return this.professorMapper.toProfessorOutputDTO(professor);
+       return findById(professorRepository.save(professorMapper.toProfessorEntity(professorInput)).getId());
     }
 
     @Override

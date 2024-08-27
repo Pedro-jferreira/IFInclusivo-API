@@ -36,8 +36,7 @@ public class ConfigAcessibilidadeServiceImpl implements ConfigAcessibilidadeServ
     @Override
     @Transactional
     public ConfigAcblOutputDTO save(ConfigAcblInputDTO configAcessibilidadeEntity) {
-         repository.save(mapper.toConfigAcblEntity(configAcessibilidadeEntity));
-         return findById(configAcessibilidadeEntity.getId());
+         return findById(repository.save(mapper.toConfigAcblEntity(configAcessibilidadeEntity)).getId());
     }
 
     @Override

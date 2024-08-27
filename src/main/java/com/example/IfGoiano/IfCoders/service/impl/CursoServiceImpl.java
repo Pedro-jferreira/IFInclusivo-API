@@ -39,8 +39,7 @@ public class CursoServiceImpl implements CursoService {
     @Override
     @Transactional
     public CursoOutputDTO save(CursoInputDTO cursoEntity) {
-         cursoRepository.save(mapper.toCursoEntity(cursoEntity));
-         return findById(cursoEntity.getId());
+         return findById(cursoRepository.save(mapper.toCursoEntity(cursoEntity)).getId());
     }
 
     @Override

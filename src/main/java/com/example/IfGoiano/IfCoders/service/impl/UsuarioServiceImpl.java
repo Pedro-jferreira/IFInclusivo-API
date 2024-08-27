@@ -37,8 +37,7 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     @Transactional
     public UsuarioOutputDTO save(UsuarioInputDTO usuario) {
-        usuarioRepository.save(mapper.toUsuarioEntity(usuario));
-        return findById(usuario.getId());
+        return findById(usuarioRepository.save(mapper.toUsuarioEntity(usuario)).getId());
     }
 
     @Override

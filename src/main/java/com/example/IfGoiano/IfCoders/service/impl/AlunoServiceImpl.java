@@ -50,8 +50,7 @@ public class AlunoServiceImpl implements AlunoService {
     @Override
     @Transactional
     public AlunoOutputDTO save(AlunoInputDTO aluno) {
-         alunoRepository.save(mapper.toAlunoEntity(aluno));
-         return findById(aluno.getId());
+        return findById( alunoRepository.save(mapper.toAlunoEntity(aluno)).getId());
     }
 
     @Override

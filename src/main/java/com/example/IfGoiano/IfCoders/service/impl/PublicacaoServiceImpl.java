@@ -41,7 +41,7 @@ public class PublicacaoServiceImpl implements PublicacaoService {
     @Override
     @Transactional
     public PublicacaoOutputDTO save(PublicacaoInputDTO publicacao){
-        return mapper.toPublicacaoOutputDTO(repositoy.save(mapper.toPublicacaoEntity(publicacao))) ;
+        return findById(repositoy.save(mapper.toPublicacaoEntity(publicacao)).getId()) ;
     }
 
     @Override

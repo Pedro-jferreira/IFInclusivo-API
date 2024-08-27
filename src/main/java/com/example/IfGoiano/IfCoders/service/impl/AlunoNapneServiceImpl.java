@@ -5,6 +5,7 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.AlunoNapneMapper;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.AlunoNapneRepository;
+import com.example.IfGoiano.IfCoders.repository.CursoRepository;
 import com.example.IfGoiano.IfCoders.service.AlunoNapneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,8 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
 
     @Autowired
     private AlunoNapneMapper alunoNapneMapper;
+    @Autowired
+    private CursoRepository cursoRepository;
 
     @Override
     public List<AlunoNapneOutputDTO> findAll(){
@@ -39,10 +42,7 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
     @Override
     @Transactional
     public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput) {
-        var entity = alunoNapneMapper.toAlunoNapneEntity(alunoNapneInput);
-        alunoNapneRepository.save(entity);
-
-        return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
+        return findById(alunoNapneRepository.save( alunoNapneMapper.toAlunoNapneEntity(alunoNapneInput)).getId());
     }
 
     @Override

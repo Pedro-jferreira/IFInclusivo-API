@@ -42,12 +42,7 @@ public class TutorServiceImpl implements TutorService {
     @Override
     @Transactional
     public TutorOutputDTO save(TutorInputDTO tutorDTO) {
-        var tutor = tutorMapper.toTutorEntity(tutorDTO);
-        tutorMapper.toTutorOutputDTO(tutorRepository.save(tutor));
-
-        this.tutorRepository.save(tutor);
-
-        return tutorMapper.toTutorOutputDTO(tutor);
+        return findById(tutorRepository.save(tutorMapper.toTutorEntity(tutorDTO)).getId());
 
     }
 

@@ -38,7 +38,7 @@ public class TopicoServiceImpl  implements TopicoService {
     @Override
     @Transactional
     public TopicoOutputDTO save(TopicoInputDTO topico){
-            return mapper.toTopicoOutputDTO(topicoRepository.save(mapper.toTopicoEntity(topico)));
+            return findById(topicoRepository.save(mapper.toTopicoEntity(topico)).getId());
     }
 
     @Override

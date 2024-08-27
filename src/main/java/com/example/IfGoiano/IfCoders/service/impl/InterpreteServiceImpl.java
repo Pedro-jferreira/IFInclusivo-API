@@ -42,9 +42,7 @@ public class InterpreteServiceImpl implements InterpreteService {
     @Override
     @Transactional
     public InterpreteOutputDTO save(InterpreteInputDTO interpreteInputDTO) {
-        var entity = interpreteMapper.toInterpreteEntity(interpreteInputDTO);
-
-        return interpreteMapper.toInterpreteOutputDTO(interpreteRepository.save(entity));
+        return findById(interpreteRepository.save(interpreteMapper.toInterpreteEntity(interpreteInputDTO)).getId());
     }
 
     @Override

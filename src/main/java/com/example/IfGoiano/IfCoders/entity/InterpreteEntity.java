@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @Entity
-@Table
+@Table(name = "interprete")
 public class InterpreteEntity extends TutorEntity {
 
     @NotNull    @Column(nullable = false)

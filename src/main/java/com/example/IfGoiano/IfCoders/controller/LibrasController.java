@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 
@@ -32,10 +33,10 @@ public class LibrasController {
                             schema = @Schema(implementation = LibrasOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PostMapping("/create")
-    public ResponseEntity<LibrasOutputDTO> createLibras(@RequestBody LibrasInputDTO sinais){
+    @PostMapping("/create/{idUser}")
+    public ResponseEntity<LibrasOutputDTO> createLibras(@RequestBody LibrasInputDTO sinais, @PathVariable Long idUser){
 
-        return new ResponseEntity<>(librasService.save(sinais), HttpStatus.CREATED);
+        return new ResponseEntity<>(librasService.save(sinais, idUser), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
@@ -53,7 +54,7 @@ public class LibrasController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<LibrasOutputDTO> updateLibras(@PathVariable Long id,@RequestBody LibrasInputDTO sinais){
-        return new ResponseEntity<>(librasService.update(id,sinais), HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(librasService.update(sinais,id), HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/delete")

@@ -1,5 +1,7 @@
 package com.example.IfGoiano.IfCoders.service;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
@@ -10,46 +12,17 @@ import java.util.List;
 
 
 @Service
-public class LibrasService {
+public interface LibrasService {
 
-    @Autowired
-    LibrasRepository librasRepository;
+    List<LibrasOutputDTO> findAll();
 
+    LibrasOutputDTO findById(Long id);
 
-    public LibrasEntity createLibras(LibrasEntity libras) {
-        return librasRepository.save(libras);
-    }
+    LibrasOutputDTO save(LibrasInputDTO librasInputDTO);
 
-    public LibrasEntity findLibrasById(Long id) {
-        var libras = librasRepository.findById(id)
-                .orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
+    LibrasOutputDTO update(LibrasInputDTO librasInputDTO ,Long id);
 
-        return libras;
-    }
+    void delete(Long id);
 
-
-    public LibrasEntity updateLibras(LibrasEntity libras) {
-        var libraAux = librasRepository.findById(libras.getId())
-                .orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
-
-        libraAux.setId(libras.getId());
-        libraAux.setDescricao(libras.getDescricao());
-        libraAux.setFoto(libras.getFoto());
-        libraAux.setPalavra(libras.getPalavra());
-        libraAux.setStatus(libras.getStatus());
-        libraAux.setUrl(libras.getUrl().toString());
-        libraAux.setInterpreteAnalise(libras.getInterpreteAnalise());
-        libraAux.setJustificativa(libras.getJustificativa());
-        libraAux.setVideo(libras.getVideo());
-        return librasRepository.save(libraAux);
-    }
-
-    public List<LibrasEntity> findAllLibras() {
-        return librasRepository.findAll();
-    }
-
-    public void deleteLibras(Long id) {
-        librasRepository.deleteById(id);
-    }
 
 }

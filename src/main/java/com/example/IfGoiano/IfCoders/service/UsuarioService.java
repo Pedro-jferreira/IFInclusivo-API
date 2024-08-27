@@ -8,13 +8,13 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 import java.util.List;
 
 public interface UsuarioService {
-    UsuarioOutputDTO save(UsuarioInputDTO topicoInputDTO);
-
-    UsuarioOutputDTO update(Long id, UsuarioInputDTO topicoDetails);
-
-    void delete(Long id);
+    List<UsuarioOutputDTO> findAll();
 
     UsuarioOutputDTO findById(Long id);
 
-    List<UsuarioOutputDTO> findAll();
+    UsuarioOutputDTO save(UsuarioInputDTO usuario);
+
+    UsuarioOutputDTO update(Long id, UsuarioInputDTO usuarioDetails);
+
+    void delete(Long id);
 }

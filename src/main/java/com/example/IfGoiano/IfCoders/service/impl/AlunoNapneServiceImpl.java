@@ -5,10 +5,12 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.AlunoNapneMapper;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.AlunoNapneRepository;
+import com.example.IfGoiano.IfCoders.repository.CursoRepository;
 import com.example.IfGoiano.IfCoders.service.AlunoNapneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,35 +22,8 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
 
     @Autowired
     private AlunoNapneMapper alunoNapneMapper;
-
-    public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput) {
-        var entity = alunoNapneMapper.toAlunoNapneEntity(alunoNapneInput);
-        alunoNapneRepository.save(entity);
-
-        return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
-    }
-
-    @Override
-    public AlunoNapneOutputDTO update(AlunoNapneInputDTO alunoNapne, Long id) {
-        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
-        alunoNapneMapper.updateAlunoNapneEntiryFromDTO(alunoNapne,entity);
-        return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
-
-    }
-
-
-
-    @Override
-    public void delete(Long id) {
-        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
-        alunoNapneRepository.delete(entity);
-    }
-
-    @Override
-    public AlunoNapneOutputDTO findById(Long id){
-        var aluno  = alunoNapneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-        return alunoNapneMapper.toAlunoNapneOutputDTO(aluno);
-    }
+    @Autowired
+    private CursoRepository cursoRepository;
 
     @Override
     public List<AlunoNapneOutputDTO> findAll(){
@@ -58,5 +33,31 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
         return listAlunos;
     }
 
+    @Override
+    public AlunoNapneOutputDTO findById(Long id){
+        var aluno  = alunoNapneRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        return alunoNapneMapper.toAlunoNapneOutputDTO(aluno);
+    }
 
+    @Override
+    @Transactional
+    public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput) {
+        return findById(alunoNapneRepository.save( alunoNapneMapper.toAlunoNapneEntity(alunoNapneInput)).getId());
+    }
+
+    @Override
+    @Transactional
+    public AlunoNapneOutputDTO update(AlunoNapneInputDTO alunoNapne, Long id) {
+        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+        alunoNapneMapper.updateAlunoNapneEntiryFromDTO(alunoNapne,entity);
+        return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
+
+    }
+
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+        alunoNapneRepository.delete(entity);
+    }
 }

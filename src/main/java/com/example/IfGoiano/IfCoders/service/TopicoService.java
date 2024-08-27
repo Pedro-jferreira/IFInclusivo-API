@@ -6,13 +6,13 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
 import java.util.List;
 
 public interface TopicoService {
+    List<TopicoOutputDTO> findAll();
+
+    TopicoOutputDTO findById(Long id);
+
     TopicoOutputDTO save(TopicoInputDTO topicoInputDTO);
 
     TopicoOutputDTO update(Long id, TopicoInputDTO topicoDetails);
 
     void delete(Long id);
-
-    TopicoOutputDTO findById(Long id);
-
-    List<TopicoOutputDTO> findAll();
 }

@@ -31,10 +31,10 @@ public class ComentarioController {
                             schema = @Schema(implementation = ComentarioOutputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PostMapping
-    public ResponseEntity<ComentarioOutputDTO> create(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do comentário a ser criado", required = true,
+    @PostMapping("/{idUser}/{IdPublicacao}")
+    public ResponseEntity<ComentarioOutputDTO> create(@PathVariable Long idUser,@PathVariable Long IdPublicacao,@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do comentário a ser criado", required = true,
             content = @Content(schema = @Schema(implementation = ComentarioInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody ComentarioInputDTO comentario) {
-            var savedComentarioDTO = service.save(comentario);
+            var savedComentarioDTO = service.save(idUser,IdPublicacao,comentario);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedComentarioDTO);
     }
 

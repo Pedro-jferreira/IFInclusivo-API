@@ -11,6 +11,7 @@ import com.example.IfGoiano.IfCoders.service.InterpreteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,47 +24,40 @@ public class InterpreteServiceImpl implements InterpreteService {
     @Autowired
     InterpreteMapper interpreteMapper;
 
-
-    public InterpreteOutputDTO save(InterpreteInputDTO interpreteInputDTO) {
-        var entity = interpreteMapper.toInterpreteEntity(interpreteInputDTO);
-
-        return interpreteMapper.toInterpreteOutputDTO(interpreteRepository.save(entity));
-    }
-
-    public InterpreteOutputDTO findById(Long id) {
-        var interprete = interpreteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Interprete not found"));
-
-        return interpreteMapper.toInterpreteOutputDTO(interprete);
-    }
-
-    public InterpreteOutputDTO update(InterpreteInputDTO interpreteInputDTO, Long id) {
-        var interprete = interpreteRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Interprete not found Id :"+ id));
-
-
-        interpreteMapper.updateInterpreteEntityFromDTO(interpreteInputDTO, interprete);
-
-
-        return interpreteMapper.toInterpreteOutputDTO(interpreteRepository.save(interprete));
-    }
-
+    @Override
     public List<InterpreteOutputDTO> findAll() {
         List<InterpreteOutputDTO> listIntrepretes = new ArrayList<>();
-
-        this.interpreteRepository.findAll().stream().
-                forEach(interpreteEntity -> listIntrepretes.add(interpreteMapper.toInterpreteOutputDTO(interpreteEntity)));
+        this.interpreteRepository.findAll().stream().forEach(interpreteEntity -> listIntrepretes.add(interpreteMapper.toInterpreteOutputDTO(interpreteEntity)));
 
         return listIntrepretes;
     }
 
-    public void delete(Long id) {
+    @Override
+    public InterpreteOutputDTO findById(Long id) {
         var interprete = interpreteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Interprete not found"));
 
-        interpreteRepository.delete(interprete);
+        return interpreteMapper.toInterpreteOutputDTO(interprete);
     }
 
+    @Override
+    @Transactional
+    public InterpreteOutputDTO save(InterpreteInputDTO interpreteInputDTO) {
+        return findById(interpreteRepository.save(interpreteMapper.toInterpreteEntity(interpreteInputDTO)).getId());
+    }
 
+    @Override
+    @Transactional
+    public InterpreteOutputDTO update(InterpreteInputDTO interpreteInputDTO, Long id) {
+        var interprete = interpreteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Interprete not found Id :"+ id));
+        interpreteMapper.updateInterpreteEntityFromDTO(interpreteInputDTO, interprete);
 
+        return interpreteMapper.toInterpreteOutputDTO(interpreteRepository.save(interprete));
+    }
 
+    @Override
+    @Transactional
+    public void delete(Long id) {
+        var interprete = interpreteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Interprete not found"));
+        interpreteRepository.delete(interprete);
+    }
 }

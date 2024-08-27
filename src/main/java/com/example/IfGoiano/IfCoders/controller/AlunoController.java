@@ -1,7 +1,9 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.AlunoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -92,5 +94,10 @@ public class AlunoController {
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
         alunoServiceImpl.delete(id);
         return ResponseEntity.noContent().build();
+    }
+    @PostMapping("/comment/{idUser}/{idPublication}")
+    public ResponseEntity<ComentarioOutputDTO> createComment(@PathVariable Long idUser, @PathVariable Long idPublication, @RequestBody ComentarioInputDTO comentario) {
+        var comment = alunoServiceImpl.createComentario(idUser, idPublication, comentario);
+        return ResponseEntity.ok().body(comment);
     }
 }

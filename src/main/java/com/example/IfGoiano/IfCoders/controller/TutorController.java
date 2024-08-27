@@ -3,7 +3,7 @@ package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TutorInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TutorOutputDTO;
-import com.example.IfGoiano.IfCoders.service.impl.TultorServiceImpl;
+import com.example.IfGoiano.IfCoders.service.impl.TutorServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -21,7 +21,7 @@ import java.util.List;
 public class TutorController {
 
     @Autowired
-    TultorServiceImpl service;
+    TutorServiceImpl service;
 
 
     @Operation(summary = "Criar um novo Tultor")

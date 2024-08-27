@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.service.impl.MessageServiceImpl;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,7 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/messages")
+@RequestMapping("/mensagens")
+@Tag(name = "Mensagem")
 public class MessageController {
 
     @Autowired

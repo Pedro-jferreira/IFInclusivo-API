@@ -66,6 +66,9 @@ public class AlunoServiceImpl implements AlunoService {
     public void delete(Long id) {
         alunoRepository.delete(mapper.toAlunoEntity(findById(id)));
     }
+
+    @Override
+    @Transactional
     public ComentarioOutputDTO createComentario(Long idUsuario , Long idPublicacao, ComentarioInputDTO comentarioInputDTO) {
         var usuario = mapper.toAlunoEntity(findById(idUsuario));
         var publicacao = publicacaomapper.toPublicacaoEntity(publicacaoService.findById(idPublicacao));

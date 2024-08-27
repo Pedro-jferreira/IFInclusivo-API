@@ -16,4 +16,5 @@ public interface AlunoService {
     AlunoOutputDTO update(Long id, AlunoInputDTO alunoDetails);
 
     void delete(Long id);
+    boolean existsById(Long id);
 }

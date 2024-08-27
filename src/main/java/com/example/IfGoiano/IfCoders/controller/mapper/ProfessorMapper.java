@@ -19,6 +19,9 @@ public class ProfessorMapper {
     public ProfessorEntity toProfessorEntity(ProfessorInputDTO professorInputDTO){
         return modelMapper.map(professorInputDTO, ProfessorEntity.class);
     }
+    public ProfessorEntity toProfessorEntity(ProfessorOutputDTO professorOutputDTO){
+        return modelMapper.map(professorOutputDTO, ProfessorEntity.class);
+    }
 
     public ProfessorOutputDTO toProfessorOutputDTO(ProfessorEntity professorEntity){
         return modelMapper.map(professorEntity, ProfessorOutputDTO.class);

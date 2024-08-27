@@ -66,4 +66,9 @@ public class TutorServiceImpl implements TutorService {
         tutorRepository.deleteById(id);
 
     }
+
+    @Override
+    public boolean existsById(Long id) {
+        return tutorRepository.existsById(id);
+    }
 }

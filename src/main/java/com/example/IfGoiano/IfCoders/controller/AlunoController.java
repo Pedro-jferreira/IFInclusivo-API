@@ -95,9 +95,5 @@ public class AlunoController {
         alunoServiceImpl.delete(id);
         return ResponseEntity.noContent().build();
     }
-    @PostMapping("/comment/{idUser}/{idPublication}")
-    public ResponseEntity<ComentarioOutputDTO> createComment(@PathVariable Long idUser, @PathVariable Long idPublication, @RequestBody ComentarioInputDTO comentario) {
-        var comment = alunoServiceImpl.createComentario(idUser, idPublication, comentario);
-        return ResponseEntity.ok().body(comment);
-    }
+
 }

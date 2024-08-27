@@ -2,16 +2,13 @@ package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
-import com.example.IfGoiano.IfCoders.controller.mapper.AlunoMapper;
-import com.example.IfGoiano.IfCoders.controller.mapper.PublicacaoMapper;
+import com.example.IfGoiano.IfCoders.controller.mapper.*;
 import com.example.IfGoiano.IfCoders.exception.DataBaseException;
-import com.example.IfGoiano.IfCoders.controller.mapper.ComentarioMapper;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.ComentarioRepository;
-import com.example.IfGoiano.IfCoders.service.AlunoService;
-import com.example.IfGoiano.IfCoders.service.ComentarioService;
-import com.example.IfGoiano.IfCoders.service.PublicacaoService;
+import com.example.IfGoiano.IfCoders.service.*;
+import com.example.IfGoiano.IfCoders.utils.UsuarioFinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
@@ -29,15 +26,40 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Autowired
     private ComentarioMapper mapper;
 
+
+    @Autowired
+    private PublicacaoService publicacaoService;
+    @Autowired
+    private PublicacaoMapper publicacaoMapper;
+
     @Autowired
     private AlunoService alunoService;
     @Autowired
     private AlunoMapper alunoMapper;
 
     @Autowired
-    private PublicacaoService publicacaoService;
+    private TutorService tutorService;
     @Autowired
-    private PublicacaoMapper publicacaoMapper;
+    private TutorMapper tutorMapper;
+
+    @Autowired
+    private ProfessorService professorService;
+    @Autowired
+    private ProfessorMapper professorMapper;
+
+    @Autowired
+    private InterpreteService interpreteService;
+    @Autowired
+    private InterpreteMapper interpreteMapper;
+
+    @Autowired
+    private AlunoNapneService alunoNapneService;
+    @Autowired
+    private AlunoNapneMapper alunoNapneMapper;
+    @Autowired
+    private UsuarioFinder usuarioFinder;
+
+
 
     @Override
     @Transactional
@@ -56,16 +78,15 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Override
     @Transactional
     public ComentarioOutputDTO save(Long idUser,Long idPublicacao, ComentarioInputDTO comentario) {
-        var aluno = alunoService.findById(idUser);
         var publicacao = publicacaoService.findById(idPublicacao);
+        var usuario = usuarioFinder.findUsuarioById(idUser);
 
-        if (aluno.getId()!= null && publicacao.getId()!= null){
-            ComentarioEntity comentarioEntity = mapper.toComentarioEntity(comentario);
-            comentarioEntity.setUsuario(alunoMapper.toAlunoEntity(aluno));
-            comentarioEntity.setPublicacaoEntity(publicacaoMapper.toPublicacaoEntity(publicacao));
-            return mapper.toComentarioOutputDTO(repository.save(comentarioEntity));
-        }else throw  new ResourceNotFoundException(idUser);
+        ComentarioEntity comentarioEntity = mapper.toComentarioEntity(comentario);
+        comentarioEntity.setUsuario(usuario);
+        comentarioEntity.setPublicacaoEntity(publicacaoMapper.toPublicacaoEntity(publicacao));
+        comentarioEntity=repository.save(comentarioEntity);
 
+        return findById(comentarioEntity.getId());
     }
 
     @Override

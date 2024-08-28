@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleMessageDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.MessageInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.MessageOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.*;

@@ -6,13 +6,12 @@ import com.example.IfGoiano.IfCoders.controller.mapper.MessageMapper;
 import com.example.IfGoiano.IfCoders.entity.MessageEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.MessageRepository;
-
 import com.example.IfGoiano.IfCoders.service.MessageService;
 import com.example.IfGoiano.IfCoders.utils.UsuarioChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -73,7 +72,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    @org.springframework.transaction.annotation.Transactional
+    @Transactional
     public void delete(Long id) {
         messageRepository.delete(messageMapper.toMessageEntity(findById(id)));
     }

@@ -34,6 +34,7 @@ public class UsuarioChat {
     }
 
     public UsuarioEntity findUsuarioById(Long idUser) {
+        System.out.println(idUser);
         if (tutorService.existsById(idUser)) {
             return tutorMapper.toTutorEntity(tutorService.findById(idUser));
         } else if (professorService.existsById(idUser)) {

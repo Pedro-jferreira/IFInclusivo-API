@@ -1,10 +1,7 @@
 package com.example.IfGoiano.IfCoders.config;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.*;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.MessageOutputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.TutorOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.*;
 import com.example.IfGoiano.IfCoders.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -24,6 +21,10 @@ public class TestConfig implements CommandLineRunner {
     TutorService tutorService;
     @Autowired
     AlunoNapneService alunoNapneService;
+    @Autowired
+    InterpreteService interpreteService;
+    @Autowired
+    ProfessorService professorService;
     @Autowired
     PublicacaoService publicacaoService;
     @Autowired
@@ -66,17 +67,35 @@ public class TestConfig implements CommandLineRunner {
         tutor1.setMatricula(714465L);
         tutor1.setEspecialidade("libras");
 
+        ProfessorInputDTO professor1 = new ProfessorInputDTO();
+        professor1.setNome("Cristiane Souza");
+        professor1.setLogin("cristiane.souza");
+        professor1.setSenha("cr88so88");
+        professor1.setBiografia("uma biografia");
+        professor1.setMatricula(884465L);
+
+        InterpreteInputDTO interprete1 = new InterpreteInputDTO();
+        interprete1.setSalary(2000.00);
+        interprete1.setEspecialidade("libras");
+        interprete1.setBiografia("uma biografia");
+        interprete1.setNome("Tatiana Silva");
+        interprete1.setLogin("tatiana.silva");
+        interprete1.setMatricula(559966L);
+        interprete1.setSenha("ta559si559");
+
         AlunoNapneOutputDTO aluno1Output= alunoNapneService.save(aluno1);
         TutorOutputDTO tutor1Output= tutorService.save(tutor1);
+        ProfessorOutputDTO professorOutputDTO = professorService.save(professor1);
+        InterpreteOutputDTO interpreteOutputDTO = interpreteService.save(interprete1);
 
         MessageInputDTO messageInputDTO = new MessageInputDTO();
         messageInputDTO.setText("meeting today");
         Timestamp timestamp = new Timestamp(new Date().getTime());
         messageInputDTO.setDateTime(timestamp);
-        messageInputDTO.setUserEnvia(aluno1);
+        messageInputDTO.setUserEnvia(professor1);
         messageInputDTO.setUserRecebe(tutor1);
         messageInputDTO.setVideo(false);
 
-        messageService.save(aluno1Output.getId(), tutor1Output.getId(), messageInputDTO);
+        messageService.save(professorOutputDTO.getId(), tutor1Output.getId(), messageInputDTO);
     }
 }

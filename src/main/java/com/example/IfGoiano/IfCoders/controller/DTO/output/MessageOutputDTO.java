@@ -1,45 +1,20 @@
-package com.example.IfGoiano.IfCoders.entity;
+package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Entity
-@Table(name = "message")
-public class MessageEntity implements Serializable {
-
+public class MessageOutputDTO {
     private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @NotNull()
     private String text;
-
-    @NotNull
     private Timestamp dateTime;
-    @NotNull
     private Boolean video;
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    private UsuarioEntity userEnvia;
+    private UsuarioOutputDTO userEnvia;
+    private UsuarioOutputDTO userRecebe;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
-    private UsuarioEntity userRecebe;
+    public MessageOutputDTO() {    }
 
-    public MessageEntity() {
-        super();
-    }
-
-    public MessageEntity(Long id, String text , UsuarioEntity userEnvia, UsuarioEntity userRecebe) {
+    public MessageOutputDTO(Long id, String text , UsuarioOutputDTO userEnvia, UsuarioOutputDTO userRecebe) {
         this.id = id;
         this.text = text;
         this.video = false;
@@ -80,19 +55,19 @@ public class MessageEntity implements Serializable {
         this.video = view;
     }
 
-    public UsuarioEntity getUserEnvia() {
+    public UsuarioOutputDTO getUserEnvia() {
         return userEnvia;
     }
 
-    public void setUserEnvia(UsuarioEntity userEnvia) {
+    public void setUserEnvia(UsuarioOutputDTO userEnvia) {
         this.userEnvia = userEnvia;
     }
 
-    public UsuarioEntity getUserRecebe() {
+    public UsuarioOutputDTO getUserRecebe() {
         return userRecebe;
     }
 
-    public void setUserRecebe(UsuarioEntity userRecebe) {
+    public void setUserRecebe(UsuarioOutputDTO userRecebe) {
         this.userRecebe = userRecebe;
     }
 
@@ -101,7 +76,7 @@ public class MessageEntity implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MessageEntity that = (MessageEntity) o;
+        MessageOutputDTO that = (MessageOutputDTO) o;
         return Objects.equals(id, that.id) && Objects.equals(text, that.text) &&
                 Objects.equals(dateTime, that.dateTime) && Objects.equals(video, that.video) &&
                 Objects.equals(userEnvia, that.userEnvia) && Objects.equals(userRecebe, that.userRecebe);

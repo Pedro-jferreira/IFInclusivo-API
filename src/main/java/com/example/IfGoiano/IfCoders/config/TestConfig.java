@@ -91,9 +91,6 @@ public class TestConfig implements CommandLineRunner {
         MessageInputDTO messageInputDTO = new MessageInputDTO();
         messageInputDTO.setText("meeting today");
         Timestamp timestamp = new Timestamp(new Date().getTime());
-        messageInputDTO.setDateTime(timestamp);
-        messageInputDTO.setUserEnvia(professor1);
-        messageInputDTO.setUserRecebe(tutor1);
         messageInputDTO.setVideo(false);
 
         messageService.save(professorOutputDTO.getId(), tutor1Output.getId(), messageInputDTO);

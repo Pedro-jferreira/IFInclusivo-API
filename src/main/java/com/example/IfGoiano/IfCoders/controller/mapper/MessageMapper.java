@@ -39,31 +39,13 @@ public class MessageMapper {
         return entity;
     }
     public MessageEntity toMessageEntity(MessageOutputDTO outputDTO){
-        if (outputDTO == null) {
-            return null;
-        }
-
-        MessageEntity entity = new MessageEntity();
-        entity.setId(outputDTO.getId());
-        entity.setDateTime(outputDTO.getDateTime());
-        entity.setVideo(outputDTO.getVideo());
-        entity.setText(outputDTO.getText());
-
-        // Mapeamento do campo 'usuario' que envia
-        if (outputDTO.getUserEnvia() != null) {
-            entity.setUserEnvia(usuarioChat.findUsuarioById(outputDTO.getUserEnvia().getId()));
-        }
-
-        // Mapeamento do campo 'usuario' que recebe
-        if (outputDTO.getUserRecebe() != null) {
-            entity.setUserRecebe(usuarioChat.findUsuarioById(outputDTO.getUserRecebe().getId()));
-        }
-
+        MessageEntity entity = modelMapper.map(outputDTO, MessageEntity.class);
         return entity;
     }
 
 
     public void updateMessageEntityFromDTO(MessageInputDTO messageDetails, MessageEntity messageEntity){
+        System.out.println("entrou aqui 4");
         modelMapper.map(messageDetails, messageEntity);
     }
 }

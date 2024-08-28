@@ -40,11 +40,11 @@ public class MessageController {
                             schema = @Schema(implementation = MessageInputDTO.class)) }),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PostMapping("/create")
-    public ResponseEntity<MessageOutputDTO> create(@PathVariable Long idUserEnvia, @PathVariable Long idUserRecebe,@RequestBody(description = "informações para criar uma publicação",
-            required = true) @org.springframework.web.bind.annotation.RequestBody MessageInputDTO message) {
-        var savedMessage = messageService.save(idUserEnvia, idUserRecebe, message);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedMessage);
+    @PostMapping("/create/{idUserEnvia}/{idUserRecebe}")
+    public ResponseEntity<MessageOutputDTO> create(@PathVariable Long idUserEnvia, @PathVariable Long idUserRecebe,@RequestBody(description = "dados para criar uma mensagem",
+            required = true, content = @Content(schema = @Schema(implementation = MessageInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody MessageInputDTO message) {
+        var savedMessageDTO = messageService.save(idUserEnvia, idUserRecebe, message);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedMessageDTO);
     }
 
     @Operation(summary = "Buscar todas as mensagens")
@@ -86,10 +86,10 @@ public class MessageController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/update/{id}")
-    public ResponseEntity<MessageOutputDTO> updateMessage(@PathVariable Long id, @RequestBody(description = "informações para atualizar uma mensagem",
+    public ResponseEntity<MessageOutputDTO> updateMessage(@PathVariable Long id, @RequestBody(description = "dados para atualizar uma mensagem",
             required = true) @org.springframework.web.bind.annotation.RequestBody MessageInputDTO messageDetails) {
         var message = messageService.update(id, messageDetails);
-        return ResponseEntity.ok().body(messageService.update(id, messageDetails));
+        return ResponseEntity.ok().body(message);
     }
 
     @Operation(summary = "Excluir uma mensagem por ID")

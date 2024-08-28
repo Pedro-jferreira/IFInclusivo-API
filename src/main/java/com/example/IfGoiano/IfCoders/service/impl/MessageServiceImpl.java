@@ -11,7 +11,7 @@ import com.example.IfGoiano.IfCoders.utils.UsuarioChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import org.springframework.transaction.annotation.Transactional;
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -72,7 +72,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    @Transactional
+    @org.springframework.transaction.annotation.Transactional
     public void delete(Long id) {
         messageRepository.delete(messageMapper.toMessageEntity(findById(id)));
     }

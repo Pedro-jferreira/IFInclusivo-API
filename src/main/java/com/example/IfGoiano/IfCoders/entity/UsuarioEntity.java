@@ -34,6 +34,15 @@ public  abstract class UsuarioEntity {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<PublicacaoEntity> publicacaoEntities = new ArrayList<>();
 
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
+    private List<LibrasEntity> librasEntities = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userEnvia", cascade = CascadeType.ALL)
+    private List<MessageEntity> userEnvia = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userRecebe", cascade = CascadeType.ALL)
+    private List<MessageEntity> userRecebe = new ArrayList<>();
+
     @ManyToMany
     @JoinTable(
             name = "usuario_likes_publicacao",
@@ -52,7 +61,7 @@ public  abstract class UsuarioEntity {
     public UsuarioEntity() {
     }
 
-    public UsuarioEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities, List<PublicacaoEntity> likes, List<ComentarioEntity> useful) {
+    public UsuarioEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities, List<LibrasEntity> librasEntities, List<MessageEntity> userEnvia, List<MessageEntity> userRecebe, List<PublicacaoEntity> likes, List<ComentarioEntity> useful) {
         this.id = id;
         this.nome = nome;
         this.login = login;
@@ -62,8 +71,19 @@ public  abstract class UsuarioEntity {
         this.configAcessibilidadeEntity = configAcessibilidadeEntity;
         this.comentarios = comentarios;
         this.publicacaoEntities = publicacaoEntities;
+        this.librasEntities = librasEntities;
+        this.userEnvia = userEnvia;
+        this.userRecebe = userRecebe;
         this.likes = likes;
         this.useful = useful;
+    }
+
+    public List<LibrasEntity> getLibrasEntities() {
+        return librasEntities;
+    }
+
+    public void setLibrasEntities(List<LibrasEntity> librasEntities) {
+        this.librasEntities = librasEntities;
     }
 
     public Long getId() {
@@ -138,6 +158,21 @@ public  abstract class UsuarioEntity {
         this.publicacaoEntities = publicacaoEntities;
     }
 
+    public List<MessageEntity> getUserEnvia() {
+        return userEnvia;
+    }
+
+    public void setUserEnvia(List<MessageEntity> userEnvia) {
+        this.userEnvia = userEnvia;
+    }
+
+    public List<MessageEntity> getUserRecebe() {
+        return userRecebe;
+    }
+
+    public void setUserRecebe(List<MessageEntity> userRecebe) {
+        this.userRecebe = userRecebe;
+    }
 
     public List<PublicacaoEntity> getLikes() {
         return likes;
@@ -160,13 +195,11 @@ public  abstract class UsuarioEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UsuarioEntity that = (UsuarioEntity) o;
-        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) &&
-                Objects.equals(login, that.login) && Objects.equals(senha, that.senha) &&
-                Objects.equals(matricula, that.matricula);
+        return Objects.equals(id, that.id) && Objects.equals(nome, that.nome) && Objects.equals(login, that.login) && Objects.equals(senha, that.senha) && Objects.equals(matricula, that.matricula) && Objects.equals(biografia, that.biografia) && Objects.equals(configAcessibilidadeEntity, that.configAcessibilidadeEntity) && Objects.equals(comentarios, that.comentarios) && Objects.equals(publicacaoEntities, that.publicacaoEntities) && Objects.equals(librasEntities, that.librasEntities) && Objects.equals(userEnvia, that.userEnvia) && Objects.equals(userRecebe, that.userRecebe) && Objects.equals(likes, that.likes) && Objects.equals(useful, that.useful);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, login, senha, matricula);
+        return Objects.hash(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, librasEntities, userEnvia, userRecebe, likes, useful);
     }
 }

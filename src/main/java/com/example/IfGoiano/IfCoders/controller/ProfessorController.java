@@ -46,7 +46,8 @@ public class ProfessorController {
             @ApiResponse(responseCode = "404", description = "Professor not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ProfessorOutputDTO> findById(@PathVariable Long id){
         return new ResponseEntity<>(professorService.findById(id),HttpStatus.OK);
@@ -57,8 +58,11 @@ public class ProfessorController {
             @ApiResponse(responseCode = "201", description = "publication created",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ProfessorOutputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)
+    })
     @PostMapping
     public ResponseEntity<ProfessorOutputDTO> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do professor a ser cadastrado", required = true,
             content = @Content(schema = @Schema(implementation = ProfessorInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody ProfessorInputDTO professor) {
@@ -75,7 +79,8 @@ public class ProfessorController {
             @ApiResponse(responseCode = "404", description = "Professor not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)
+    })
     @PutMapping("/{id}")
     public ResponseEntity<ProfessorOutputDTO> update(@PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do professor a ser atualizado", required = true,
             content = @Content(schema = @Schema(implementation = ProfessorInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody ProfessorInputDTO professor){
@@ -89,7 +94,8 @@ public class ProfessorController {
             @ApiResponse(responseCode = "404", description = "Professor not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<ProfessorOutputDTO> delete(Long id){
         professorService.delete(id);

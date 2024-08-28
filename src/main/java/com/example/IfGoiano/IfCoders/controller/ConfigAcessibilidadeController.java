@@ -47,7 +47,8 @@ public class ConfigAcessibilidadeController {
             @ApiResponse(responseCode = "404", description = "Accessibility configuration not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<ConfigAcblOutputDTO> findById(@PathVariable Long id) {
         var configAcessibilidadeEntity = configAcessibilidadeServiceImpl.findById(id);
@@ -59,8 +60,11 @@ public class ConfigAcessibilidadeController {
             @ApiResponse(responseCode = "201", description = "Accessibility configuration created",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ConfigAcblOutputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)
+    })
     @PostMapping
     public ResponseEntity<ConfigAcblOutputDTO> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados da configuração de acessibilidade a ser cadastrada", required = true,
             content = @Content(schema = @Schema(implementation = ConfigAcblInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody ConfigAcblInputDTO configAcessibilidadeEntity) {
@@ -75,6 +79,8 @@ public class ConfigAcessibilidadeController {
             @ApiResponse(responseCode = "200", description = "Accessibility configuration updated",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ConfigAcblOutputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
             @ApiResponse(responseCode = "404", description = "Accessibility configuration not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
@@ -88,8 +94,6 @@ public class ConfigAcessibilidadeController {
     @Operation(summary = "Excluir configuração de acessibilidade por ID", tags = "Configurações de acessibilidade")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Accessibility configuration deleted",
-                    content = @Content),
-            @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Accessibility configuration not found",
                     content = @Content),

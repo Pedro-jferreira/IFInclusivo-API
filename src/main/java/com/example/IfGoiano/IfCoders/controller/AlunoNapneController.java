@@ -57,6 +57,8 @@ public class AlunoNapneController {
             @ApiResponse(responseCode = "201", description = "Student NAPNE created",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = AlunoNapneOutputDTO.class))}),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })

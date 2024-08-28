@@ -59,6 +59,8 @@ public class ComentarioController {
             @ApiResponse(responseCode = "201", description = "Comment created",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = ComentarioOutputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping("/{idUser}/{idPublicacao}")

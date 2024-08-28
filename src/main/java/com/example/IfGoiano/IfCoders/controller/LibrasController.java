@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.List;
 
 
@@ -69,6 +70,21 @@ public class LibrasController {
         return new ResponseEntity<>(librasService.save(sinais), HttpStatus.CREATED);
     }
 
+    @Operation(summary = "Sugerir um novo sinal", tags = "Sinais de Libras")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Suggestion created",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = InterpreteOutputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
+    @PostMapping("/sugere/{id}")
+    public ResponseEntity<LibrasOutputDTO> sugereLibras(@RequestBody LibrasInputDTO sinais,Long id){
+        return new ResponseEntity<>(librasService.sugereLibras(sinais,id), HttpStatus.CREATED);
+    }
+
     @Operation(summary = "Atualizar um sinal por ID", tags = "Sinais de Libras")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Sign updated",
@@ -83,8 +99,8 @@ public class LibrasController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<LibrasOutputDTO> update(@PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do sinal a ser atualizado", required = true,
-            content = @Content(schema = @Schema(implementation = LibrasInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody LibrasInputDTO sinais){
-        return new ResponseEntity<>(librasService.update(id,sinais), HttpStatus.NO_CONTENT);
+            content = @Content(schema = @Schema(implementation = LibrasInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody LibrasInputDTO librasDetails){
+        return new ResponseEntity<>(librasService.update(librasDetails, id), HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "Deletar um sinal por ID", tags = "Sinais de Libras")

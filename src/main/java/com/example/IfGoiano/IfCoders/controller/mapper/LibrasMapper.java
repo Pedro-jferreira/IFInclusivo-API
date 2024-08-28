@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleLibrasDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
@@ -13,6 +14,8 @@ public class LibrasMapper {
 
     @Autowired
     ModelMapper modelMapper;
+    @Autowired
+    UsuarioMapper usuarioMapper;
 
     public SimpleLibrasDTO toSimpleLibraDTO(LibrasEntity librasEntity){
         return modelMapper.map(librasEntity, SimpleLibrasDTO.class);
@@ -29,7 +32,18 @@ public class LibrasMapper {
     }
 
     public LibrasOutputDTO toLibrasOutputDTO(LibrasEntity librasEntity){
-        return modelMapper.map(librasEntity, LibrasOutputDTO.class);
+        LibrasOutputDTO dto = new LibrasOutputDTO();
+        dto.setId(librasEntity.getId());
+        dto.setPalavra(librasEntity.getPalavra());
+        dto.setDescricao(librasEntity.getDescricao());
+        dto.setUrl(librasEntity.getUrl());
+        dto.setVideo(librasEntity.getVideo());
+        dto.setFoto(librasEntity.getFoto());
+        dto.setJustificativa(librasEntity.getJustificativa());
+        dto.setStatus(librasEntity.getStatus());
+        SimpleUsuarioDTO sugeriu = usuarioMapper.toSimpleUsuarioDTO(librasEntity.getUsuario());
+        dto.setSugeriu(sugeriu);
+        return dto;
     }
     public LibrasEntity toLibrasEntity(LibrasOutputDTO outputDTO){
         return modelMapper.map(outputDTO, LibrasEntity.class);

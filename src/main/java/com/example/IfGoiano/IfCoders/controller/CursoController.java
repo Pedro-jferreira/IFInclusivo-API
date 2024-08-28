@@ -59,6 +59,8 @@ public class CursoController {
             @ApiResponse(responseCode = "201", description = "Course created",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = CursoOutputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping

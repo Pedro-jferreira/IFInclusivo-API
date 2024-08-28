@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 @Entity
-@Table
+@Table(name = "interprete")
 public class InterpreteEntity extends TutorEntity {
 
     @NotNull    @Column(nullable = false)
@@ -22,11 +22,11 @@ public class InterpreteEntity extends TutorEntity {
     public InterpreteEntity() { super();
     }
 
-    public InterpreteEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities,  List<PublicacaoEntity> likes, List<ComentarioEntity> useful, String especialidade, Double salary, List<LibrasEntity> libras) {
-        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities,  likes, useful, especialidade);
+    public InterpreteEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities, List<LibrasEntity> librasEntities, List<MessageEntity> userEnvia, List<MessageEntity> userRecebe, List<PublicacaoEntity> likes, List<ComentarioEntity> useful, String especialidade, Double salary, List<LibrasEntity> libras) {
+        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, librasEntities, userEnvia, userRecebe, likes, useful, especialidade);
         this.salary = salary;
-   }
-
+        this.libras = libras;
+    }
 
     @Override
     public boolean equals(Object o) {

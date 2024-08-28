@@ -1,9 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.AlunoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -60,6 +58,8 @@ public class AlunoController {
             @ApiResponse(responseCode = "201", description = "Student created",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = AlunoOutputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping

@@ -59,6 +59,8 @@ public class InterpreteController {
             @ApiResponse(responseCode = "201", description = "Interpreter created",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = InterpreteInputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })

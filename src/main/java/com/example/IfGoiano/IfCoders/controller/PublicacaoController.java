@@ -47,7 +47,8 @@ public class PublicacaoController {
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)
+    })
     @GetMapping("/{id}")
     public ResponseEntity<PublicacaoOutputDTO> findById(@PathVariable Long id) {
         var publicacao = service.findById(id);
@@ -62,7 +63,8 @@ public class PublicacaoController {
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)
+    })
     @PostMapping("/{idUser}")
     public ResponseEntity<PublicacaoOutputDTO> save(@PathVariable Long idUser,@RequestBody(description = "informações para criar uma publicação",
                     required = true) @org.springframework.web.bind.annotation.RequestBody PublicacaoInputDTO publicacao) {
@@ -80,7 +82,8 @@ public class PublicacaoController {
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)
+    })
     @PutMapping("/{id}")
     public ResponseEntity<PublicacaoOutputDTO> update(@PathVariable Long id, @RequestBody(description = "Dados para atualizar uma publicação", required = true,
             content = @Content(schema = @Schema(implementation = PublicacaoInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody PublicacaoInputDTO publicacaoDetails) {
@@ -95,7 +98,8 @@ public class PublicacaoController {
             @ApiResponse(responseCode = "404", description = "Publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)
+    })
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
             service.delete(id);

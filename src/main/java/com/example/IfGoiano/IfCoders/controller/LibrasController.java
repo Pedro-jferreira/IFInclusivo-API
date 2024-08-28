@@ -37,7 +37,7 @@ public class LibrasController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @GetMapping()
+    @GetMapping("/findall")
     public ResponseEntity<List<LibrasOutputDTO>> findAll(){
         return new ResponseEntity<>(librasService.findAll(), HttpStatus.OK);
     }
@@ -52,7 +52,7 @@ public class LibrasController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @GetMapping("/{id}")
+    @GetMapping("find/{id}")
     public ResponseEntity<LibrasOutputDTO> findById(@PathVariable Long id){
         return new ResponseEntity<>(librasService.findById(id), HttpStatus.OK);
     }

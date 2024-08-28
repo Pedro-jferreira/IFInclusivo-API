@@ -55,7 +55,7 @@ public class MessageController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @GetMapping("/messages")
+    @GetMapping()
     public ResponseEntity<List<MessageOutputDTO>> getAllMessages(){
         var messages = messageService.findAll();
         return ResponseEntity.ok().body(messages);

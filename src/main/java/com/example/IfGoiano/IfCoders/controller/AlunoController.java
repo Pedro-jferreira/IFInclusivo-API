@@ -102,19 +102,5 @@ public class AlunoController {
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Adicionar comentário em uma publicação por ID", tags = {"Aluno"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Comment created",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = ComentarioOutputDTO.class)) }),
-            @ApiResponse(responseCode = "404", description = "Student or publication not found",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
-    @PostMapping("/comment/{idUser}/{idPublication}")
-    public ResponseEntity<ComentarioOutputDTO> createComentario(@PathVariable Long idUser, @PathVariable Long idPublication, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do comentário a ser criado", required = true,
-            content = @Content(schema = @Schema(implementation = ComentarioInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody ComentarioInputDTO comentario) {
-        var comment = alunoServiceImpl.createComentario(idUser, idPublication, comentario);
-        return ResponseEntity.ok().body(comment);
-    }
+
 }

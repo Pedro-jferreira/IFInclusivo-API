@@ -41,7 +41,7 @@ public class LibrasMapper {
         dto.setFoto(librasEntity.getFoto());
         dto.setJustificativa(librasEntity.getJustificativa());
         dto.setStatus(librasEntity.getStatus());
-        SimpleUsuarioDTO sugeriu = usuarioMapper.toSimpleUsuarioDTO(librasEntity.getUsuario());
+        SimpleUsuarioDTO sugeriu = usuarioMapper.toSimpleUsuarioDTO(librasEntity.getSugeriu());
         dto.setSugeriu(sugeriu);
         return dto;
     }

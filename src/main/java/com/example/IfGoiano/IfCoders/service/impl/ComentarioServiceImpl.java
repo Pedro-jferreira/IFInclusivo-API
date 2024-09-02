@@ -29,31 +29,6 @@ public class ComentarioServiceImpl implements ComentarioService {
     private PublicacaoService publicacaoService;
     @Autowired
     private PublicacaoMapper publicacaoMapper;
-
-    @Autowired
-    private AlunoService alunoService;
-    @Autowired
-    private AlunoMapper alunoMapper;
-
-    @Autowired
-    private TutorService tutorService;
-    @Autowired
-    private TutorMapper tutorMapper;
-
-    @Autowired
-    private ProfessorService professorService;
-    @Autowired
-    private ProfessorMapper professorMapper;
-
-    @Autowired
-    private InterpreteService interpreteService;
-    @Autowired
-    private InterpreteMapper interpreteMapper;
-
-    @Autowired
-    private AlunoNapneService alunoNapneService;
-    @Autowired
-    private AlunoNapneMapper alunoNapneMapper;
     @Autowired
     private UsuarioFinder usuarioFinder;
 
@@ -81,7 +56,7 @@ public class ComentarioServiceImpl implements ComentarioService {
 
         ComentarioEntity comentarioEntity = mapper.toComentarioEntity(comentario);
         comentarioEntity.setUsuario(usuario);
-        comentarioEntity.setPublicacaoEntity(publicacaoMapper.toPublicacaoEntity(publicacao));
+        comentarioEntity.setPublicacao(publicacaoMapper.toPublicacaoEntity(publicacao));
         comentarioEntity=repository.save(comentarioEntity);
 
         return findById(comentarioEntity.getId());

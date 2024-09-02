@@ -10,23 +10,14 @@ import com.example.IfGoiano.IfCoders.service.MessageService;
 import com.example.IfGoiano.IfCoders.utils.UsuarioChat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class MessageServiceImpl implements MessageService {
-//    @Autowired
-//    private MessageRepository messageRepository;
-//    @Autowired
-//    private SimpMessagingTemplate messagingTemplate;
-//
-//    public void sendMessage(Long sender, Long receiver, String text) {
-//        // Cria uma nova mensagem
-//
-//    }
+
     @Autowired
     private MessageRepository messageRepository;
     @Autowired

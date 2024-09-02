@@ -6,12 +6,10 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.InterpreteMapper;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.InterpreteRepository;
-
 import com.example.IfGoiano.IfCoders.service.InterpreteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 

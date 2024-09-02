@@ -34,6 +34,7 @@ public class TestConfig implements CommandLineRunner {
         alunoInputDTO.setBiografia("uma biografia");
         alunoInputDTO.setMatricula(564465L);
 
+
         AlunoOutputDTO alunoOutputDTO= alunoService.save(alunoInputDTO);
 
         PublicacaoInputDTO publicacaoInputDTO  = new PublicacaoInputDTO();

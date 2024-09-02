@@ -3,14 +3,10 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
-import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
-import com.example.IfGoiano.IfCoders.entity.ProfessorEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
-import com.example.IfGoiano.IfCoders.repository.ProfessorRepository;
 import com.example.IfGoiano.IfCoders.service.LibrasService;
-import com.example.IfGoiano.IfCoders.service.ProfessorService;
 import com.example.IfGoiano.IfCoders.utils.UsuarioFinder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,7 +60,7 @@ public class LibrasServiceImpl implements LibrasService {
         var usuario =  usuarioFinder.findUsuarioById(idUser);
 
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
-        librasEntity.setUsuario(usuario);
+        librasEntity.setSugeriu(usuario);
         return findById(repository.save(librasEntity).getId());
     }
 

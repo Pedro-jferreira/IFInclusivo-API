@@ -9,8 +9,9 @@ import com.example.IfGoiano.IfCoders.repository.CursoRepository;
 import com.example.IfGoiano.IfCoders.service.AlunoNapneService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 

@@ -10,7 +10,6 @@ import com.example.IfGoiano.IfCoders.repository.PublicacaoRepositoy;
 import com.example.IfGoiano.IfCoders.service.PublicacaoService;
 import com.example.IfGoiano.IfCoders.utils.UsuarioFinder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

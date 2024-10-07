@@ -13,7 +13,7 @@ O projeto **IF Inclusivo** é uma iniciativa de extensão voltada para soluciona
 Nosso público-alvo inclui pessoas com:
 - 🧠 TDAH (Transtorno de Déficit de Atenção com Hiperatividade)
 - 🧑‍🏫 Deficiência intelectual
-- 👂 Surdez
+- 👂 Deficiência Auditiva 
 - 👁️ Problemas de visão
 
 A interface do site será especialmente adaptada para atender a essas necessidades, garantindo uma experiência acessível e inclusiva para todos.

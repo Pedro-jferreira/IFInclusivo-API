@@ -1,5 +1,7 @@
 # 🎓 **IF Inclusivo** 🌐
 
+## 🛠️  **Ferramentas utilizadas**
+<img src="https://github.com/tandpfun/skill-icons/blob/main/icons/Java-Dark.svg" width="50px"> <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/Spring-Light.svg" width="50px"> <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/PostgreSQL-Dark.svg" width="50px">  <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/Git.svg" width="50px">  <img src="https://img.icons8.com/?size=100&id=rHpveptSuwDz&format=png&color=000000" width="50px"> <img src="https://github.com/tandpfun/skill-icons/blob/main/icons/Hibernate-Dark.svg" width="50px">
 ## 🎯 **Objetivo**
 
 O projeto **IF Inclusivo** é uma iniciativa de extensão voltada para solucionar problemas enfrentados por pessoas com necessidades específicas. A aplicação que estamos desenvolvendo contará com as seguintes funcionalidades principais:
@@ -17,6 +19,41 @@ Nosso público-alvo inclui pessoas com:
 - 👁️ Problemas de visão
 
 A interface do site será especialmente adaptada para atender a essas necessidades, garantindo uma experiência acessível e inclusiva para todos.
+
+## Como executa o projeto
+### Pré-requisitos
+- Java: 8 ou superior
+- Maven
+- PostgreSQL
+  
+### Passo a Passo para Execução
+#### 1. Clone o repositorio
+```bash
+git clone https://github.com/Pedro-jferreira/IFInclusivo-API.git
+cd IFInclusivo-API
+```
+### 2. Configure o banco de dados
+Adicione as configurações do seu banco de dados no ```application-test.properties``` mas mantenha a linha ```spring.datasource.driverClassName```  a qual ja seta o banco de dados em memoria H2
+
+```properties
+spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=seu_user
+spring.datasource.password=sua_senha
+spring.h2.console.enabled=true
+spring.h2.console.path=/h2-console
+spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+spring.jpa.show-sql=true
+```
+### 3. Compile e Execute a Aplicação
+A IDE fica a seu criterio sobre qual utilizar
+
+### 4 Acesse a API 
+A aplicação vai esta rodando na porta ```http://localhost:8080 ```
+
+### 5 Acesse a API no Swagger 
+Assim que starta a aplicação, a mesma estara disponivel no endereço
+```http://localhost:8080/swagger-ui/index.html ```
 
 ## 🧑‍💻 **Equipe**
 

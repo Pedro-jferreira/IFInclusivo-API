@@ -1,14 +1,18 @@
 package com.example.IfGoiano.IfCoders.entity;
 
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
 import java.util.ArrayList;
-import java.util.Objects;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "interprete")
+@Data
 public class InterpreteEntity extends TutorEntity {
 
     @NotNull    @Column(nullable = false)
@@ -19,42 +23,4 @@ public class InterpreteEntity extends TutorEntity {
     private List<LibrasEntity> libras = new ArrayList<>();
 
 
-    public InterpreteEntity() { super();
-    }
-
-    public InterpreteEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities, List<LibrasEntity> librasEntities, List<MessageEntity> userEnvia, List<MessageEntity> userRecebe, List<PublicacaoEntity> likes, List<ComentarioEntity> useful, String especialidade, Double salary, List<LibrasEntity> libras) {
-        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, librasEntities, userEnvia, userRecebe, likes, useful, especialidade);
-        this.salary = salary;
-        this.libras = libras;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
-        InterpreteEntity that = (InterpreteEntity) o;
-        return Objects.equals(salary, that.salary) && Objects.equals(libras, that.libras);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(super.hashCode(), salary, libras);
-    }
-
-    public Double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }
-
-    public List<LibrasEntity> getLibras() {
-        return libras;
-    }
-
-    public void setLibras(List<LibrasEntity> libras) {
-        this.libras = libras;
-    }
 }

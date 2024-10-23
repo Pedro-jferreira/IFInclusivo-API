@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ProfessorInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
 import com.example.IfGoiano.IfCoders.service.PublicacaoService;

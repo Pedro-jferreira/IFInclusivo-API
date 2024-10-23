@@ -35,19 +35,33 @@ public class MessageController {
 //
 //        return ResponseEntity.ok().build();
 //    }
-@Operation(summary = "Buscar todas as mensagens", tags = "Mensagem")
-@ApiResponses(value = {
-        @ApiResponse(responseCode = "200",description = "Found all messages",
-                content = {@Content(mediaType = "application/json",
-                        schema = @Schema(implementation = MessageOutputDTO.class))}),
-        @ApiResponse(responseCode = "500", description = "Internal server error",
-                content = @Content)
-})
-@GetMapping("/messages")
-public ResponseEntity<List<MessageOutputDTO>> findAll(){
-    var messages = messageService.findAll();
-    return ResponseEntity.ok().body(messages);
-}
+    @Operation(summary = "Criar uma nova Mensagem")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "message created",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MessageInputDTO.class)) }),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content) })
+    @PostMapping("/create/{idUserEnvia}/{idUserRecebe}")
+    public ResponseEntity<MessageOutputDTO> create(@PathVariable Long idUserEnvia, @PathVariable Long idUserRecebe,@RequestBody(description = "dados para criar uma mensagem",
+            required = true, content = @Content(schema = @Schema(implementation = MessageInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody MessageInputDTO message) {
+        var savedMessageDTO = messageService.save(idUserEnvia, idUserRecebe, message);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedMessageDTO);
+    }
+
+    @Operation(summary = "Buscar todas as mensagens")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",description = "Found all Messages",
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = MessageOutputDTO.class))}),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)
+    })
+    @GetMapping()
+    public ResponseEntity<List<MessageOutputDTO>> getAllMessages(){
+        var messages = messageService.findAll();
+        return ResponseEntity.ok().body(messages);
+    }
 
     @Operation(summary = "Buscar Mensagens por ID", tags = "Mensagem")
     @ApiResponses(value = {

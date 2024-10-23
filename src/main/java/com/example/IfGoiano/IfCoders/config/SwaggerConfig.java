@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.Collections;
 
+
 @Configuration
 public class SwaggerConfig {
 
@@ -27,6 +28,6 @@ public class SwaggerConfig {
                                 " gerenciado por tutores que adicionam palavras e vídeos de tradução para Libras.")
                         .version("1.0.0")
                 )
-                .servers(Collections.singletonList(new Server().url("http://localhost:8080")));
+                .servers(Collections.singletonList(new Server().url("https://ifinclusivo-api-production.up.railway.app/")));
     }
 }

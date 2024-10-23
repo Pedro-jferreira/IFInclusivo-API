@@ -1,7 +1,9 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.AlunoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -101,5 +103,6 @@ public class AlunoController {
         alunoServiceImpl.delete(id);
         return ResponseEntity.noContent().build();
     }
+
 
 }

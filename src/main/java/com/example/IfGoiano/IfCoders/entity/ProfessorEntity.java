@@ -1,48 +1,26 @@
 package com.example.IfGoiano.IfCoders.entity;
 
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name= "professor")
+@Data
 public class ProfessorEntity extends UsuarioEntity {
 
     private String formacao;
 
-    @OneToMany(mappedBy ="professorEntity",cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<TopicoEntity> topicos = new ArrayList<>();
 
-    public ProfessorEntity() { super();
-    }
-
-    public ProfessorEntity(String formacao) {
-        this.formacao = formacao;
-    }
-
-    public ProfessorEntity(Long id, String nome, String login, String senha, Long matricula, String biografia, ConfigAcessibilidadeEntity configAcessibilidadeEntity, List<ComentarioEntity> comentarios, List<PublicacaoEntity> publicacaoEntities, List<LibrasEntity> librasEntities, List<MessageEntity> userEnvia, List<MessageEntity> userRecebe, List<PublicacaoEntity> likes, List<ComentarioEntity> useful, String formacao, List<TopicoEntity> topicos) {
-        super(id, nome, login, senha, matricula, biografia, configAcessibilidadeEntity, comentarios, publicacaoEntities, librasEntities, userEnvia, userRecebe, likes, useful);
-        this.formacao = formacao;
-        this.topicos = topicos;
-    }
-
-    public String getFormacao() {
-        return formacao;
-    }
-
-    public void setFormacao(String formacao) {
-        this.formacao = formacao;
-    }
-
-    public List<TopicoEntity> getTopicos() {
-        return topicos;
-    }
-
-    public void setTopicos(List<TopicoEntity> topicos) {
-        this.topicos = topicos;
+    public ProfessorEntity() {
+        super();
     }
 }

@@ -1,22 +1,11 @@
 package com.example.IfGoiano.IfCoders.controller.DTO;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+@Data
+@EqualsAndHashCode(callSuper = true)
 public class SimpleProfessorDTO extends SimpleUsuarioDTO {
     private String formacao;
-
-
-    public SimpleProfessorDTO() {     super();}
-
-    public SimpleProfessorDTO(Long id, String nome, Long matricula,  String formacao) {
-        super(id, nome, matricula);
-        this.formacao = formacao;
-    }
-
-    public String getFormacao() {
-        return formacao;
-    }
-
-    public void setFormacao(String formacao) {
-        this.formacao = formacao;
-    }
 
 }

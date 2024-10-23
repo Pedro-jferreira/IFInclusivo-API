@@ -17,7 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.websocket.server.PathParam;
+
 import java.util.List;
 
 
@@ -37,7 +37,7 @@ public class LibrasController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @GetMapping()
+    @GetMapping("/findall")
     public ResponseEntity<List<LibrasOutputDTO>> findAll(){
         return new ResponseEntity<>(librasService.findAll(), HttpStatus.OK);
     }
@@ -52,7 +52,7 @@ public class LibrasController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @GetMapping("/{id}")
+    @GetMapping("find/{id}")
     public ResponseEntity<LibrasOutputDTO> findById(@PathVariable Long id){
         return new ResponseEntity<>(librasService.findById(id), HttpStatus.OK);
     }
@@ -101,6 +101,12 @@ public class LibrasController {
     public ResponseEntity<LibrasOutputDTO> update(@PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do sinal a ser atualizado", required = true,
             content = @Content(schema = @Schema(implementation = LibrasInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody LibrasInputDTO librasDetails){
         return new ResponseEntity<>(librasService.update(librasDetails, id), HttpStatus.NO_CONTENT);
+    }
+
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<LibrasOutputDTO> updateLibras(@PathVariable Long id,@RequestBody LibrasInputDTO sinais){
+        return new ResponseEntity<>(librasService.update(sinais,id), HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "Deletar um sinal por ID", tags = "Sinais de Libras")

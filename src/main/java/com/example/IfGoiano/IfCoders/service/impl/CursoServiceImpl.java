@@ -4,16 +4,12 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.CursoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.CursoOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.CursoMapper;
-import com.example.IfGoiano.IfCoders.exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
-
 import com.example.IfGoiano.IfCoders.repository.CursoRepository;
 import com.example.IfGoiano.IfCoders.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 

@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.entity;
 
+import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -26,7 +27,7 @@ public class TopicoEntity implements Serializable {
     @NotNull
     private String descripcion;
     @NotNull
-    private String categoria;
+    private Categorias categoria;
     @OneToMany(mappedBy = "topico")
     private List<PublicacaoEntity> publicacoes = new ArrayList<>();
 

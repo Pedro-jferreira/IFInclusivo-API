@@ -7,7 +7,7 @@ import lombok.Data;
 public class SimpleTopicoDTO {
     private Long id;
     private String tema;
-    private Categorias descripcion;
-    private String categoria;
+    private String descripcion;
+    private Categorias categoria;
     private SimpleProfessorDTO professor;
 }

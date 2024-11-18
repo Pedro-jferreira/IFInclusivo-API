@@ -12,6 +12,7 @@ import java.util.List;
 public class PublicacaoOutputDTO {
 
     private Long id;
+    private String titulo;
     private String text;
     private String urlVideo;
     private String urlFoto;

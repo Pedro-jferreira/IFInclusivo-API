@@ -12,7 +12,9 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOriginPatterns("https://ifinclusivo-api-production.up.railway.app", "https://ifcoders-api-production.up.railway.app")
+                .allowedOriginPatterns("https://ifinclusivo-api-production.up.railway.app",
+                        "https://ifcoders-api-production.up.railway.app",
+                        "http://localhost:4200")
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS")
                 .allowedHeaders("*")
                 .allowCredentials(true);

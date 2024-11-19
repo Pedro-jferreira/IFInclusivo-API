@@ -18,7 +18,6 @@ public class PublicacaoEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String titulo;
     private String text;
     private String urlVideo;
     private String urlFoto;

@@ -5,7 +5,6 @@ import lombok.Data;
 
 @Data
 public class PublicacaoInputDTO {
-    private String titulo;
     private String text;
     private String urlVideo;
     private String urlFoto;

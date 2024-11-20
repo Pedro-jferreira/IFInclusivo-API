@@ -31,6 +31,6 @@ public class SwaggerConfig {
                                 " gerenciado por tutores que adicionam palavras e vídeos de tradução para Libras.")
                         .version("1.0.0")
                 )
-                .servers(Collections.singletonList(new Server().url(url)));
+                .servers(Collections.singletonList(new Server().url("https://ifinclusivo-api-production.up.railway.app/")));
     }
 }

@@ -13,6 +13,8 @@ import java.util.Collections;
 
 @Configuration
 public class SwaggerConfig {
+    @Value("${swagger.url}")
+    private String swaggerUrl;
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -29,6 +31,6 @@ public class SwaggerConfig {
                                 " gerenciado por tutores que adicionam palavras e vídeos de tradução para Libras.")
                         .version("1.0.0")
                 )
-                .servers(Collections.singletonList(new Server().url("https://ifinclusivo-api-production.up.railway.app/")));
+                .servers(Collections.singletonList(new Server().url(swaggerUrl)));
     }
 }

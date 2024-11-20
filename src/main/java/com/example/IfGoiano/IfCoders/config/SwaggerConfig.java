@@ -13,8 +13,6 @@ import java.util.Collections;
 
 @Configuration
 public class SwaggerConfig {
-    @Value("$springdoc.swagger-ui.url")
-    private String url;
 
     @Bean
     public OpenAPI customOpenAPI() {

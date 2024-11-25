@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleInterpreteDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
+import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import lombok.Data;
 
@@ -16,6 +17,7 @@ public class LibrasOutputDTO {
     private String foto;
     private String justificativa;
     private Status status;
+    private Categorias categorias;
     private SimpleUsuarioDTO sugeriu;
     private List<SimpleInterpreteDTO> interpreteAnalise;
 

@@ -43,6 +43,7 @@ public class LibrasMapper {
         dto.setStatus(librasEntity.getStatus());
         SimpleUsuarioDTO sugeriu = usuarioMapper.toSimpleUsuarioDTO(librasEntity.getSugeriu());
         dto.setSugeriu(sugeriu);
+        dto.setCategorias(librasEntity.getCategorias());
         return dto;
     }
     public LibrasEntity toLibrasEntity(LibrasOutputDTO outputDTO){

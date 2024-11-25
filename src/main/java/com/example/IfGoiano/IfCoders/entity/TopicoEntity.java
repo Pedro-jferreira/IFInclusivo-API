@@ -27,7 +27,8 @@ public class TopicoEntity implements Serializable {
     @NotNull
     private String descripcion;
     @NotNull
-    private Categorias categoria;
+    private Categorias
+            categoria;
     @OneToMany(mappedBy = "topico")
     private List<PublicacaoEntity> publicacoes = new ArrayList<>();
 

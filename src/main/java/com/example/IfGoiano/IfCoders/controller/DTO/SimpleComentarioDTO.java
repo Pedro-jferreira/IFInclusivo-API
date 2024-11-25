@@ -4,7 +4,8 @@ import lombok.Data;
 
 
 @Data
-public class SimpleComentarioDTO {
+public class
+SimpleComentarioDTO {
     private Long id;
     private String content;
 }

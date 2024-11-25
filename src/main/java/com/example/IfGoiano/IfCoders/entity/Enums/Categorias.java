@@ -11,7 +11,8 @@ public enum Categorias {
     private final String descricao;
 
     Categorias(String descricao) {
-        this.descricao = descricao;
+        this.descricao =
+                descricao;
     }
 
     public String getDescricao() {

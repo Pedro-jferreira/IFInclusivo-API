@@ -3,6 +3,8 @@ package com.example.IfGoiano.IfCoders.entity;
 import lombok.Data;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,13 +20,12 @@ public class PublicacaoEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-
-    private String
-            titulo;
+    private String titulo;
     private String text;
     private String urlVideo;
     private String urlFoto;
-    private LocalDateTime dataCriacao = LocalDateTime.now();
+    @CreationTimestamp
+    private LocalDateTime dataCriacao;
 
 
     @ManyToOne

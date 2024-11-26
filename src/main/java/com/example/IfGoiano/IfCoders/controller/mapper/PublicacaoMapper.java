@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class PublicacaoMapper {
@@ -50,21 +51,23 @@ public class PublicacaoMapper {
         System.out.println("Mapped PublicacaoOutputDTO: " + entity);
         return entity;
     }
-    public PublicacaoEntity toPublicacaoEntity(PublicacaoOutputDTO inputDTO){
+    public PublicacaoEntity toPublicacaoEntity(PublicacaoOutputDTO inputDTO) {
         if (inputDTO == null) {
-            return null;  // Trate casos nulos conforme necessário
+            return null; // Tratar casos nulos conforme necessário
         }
 
         PublicacaoEntity entity = new PublicacaoEntity();
 
-        entity.setId(inputDTO.getId());  // Mapeando o ID
-        entity.setText(inputDTO.getText());  // Mapeando o texto
-        entity.setUrlVideo(inputDTO.getUrlVideo());  // Mapeando a URL do vídeo
-        entity.setUrlFoto(inputDTO.getUrlFoto());  // Mapeando a URL da foto
-        entity.setDataCriacao(inputDTO.getDataCriacao());  // Mapeando a data de criação
+        // Mapeamento direto dos atributos simples
+        entity.setId(inputDTO.getId());
+        entity.setTitulo(inputDTO.getTitulo());
+        entity.setText(inputDTO.getText());
+        entity.setUrlVideo(inputDTO.getUrlVideo());
+        entity.setUrlFoto(inputDTO.getUrlFoto());
+        entity.setDataCriacao(inputDTO.getDataCriacao());
 
-        // Mapeamento do campo 'usuario'
-        if (inputDTO.getUsuario() != null) {
+        // Mapeamento do campo 'usuario' utilizando usuarioFinder
+        if (inputDTO.getUsuario() != null && inputDTO.getUsuario().getId() != null) {
             entity.setUsuario(usuarioFinder.findUsuarioById(inputDTO.getUsuario().getId()));
         }
 
@@ -78,28 +81,30 @@ public class PublicacaoMapper {
             entity.setTopico(topicoEntity);
         }
 
+        // Mapeamento do campo 'comentarios'
         if (inputDTO.getComentarios() != null) {
-            List<ComentarioEntity> comentarioEntities = new ArrayList<>();
-            for (SimpleComentarioDTO comentarioDTO : inputDTO.getComentarios()) {
-                ComentarioEntity comentarioEntity = new ComentarioEntity();
-                comentarioEntity.setId(comentarioDTO.getId());
-                comentarioEntity.setContent(comentarioDTO.getContent());
-                comentarioEntities.add(comentarioEntity);
-            }
+            List<ComentarioEntity> comentarioEntities = inputDTO.getComentarios()
+                    .stream()
+                    .map(comentarioDTO -> {
+                        ComentarioEntity comentarioEntity = new ComentarioEntity();
+                        comentarioEntity.setId(comentarioDTO.getId());
+                        comentarioEntity.setContent(comentarioDTO.getContent());
+                        return comentarioEntity;
+                    })
+                    .collect(Collectors.toList());
             entity.setComentarios(comentarioEntities);
         }
 
-        // Mapeamento da lista 'likeBy'
+        // Mapeamento da lista 'likeBy' utilizando usuarioFinder
         if (inputDTO.getLikeBy() != null) {
-            List<UsuarioEntity> likeByEntities = new ArrayList<>();
-            for (SimpleUsuarioDTO usuarioDTO : inputDTO.getLikeBy()) {
-                likeByEntities.add(usuarioFinder.findUsuarioById(usuarioDTO.getId()));
-            }
+            List<UsuarioEntity> likeByEntities = inputDTO.getLikeBy()
+                    .stream()
+                    .map(usuarioDTO -> usuarioFinder.findUsuarioById(usuarioDTO.getId()))
+                    .collect(Collectors.toList());
             entity.setLikeBy(likeByEntities);
         }
 
         return entity;
-
     }
 
 

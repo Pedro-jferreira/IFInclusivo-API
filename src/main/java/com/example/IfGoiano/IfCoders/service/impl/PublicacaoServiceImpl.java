@@ -10,6 +10,9 @@ import com.example.IfGoiano.IfCoders.repository.PublicacaoRepositoy;
 import com.example.IfGoiano.IfCoders.service.PublicacaoService;
 import com.example.IfGoiano.IfCoders.utils.UsuarioFinder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -60,6 +63,18 @@ public class PublicacaoServiceImpl implements PublicacaoService {
             mapper.updatePublicacaoEntityFromDTO(publicacaoDetails, publicacaoEntity);
             return mapper.toPublicacaoOutputDTO(repositoy.save(publicacaoEntity));
         }else throw new ResourceNotFoundException("Publication not found");
+    }
+
+    @Override
+    public Page<PublicacaoOutputDTO> searchPublicacaoByTermQuickly(String termo, int pagina, int tamanho) {
+        Pageable  pageable = PageRequest.of(pagina,tamanho);
+        return repositoy.searchPublicacaoByTermQuickly(termo,pageable).map(mapper::toPublicacaoOutputDTO);
+    }
+
+    @Override
+    public Page<PublicacaoOutputDTO> searchPublicacaoByTermDeeply(String termo, int pagina, int tamanho) {
+        Pageable  pageable = PageRequest.of(pagina,tamanho);
+        return repositoy.searchPublicacaoByTermDeeply(termo,pageable).map(mapper::toPublicacaoOutputDTO);
     }
 
     @Override

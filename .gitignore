@@ -39,3 +39,5 @@ build/
 /resources/application-prod.properties
 /resources/application-test.properties
 
+config/
+

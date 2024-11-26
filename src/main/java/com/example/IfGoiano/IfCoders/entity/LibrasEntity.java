@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.entity;
 
 
+import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import lombok.Data;
 
@@ -25,6 +26,7 @@ public class LibrasEntity implements Serializable {
     private String foto;
     private String justificativa;
     private Status status;
+    private Categorias categorias;
 
 
     @ManyToMany

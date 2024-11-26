@@ -4,6 +4,7 @@ package com.example.IfGoiano.IfCoders.config;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +13,8 @@ import java.util.Collections;
 
 @Configuration
 public class SwaggerConfig {
+    @Value("${swagger.url}")
+    private String swaggerUrl;
 
     @Bean
     public OpenAPI customOpenAPI() {
@@ -28,6 +31,6 @@ public class SwaggerConfig {
                                 " gerenciado por tutores que adicionam palavras e vídeos de tradução para Libras.")
                         .version("1.0.0")
                 )
-                .servers(Collections.singletonList(new Server().url("https://ifinclusivo-api-production.up.railway.app/")));
+                .servers(Collections.singletonList(new Server().url(swaggerUrl)));
     }
 }

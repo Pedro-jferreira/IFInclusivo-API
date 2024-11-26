@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.*;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
@@ -9,6 +10,9 @@ import com.example.IfGoiano.IfCoders.repository.ComentarioRepository;
 import com.example.IfGoiano.IfCoders.service.*;
 import com.example.IfGoiano.IfCoders.utils.UsuarioFinder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,6 +75,12 @@ public class ComentarioServiceImpl implements ComentarioService {
             mapper.updateComentarioEntityFromDTO(comentarioDetails,comentario1);
             return mapper.toComentarioOutputDTO(repository.save(comentario1));
         }else throw  new ResourceNotFoundException(id);
+    }
+
+    @Override
+    public Page<ComentarioOutputDTO> findComentarioByPublicacao(Long publicacaoId, int pagina, int tamanho) {
+        Pageable pageable = PageRequest.of(pagina,tamanho);
+        return repository.findByPublicacao_Id(publicacaoId,pageable).map(mapper::toComentarioOutputDTO);
     }
 
     @Override

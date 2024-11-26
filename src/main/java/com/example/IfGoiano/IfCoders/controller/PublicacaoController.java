@@ -4,6 +4,7 @@ package com.example.IfGoiano.IfCoders.controller;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ProfessorInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
 import com.example.IfGoiano.IfCoders.service.PublicacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -101,6 +103,24 @@ public class PublicacaoController {
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
             service.delete(id);
             return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/buscar-rapido")
+    public ResponseEntity<Page<PublicacaoOutputDTO>> buscarRapido(
+            @RequestParam String termo,
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanho) {
+        Page<PublicacaoOutputDTO> resultados = service.searchPublicacaoByTermQuickly(termo, pagina, tamanho);
+        return ResponseEntity.ok(resultados);
+    }
+
+    @GetMapping("/buscar-profundo")
+    public ResponseEntity<Page<PublicacaoOutputDTO>> buscarProfundo(
+            @RequestParam String termo,
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanho) {
+        Page<PublicacaoOutputDTO> resultados = service.searchPublicacaoByTermDeeply(termo, pagina, tamanho);
+        return ResponseEntity.ok(resultados);
     }
 }
 

@@ -4,9 +4,11 @@ import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,17 +21,23 @@ public class TopicoEntity implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "professor_id")
-    private ProfessorEntity professor;
+    @NotNull
+    private String titulo;
     @NotNull
     private String tema;
     @NotNull
     private String descripcion;
     @NotNull
-    private Categorias
-            categoria;
+    private Categorias categoria;
+    @CreationTimestamp
+    private LocalDateTime dataCriacao;
+
+    @ManyToOne
+    @JoinColumn(name = "professor_id")
+    private ProfessorEntity professor;
     @OneToMany(mappedBy = "topico")
     private List<PublicacaoEntity> publicacoes = new ArrayList<>();
+
+
 
 }

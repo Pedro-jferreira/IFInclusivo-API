@@ -2,12 +2,18 @@ package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TopicoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
+import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
+import com.example.IfGoiano.IfCoders.entity.TopicoEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 
 import com.example.IfGoiano.IfCoders.controller.mapper.TopicoMapper;
 import com.example.IfGoiano.IfCoders.repository.TopicoRepositoy;
 import com.example.IfGoiano.IfCoders.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -48,6 +54,26 @@ public class TopicoServiceImpl  implements TopicoService {
                 return mapper.toTopicoOutputDTO(topico);
 
     }
+
+    @Override
+    public Page<TopicoOutputDTO> findByCategoria(Categorias categoria, int pagina, int tamanho) {
+        Pageable pageable = PageRequest.of(pagina, tamanho, Sort.by("dataCriacao").descending());
+        return topicoRepository.findByCategoria(categoria, pageable).map(mapper::toTopicoOutputDTO);
+    }
+
+    @Override
+    public Page<TopicoOutputDTO> searchTopicByTermQuickly(String termo, int pagina, int tamanho) {
+        Pageable pageable = PageRequest.of(pagina, tamanho);
+        return topicoRepository.findByTemaStartingWithIgnoreCase(termo, pageable)
+                .map(mapper::toTopicoOutputDTO);
+    }
+
+    @Override
+    public Page<TopicoOutputDTO> searchTopicByTermDeeply(String termo, int pagina, int tamanho) {
+        Pageable pageable = PageRequest.of(pagina, tamanho);
+        return topicoRepository.searchTopicByTermDeeply(termo, pageable).map(mapper::toTopicoOutputDTO);
+    }
+
 
     @Override
     @Transactional

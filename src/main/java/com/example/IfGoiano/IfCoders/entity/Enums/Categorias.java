@@ -1,21 +1,20 @@
 package com.example.IfGoiano.IfCoders.entity.Enums;
 
 public enum Categorias {
-    REDES("Redes"),
-    BANCO_DE_DADOS("Banco de Dados"),
-    PROGRAMACAO("Programação"),
-    WEB("Web"),
-    ESTRUTURA_DE_DADOS("Estrutura de Dados"),
-    ARQUITETURA_DE_COMPUTADORES("Arquitetura de Computadores");
+    REDES(1),
+    BANCO_DE_DADOS(2),
+    PROGRAMACAO(3),
+    WEB(4),
+    ESTRUTURA_DE_DADOS(5),
+    ARQUITETURA_DE_COMPUTADORES(6);
 
-    private final String descricao;
+    private final int categoria;
 
-    Categorias(String descricao) {
-        this.descricao =
-                descricao;
+    Categorias(int categoria) {
+        this.categoria = categoria;
     }
 
-    public String getDescricao() {
-        return descricao;
+    public int getCategoria() {
+        return categoria;
     }
 }

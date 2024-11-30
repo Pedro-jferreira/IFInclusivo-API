@@ -104,7 +104,7 @@ public class TopicoController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/categoria")
+    @GetMapping("")
     public ResponseEntity<Page<TopicoOutputDTO>> buscarPorCategoria(
             @RequestParam Categorias categoria,
             @RequestParam(defaultValue = "0") int pagina,

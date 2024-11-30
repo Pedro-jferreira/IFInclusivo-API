@@ -34,6 +34,7 @@ public class ComentarioEntity implements Serializable {
     private PublicacaoEntity publicacao;
 
     @NotNull
+    @Column(length = 800)
     private String content;
 
     @CreationTimestamp

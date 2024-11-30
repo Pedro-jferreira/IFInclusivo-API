@@ -1,18 +1,21 @@
 package com.example.IfGoiano.IfCoders.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
 
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
 @Data
-public  abstract class UsuarioEntity {
+public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -26,6 +29,10 @@ public  abstract class UsuarioEntity {
     @NotNull    @Column(nullable = false)
     private Long matricula;
     private String biografia;
+
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dataCriacao;
 
 
     @OneToOne

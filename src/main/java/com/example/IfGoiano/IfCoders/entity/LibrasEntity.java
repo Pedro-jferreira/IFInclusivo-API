@@ -20,6 +20,7 @@ public class LibrasEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String palavra;
+    @Column(length = 800)
     private String descricao;
     private String url;
     private String video;

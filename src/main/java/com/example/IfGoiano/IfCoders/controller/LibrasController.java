@@ -72,7 +72,7 @@ public class LibrasController {
 
 
     @PostMapping("/sugere/{id}")
-    public ResponseEntity<LibrasOutputDTO> sugereLibras(@RequestBody LibrasInputDTO sinais,Long id){
+    public ResponseEntity<LibrasOutputDTO> sugereLibras(@RequestBody LibrasInputDTO sinais,@PathVariable Long id){
 
         return new ResponseEntity<>(librasService.sugereLibras(sinais,id), HttpStatus.CREATED);
     }

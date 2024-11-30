@@ -1,9 +1,12 @@
 package com.example.IfGoiano.IfCoders.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -33,8 +36,9 @@ public class ComentarioEntity implements Serializable {
     @NotNull
     private String content;
 
-    @NotNull
-    private LocalDateTime dataCriacao = LocalDateTime.now();
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dataCriacao;
 
     @ManyToOne
     @JoinColumn(name = "comentario_id")

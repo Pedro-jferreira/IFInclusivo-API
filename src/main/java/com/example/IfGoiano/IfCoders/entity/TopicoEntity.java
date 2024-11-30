@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.entity;
 
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -30,6 +31,7 @@ public class TopicoEntity implements Serializable {
     @NotNull
     private Categorias categoria;
     @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;
 
     @ManyToOne

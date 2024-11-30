@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
 import jakarta.persistence.*;
@@ -25,6 +26,7 @@ public class PublicacaoEntity implements Serializable {
     private String urlVideo;
     private String urlFoto;
     @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;
 
 

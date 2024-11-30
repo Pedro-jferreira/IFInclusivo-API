@@ -24,14 +24,15 @@ public class ComentarioMapper {
     public SimpleComentarioDTO toSimpleComentarioDTO(ComentarioEntity comentarioEntity) {
         return modelMapper.map(comentarioEntity, SimpleComentarioDTO.class);
     }
+
     public ComentarioEntity toComentarioEntity(SimpleComentarioDTO simpleComentarioDTO) {
         return modelMapper.map(simpleComentarioDTO, ComentarioEntity.class);
     }
 
-
     public ComentarioInputDTO toComentarioInputDTO(ComentarioEntity comentarioEntity) {
         return modelMapper.map(comentarioEntity, ComentarioInputDTO.class);
     }
+
     public ComentarioEntity toComentarioEntity(ComentarioInputDTO comentarioInputDTO) {
         if (comentarioInputDTO == null) {
             return null; // Tratar caso nulo
@@ -39,6 +40,7 @@ public class ComentarioMapper {
         ComentarioEntity comentarioEntity = new ComentarioEntity();
 
         comentarioEntity.setContent(comentarioInputDTO.getContent());
+
 
         if (comentarioInputDTO.getComentarioPai() != null && comentarioInputDTO.getComentarioPai().getId() != null) {
             ComentarioEntity comentarioPai = new ComentarioEntity();
@@ -48,8 +50,6 @@ public class ComentarioMapper {
 
         return comentarioEntity;
     }
-
-
 
     public ComentarioOutputDTO toComentarioOutputDTO(ComentarioEntity comentarioEntity) {
         if (comentarioEntity == null) {
@@ -111,11 +111,10 @@ public class ComentarioMapper {
 
         return comentarioOutputDTO;
     }
+
     public ComentarioEntity toComentarioEntity(ComentarioOutputDTO comentarioOutputDTO) {
         return modelMapper.map(comentarioOutputDTO, ComentarioEntity.class);
     }
-
-
 
     public void updateComentarioEntityFromDTO(ComentarioInputDTO comentarioDeitals, ComentarioEntity comentarioEntity) {
         modelMapper.map(comentarioDeitals, comentarioEntity);

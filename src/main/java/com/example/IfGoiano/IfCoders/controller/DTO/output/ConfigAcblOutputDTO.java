@@ -10,5 +10,4 @@ public class ConfigAcblOutputDTO {
     private String audicao;
     private TemaCSS tema;
     private String zoom;
-    private SimpleUsuarioDTO usuario;
 }

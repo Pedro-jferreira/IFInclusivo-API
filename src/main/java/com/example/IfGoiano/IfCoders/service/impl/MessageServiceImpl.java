@@ -3,11 +3,15 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.MessageInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.MessageOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.MessageMapper;
+import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
+import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
 import com.example.IfGoiano.IfCoders.entity.MessageEntity;
+import com.example.IfGoiano.IfCoders.entity.ProfessorEntity;
+import com.example.IfGoiano.IfCoders.entity.TutorEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.MessageRepository;
 import com.example.IfGoiano.IfCoders.service.MessageService;
-import com.example.IfGoiano.IfCoders.utils.UsuarioChat;
+import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +27,9 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private MessageMapper messageMapper;
     @Autowired
-    private UsuarioChat usuarioChat;
+    private UsuarioService usuario;
+    @Autowired
+    UsuarioMapper usuarioMapper;
 
 
     @Override
@@ -41,14 +47,28 @@ public class MessageServiceImpl implements MessageService {
 
     @Override
     @Transactional
-    public MessageOutputDTO save(Long idUserEnvia, Long idUserRecebe, MessageInputDTO message){
-        var userEnvia = usuarioChat.findUsuarioById(idUserEnvia);
-        var userRecebe = usuarioChat.findUsuarioById(idUserRecebe);
+    public MessageOutputDTO save(Long idUserEnvia, Long idUserRecebe, MessageInputDTO message) {
+        var userEnvia = usuarioMapper.toEntity(usuario.findById(idUserEnvia));
+        var userRecebe = usuarioMapper.toEntity(usuario.findById(idUserRecebe));
         MessageEntity messageEntity = messageMapper.toMessageEntity(message);
-        messageEntity.setUserEnvia(userEnvia);
-        messageEntity.setUserRecebe(userRecebe);
 
-        return findById(messageRepository.save(messageEntity).getId()) ;
+        if (isValidUserType(userEnvia) && isValidUserType(userRecebe)) {
+            messageEntity.setUserEnvia(userEnvia);
+            messageEntity.setUserRecebe(userRecebe);
+            messageEntity.setText(message.getText());
+            messageEntity.setVisualizado(false);
+            return findById(messageRepository.save(messageEntity).getId());
+        } else {
+            throw new IllegalArgumentException("Um ou mais usuários não têm um tipo válido para envio de mensagens.");
+        }
+
+    }
+
+
+    private boolean isValidUserType(Object user) {
+        return user instanceof AlunoNapneEntity ||
+                user instanceof ProfessorEntity ||
+                user instanceof TutorEntity;
     }
 
     @Override

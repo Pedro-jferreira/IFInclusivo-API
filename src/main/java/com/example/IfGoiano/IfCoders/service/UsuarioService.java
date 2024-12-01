@@ -1,8 +1,6 @@
 package com.example.IfGoiano.IfCoders.service;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.input.TopicoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.UsuarioInputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 
 import java.util.List;
@@ -12,9 +10,14 @@ public interface UsuarioService {
 
     UsuarioOutputDTO findById(Long id);
 
-    UsuarioOutputDTO save(UsuarioInputDTO usuario);
+    UsuarioOutputDTO save(UsuarioInputDTO usuarioId);
 
-    UsuarioOutputDTO update(Long id, UsuarioInputDTO usuarioDetails);
+    UsuarioOutputDTO update(UsuarioInputDTO usuarioDaiteils, Long id);
+
+    UsuarioOutputDTO findUsuarioById(Long id);
 
     void delete(Long id);
+
+    boolean existsById(Long id);
+
 }

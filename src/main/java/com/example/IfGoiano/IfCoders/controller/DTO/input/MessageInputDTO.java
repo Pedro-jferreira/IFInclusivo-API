@@ -2,8 +2,7 @@ package com.example.IfGoiano.IfCoders.controller.DTO.input;
 
 import lombok.Data;
 
-
 @Data
-public class CursoInputDTO {
-    private String nome;
+public class MessageInputDTO {
+    private String text;
 }

@@ -1,23 +1,15 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleAlunoDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.AlunoMapper;
-import com.example.IfGoiano.IfCoders.controller.mapper.PublicacaoMapper;
-import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
-
 import com.example.IfGoiano.IfCoders.repository.AlunoRepository;
 import com.example.IfGoiano.IfCoders.service.AlunoService;
-import com.example.IfGoiano.IfCoders.repository.ComentarioRepository;
-import com.example.IfGoiano.IfCoders.service.PublicacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,12 +20,6 @@ public class AlunoServiceImpl implements AlunoService {
     private AlunoRepository alunoRepository;
     @Autowired
     private AlunoMapper mapper;
-    @Autowired
-    PublicacaoService publicacaoService;
-    @Autowired
-    ComentarioRepository comentarioRepository;
-    @Autowired
-    PublicacaoMapper publicacaomapper;
 
 
     @Override

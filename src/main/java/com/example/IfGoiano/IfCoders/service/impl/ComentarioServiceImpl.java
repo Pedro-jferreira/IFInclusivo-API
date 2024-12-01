@@ -3,14 +3,14 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.*;
-import com.example.IfGoiano.IfCoders.exception.DataBaseException;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.ComentarioRepository;
 import com.example.IfGoiano.IfCoders.service.*;
-import com.example.IfGoiano.IfCoders.utils.UsuarioFinder;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,33 +31,10 @@ public class ComentarioServiceImpl implements ComentarioService {
     private PublicacaoService publicacaoService;
     @Autowired
     private PublicacaoMapper publicacaoMapper;
-
     @Autowired
-    private AlunoService alunoService;
+    private UsuarioService usuarioService;
     @Autowired
-    private AlunoMapper alunoMapper;
-
-    @Autowired
-    private TutorService tutorService;
-    @Autowired
-    private TutorMapper tutorMapper;
-
-    @Autowired
-    private ProfessorService professorService;
-    @Autowired
-    private ProfessorMapper professorMapper;
-
-    @Autowired
-    private InterpreteService interpreteService;
-    @Autowired
-    private InterpreteMapper interpreteMapper;
-
-    @Autowired
-    private AlunoNapneService alunoNapneService;
-    @Autowired
-    private AlunoNapneMapper alunoNapneMapper;
-    @Autowired
-    private UsuarioFinder usuarioFinder;
+    private UsuarioMapper usuarioMapper;
 
 
 
@@ -79,14 +56,14 @@ public class ComentarioServiceImpl implements ComentarioService {
     @Transactional
     public ComentarioOutputDTO save(Long idUser,Long idPublicacao, ComentarioInputDTO comentario) {
         var publicacao = publicacaoService.findById(idPublicacao);
-        var usuario = usuarioFinder.findUsuarioById(idUser);
+        var usuario = usuarioService.findById(idUser);
 
         ComentarioEntity comentarioEntity = mapper.toComentarioEntity(comentario);
-        comentarioEntity.setUsuario(usuario);
-        comentarioEntity.setPublicacaoEntity(publicacaoMapper.toPublicacaoEntity(publicacao));
-        comentarioEntity=repository.save(comentarioEntity);
 
-        return findById(comentarioEntity.getId());
+        comentarioEntity.setUsuario(usuarioMapper.toEntity(usuario));
+        comentarioEntity.setPublicacao(publicacaoMapper.toPublicacaoEntity(publicacao));
+
+        return findById(repository.save(comentarioEntity).getId());
     }
 
     @Override
@@ -98,6 +75,12 @@ public class ComentarioServiceImpl implements ComentarioService {
             mapper.updateComentarioEntityFromDTO(comentarioDetails,comentario1);
             return mapper.toComentarioOutputDTO(repository.save(comentario1));
         }else throw  new ResourceNotFoundException(id);
+    }
+
+    @Override
+    public Page<ComentarioOutputDTO> findComentarioByPublicacao(Long publicacaoId, int pagina, int tamanho) {
+        Pageable pageable = PageRequest.of(pagina,tamanho);
+        return repository.findByPublicacao_Id(publicacaoId,pageable).map(mapper::toComentarioOutputDTO);
     }
 
     @Override

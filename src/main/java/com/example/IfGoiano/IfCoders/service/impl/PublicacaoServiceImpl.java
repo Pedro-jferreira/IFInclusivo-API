@@ -1,14 +1,18 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
-
 import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.PublicacaoMapper;
+import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
 import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.PublicacaoRepositoy;
 import com.example.IfGoiano.IfCoders.service.PublicacaoService;
+import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,9 +24,14 @@ import java.util.stream.Collectors;
 public class PublicacaoServiceImpl implements PublicacaoService {
     @Autowired
     private PublicacaoRepositoy repositoy;
-
     @Autowired
     private PublicacaoMapper mapper;
+
+    @Autowired
+    private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioMapper usuarioMapper;
+
 
     @Override
     @Transactional
@@ -40,8 +49,12 @@ public class PublicacaoServiceImpl implements PublicacaoService {
 
     @Override
     @Transactional
-    public PublicacaoOutputDTO save(PublicacaoInputDTO publicacao){
-        return findById(repositoy.save(mapper.toPublicacaoEntity(publicacao)).getId()) ;
+    public PublicacaoOutputDTO save(Long idUser,PublicacaoInputDTO publicacao){
+        var user = usuarioService.findById(idUser);
+        PublicacaoEntity publicacaoEntity = mapper.toPublicacaoEntity(publicacao);
+        publicacaoEntity.setUsuario(usuarioMapper.toEntity(user));
+
+        return findById(repositoy.save(publicacaoEntity).getId()) ;
     }
 
     @Override
@@ -53,6 +66,18 @@ public class PublicacaoServiceImpl implements PublicacaoService {
             mapper.updatePublicacaoEntityFromDTO(publicacaoDetails, publicacaoEntity);
             return mapper.toPublicacaoOutputDTO(repositoy.save(publicacaoEntity));
         }else throw new ResourceNotFoundException("Publication not found");
+    }
+
+    @Override
+    public Page<PublicacaoOutputDTO> searchPublicacaoByTermQuickly(String termo, int pagina, int tamanho) {
+        Pageable  pageable = PageRequest.of(pagina,tamanho);
+        return repositoy.searchPublicacaoByTermQuickly(termo,pageable).map(mapper::toPublicacaoOutputDTO);
+    }
+
+    @Override
+    public Page<PublicacaoOutputDTO> searchPublicacaoByTermDeeply(String termo, int pagina, int tamanho) {
+        Pageable  pageable = PageRequest.of(pagina,tamanho);
+        return repositoy.searchPublicacaoByTermDeeply(termo,pageable).map(mapper::toPublicacaoOutputDTO);
     }
 
     @Override

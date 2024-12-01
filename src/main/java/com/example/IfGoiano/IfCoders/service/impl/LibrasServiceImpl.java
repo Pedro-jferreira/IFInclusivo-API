@@ -3,15 +3,12 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
-import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
+import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
-import com.example.IfGoiano.IfCoders.entity.ProfessorEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
-import com.example.IfGoiano.IfCoders.repository.ProfessorRepository;
 import com.example.IfGoiano.IfCoders.service.LibrasService;
-import com.example.IfGoiano.IfCoders.service.ProfessorService;
-import com.example.IfGoiano.IfCoders.utils.UsuarioFinder;
+import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,9 +25,9 @@ public class LibrasServiceImpl implements LibrasService {
     LibrasMapper mapper;
 
     @Autowired
-    private UsuarioFinder usuarioFinder;
-
-
+    private UsuarioService usuarioService;
+    @Autowired
+    private UsuarioMapper usuarioMapper;
 
     public LibrasOutputDTO findById(Long id) {
         var libras = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
@@ -61,10 +58,9 @@ public class LibrasServiceImpl implements LibrasService {
     }
 
     public LibrasOutputDTO sugereLibras(LibrasInputDTO libras, Long idUser){
-        var usuario =  usuarioFinder.findUsuarioById(idUser);
-
+        var usuario =  usuarioService.findById(idUser);
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
-        librasEntity.setUsuario(usuario);
+        librasEntity.setSugeriu(usuarioMapper.toEntity(usuario));
         return findById(repository.save(librasEntity).getId());
     }
 

@@ -1,8 +1,10 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.ProfessorInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
 import com.example.IfGoiano.IfCoders.service.PublicacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -10,7 +12,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,13 +23,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/publicacoes")
+@Tag(name = "Publicação")
 public class PublicacaoController {
     @Autowired
     private PublicacaoService service;
 
-    @Operation(summary = "Buscar todas as Publicacões")
+    @Operation(summary = "Buscar todas as publicacões", tags = "Publicação")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200",description = "Found all Publication",
+            @ApiResponse(responseCode = "200",description = "Found all publications",
                     content = {@Content(mediaType = "application/json",
                             schema = @Schema(implementation = PublicacaoOutputDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
@@ -37,7 +42,7 @@ public class PublicacaoController {
             return ResponseEntity.ok().body(publicacoes);
     }
 
-    @Operation(summary = "Buscar publicação por ID")
+    @Operation(summary = "Buscar publicação por ID", tags = "Publicação")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the publication",
                     content = { @Content(mediaType = "application/json",
@@ -52,41 +57,45 @@ public class PublicacaoController {
         return ResponseEntity.ok().body(publicacao);
     }
 
-    @Operation(summary = "Criar uma nova Publicação")
+    @Operation(summary = "Criar uma nova publicação", tags = "Publicação")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "publication created",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = PublicacaoOutputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
-    @PostMapping
-    public ResponseEntity<PublicacaoOutputDTO> create(@RequestBody(description = "informações para criar uma publicação",
+    @PostMapping("/{idUser}")
+    public ResponseEntity<PublicacaoOutputDTO> create(@PathVariable Long idUser,@RequestBody(description = "informações para criar uma publicação",
                     required = true) @org.springframework.web.bind.annotation.RequestBody PublicacaoInputDTO publicacao) {
-        var savedPublicacao = service.save(publicacao);
+        var savedPublicacao = service.save(idUser,publicacao);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPublicacao);
     }
 
-    @Operation(summary = "Atualizar um publiicação por ID")
+    @Operation(summary = "Atualizar um publicação por ID", tags = "Publicação")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "publication updated",
                     content = { @Content(mediaType = "application/json",
                             schema = @Schema(implementation = PublicacaoOutputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Bad request",
+                    content = @Content),
             @ApiResponse(responseCode = "404", description = "publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PutMapping("/{id}")
-    public ResponseEntity<PublicacaoOutputDTO> update(@PathVariable Long id, @RequestBody(description = "informações para atualizar uma publicação",
-                                                              required = true) @org.springframework.web.bind.annotation.RequestBody PublicacaoInputDTO publicacaoDetails) {
+    public ResponseEntity<PublicacaoOutputDTO> update(@PathVariable Long id, @RequestBody(description = "Dados para atualizar uma publicação", required = true,
+            content = @Content(schema = @Schema(implementation = PublicacaoInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody PublicacaoInputDTO publicacaoDetails) {
         var publicacao = service.update(id, publicacaoDetails);
-            return ResponseEntity.ok().body(service.update(id, publicacaoDetails));
+        return ResponseEntity.ok().body(service.update(id, publicacaoDetails));
     }
 
-    @Operation(summary = "Excluir uma publicação por ID")
+    @Operation(summary = "Excluir uma publicação por ID", tags = "Publicação")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "publication deleted",
+            @ApiResponse(responseCode = "204", description = "Publication deleted",
                     content = @Content),
-            @ApiResponse(responseCode = "404", description = "publication not found",
+            @ApiResponse(responseCode = "404", description = "Publication not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
@@ -96,6 +105,22 @@ public class PublicacaoController {
             return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/buscar-rapido")
+    public ResponseEntity<Page<PublicacaoOutputDTO>> buscarRapido(
+            @RequestParam String termo,
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanho) {
+        Page<PublicacaoOutputDTO> resultados = service.searchPublicacaoByTermQuickly(termo, pagina, tamanho);
+        return ResponseEntity.ok(resultados);
+    }
 
+    @GetMapping("/buscar-profundo")
+    public ResponseEntity<Page<PublicacaoOutputDTO>> buscarProfundo(
+            @RequestParam String termo,
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanho) {
+        Page<PublicacaoOutputDTO> resultados = service.searchPublicacaoByTermDeeply(termo, pagina, tamanho);
+        return ResponseEntity.ok(resultados);
+    }
 }
 

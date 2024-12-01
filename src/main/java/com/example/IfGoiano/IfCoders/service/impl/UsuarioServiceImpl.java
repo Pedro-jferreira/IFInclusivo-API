@@ -3,54 +3,68 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.UsuarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
-import com.example.IfGoiano.IfCoders.exception.DataBaseException;
+import com.example.IfGoiano.IfCoders.entity.ProfessorEntity;
+import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
 import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    UsuarioRepository repository;
+
     @Autowired
     UsuarioMapper mapper;
 
     @Override
     public List<UsuarioOutputDTO> findAll() {
-        return usuarioRepository.findAll().stream().map(mapper::toUsuarioOutputDTO).collect(Collectors.toList());
+        return repository.findAll().stream().map(mapper::toOutputDTO).collect(Collectors.toList());
     }
 
     @Override
     public UsuarioOutputDTO findById(Long id) {
-        var usuario = usuarioRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
-        return mapper.toUsuarioOutputDTO(usuario);
+        return mapper.toOutputDTO(repository.findById(id).get());
     }
 
     @Override
-    @Transactional
-    public UsuarioOutputDTO save(UsuarioInputDTO usuario) {
-        return findById(usuarioRepository.save(mapper.toUsuarioEntity(usuario)).getId());
+    public UsuarioOutputDTO save(UsuarioInputDTO usuarioId) {
+        return findById(repository.save(mapper.toEntity(usuarioId)).getId());
     }
 
     @Override
-    @Transactional
-    public UsuarioOutputDTO update(Long id, UsuarioInputDTO usuarioDetails) {
-        var usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-        mapper.updateUsuarioEntityFromDTO(usuarioDetails,usuario);
-        return mapper.toUsuarioOutputDTO(usuarioRepository.save(usuario));
+    public UsuarioOutputDTO update(UsuarioInputDTO usuarioDetails, Long id) {
+        Optional<UsuarioEntity> optional = repository.findById(id);
+        if (optional.isPresent()) {
+            mapper.updateUsuarioEntityFromDTO(usuarioDetails, optional.get());
+            return mapper.toOutputDTO(repository.save(optional.get()));
+        }else throw new ResourceNotFoundException("usuario nao disponivel");
+
     }
 
     @Override
-    @Transactional
     public void delete(Long id) {
-        usuarioRepository.delete(mapper.toUsuarioEntity(findById(id)));
+        repository.deleteById(id);
+    }
+
+    @Override
+    public boolean existsById(Long id) {
+        return repository.existsById(id);
+    }
+
+    @Override
+    public UsuarioOutputDTO findUsuarioById(Long id) {
+
+        UsuarioEntity usuarioEntity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
+        System.out.println("\n"+usuarioEntity.toString()+ "\n");
+
+        return  mapper.toOutputDTO(usuarioEntity);
     }
 }

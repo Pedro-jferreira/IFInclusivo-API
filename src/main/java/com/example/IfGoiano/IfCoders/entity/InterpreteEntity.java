@@ -13,6 +13,7 @@ import java.util.ArrayList;
 @Entity
 @Table(name = "interprete")
 @Data
+@DiscriminatorValue("INTERPRETE")
 public class InterpreteEntity extends TutorEntity {
 
     @NotNull    @Column(nullable = false)

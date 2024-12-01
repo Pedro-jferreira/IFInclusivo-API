@@ -1,13 +1,15 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleLibrasDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.input.UsuarioInputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.ConfigAcblOutputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
-import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
-import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.*;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.*;
+import com.example.IfGoiano.IfCoders.entity.*;
 
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class UsuarioMapper {
@@ -18,7 +20,20 @@ public class UsuarioMapper {
             return null;
         }
 
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        UsuarioEntity usuarioEntity ;
+
+        if (usuarioInputDTO instanceof ProfessorInputDTO) {
+            usuarioEntity = new ProfessorEntity();
+        } else if (usuarioInputDTO instanceof InterpreteInputDTO) {
+            usuarioEntity = new InterpreteEntity();
+        } else if (usuarioInputDTO instanceof TutorInputDTO) {
+            usuarioEntity = new TutorEntity();
+        } else if (usuarioInputDTO instanceof AlunoNapneInputDTO) {
+            usuarioEntity = new AlunoNapneEntity();
+        } else if (usuarioInputDTO instanceof AlunoInputDTO) {
+            usuarioEntity = new AlunoEntity();
+        } else throw new IllegalArgumentException("parce no usuario entitya paritir do input  1 deto falhou");
+
         usuarioEntity.setNome(usuarioInputDTO.getNome());
         usuarioEntity.setLogin(usuarioInputDTO.getLogin());
         usuarioEntity.setSenha(usuarioInputDTO.getSenha());
@@ -27,7 +42,6 @@ public class UsuarioMapper {
 
         return usuarioEntity;
     }
-
 
     public UsuarioInputDTO toInputDTO(UsuarioEntity usuarioEntity) {
         if (usuarioEntity == null) {
@@ -43,12 +57,40 @@ public class UsuarioMapper {
 
         return usuarioInputDTO;
     }
+
     public UsuarioOutputDTO toOutputDTO(UsuarioEntity usuarioEntity) {
         if (usuarioEntity == null) {
             return null;
         }
 
-        UsuarioOutputDTO usuarioOutputDTO = new UsuarioOutputDTO();
+        UsuarioOutputDTO usuarioOutputDTO;
+
+        // Verifica o tipo da entidade e instancia o DTO correspondente
+        if (usuarioEntity instanceof ProfessorEntity) {
+            usuarioOutputDTO = new ProfessorOutputDTO();
+        } else if (usuarioEntity instanceof InterpreteEntity) {
+            InterpreteOutputDTO interpreteOutputDTO = new InterpreteOutputDTO();
+            interpreteOutputDTO.setSalary(((InterpreteEntity) usuarioEntity).getSalary());
+            List<SimpleLibrasDTO> librasDTOS = new ArrayList<>();
+            for (LibrasEntity librasEntity : ((InterpreteEntity) usuarioEntity).getLibras()) {
+                SimpleLibrasDTO sl = new SimpleLibrasDTO();
+                sl.setId(librasEntity.getId());
+                sl.setCategorias(librasEntity.getCategorias());
+                sl.setPalavra(librasEntity.getPalavra());
+                librasDTOS.add(sl);
+            }
+            interpreteOutputDTO.setLibras(librasDTOS);
+            usuarioOutputDTO = interpreteOutputDTO;
+        } else if (usuarioEntity instanceof TutorEntity) {
+            TutorOutputDTO tutorOutputDTO = new TutorOutputDTO();
+            tutorOutputDTO.setEspecialidade(((TutorEntity) usuarioEntity).getEspecialidade());
+            usuarioOutputDTO = tutorOutputDTO;
+        } else if (usuarioEntity instanceof AlunoNapneEntity) {
+            usuarioOutputDTO = new AlunoNapneOutputDTO();
+        } else if (usuarioEntity instanceof AlunoEntity) {
+            usuarioOutputDTO = new AlunoOutputDTO();
+        }else throw new IllegalArgumentException("parce to output  a partir do usuario entity 2 nao conseguiu identificar o tipo");
+
         usuarioOutputDTO.setId(usuarioEntity.getId());
         usuarioOutputDTO.setNome(usuarioEntity.getNome());
         usuarioOutputDTO.setLogin(usuarioEntity.getLogin());
@@ -69,13 +111,25 @@ public class UsuarioMapper {
         return usuarioOutputDTO;
     }
 
-    // Mapeia de UsuarioOutputDTO para UsuarioEntity
     public UsuarioEntity toEntity(UsuarioOutputDTO usuarioOutputDTO) {
         if (usuarioOutputDTO == null) {
             return null;
         }
 
-        UsuarioEntity usuarioEntity = new UsuarioEntity();
+        UsuarioEntity usuarioEntity;
+
+        if (usuarioOutputDTO instanceof ProfessorOutputDTO) {
+            usuarioEntity = new ProfessorEntity();
+        } else if (usuarioOutputDTO instanceof InterpreteOutputDTO) {
+            usuarioEntity = new InterpreteEntity();
+        } else if (usuarioOutputDTO instanceof TutorOutputDTO) {
+            usuarioEntity = new TutorEntity();
+        } else if (usuarioOutputDTO instanceof AlunoNapneOutputDTO) {
+            usuarioEntity = new AlunoNapneEntity();
+        } else if (usuarioOutputDTO instanceof AlunoOutputDTO) {
+            usuarioEntity = new AlunoEntity();
+        } else throw new IllegalArgumentException("parce de to entity a partir do output falhou 3");
+
         usuarioEntity.setId(usuarioOutputDTO.getId());
         usuarioEntity.setNome(usuarioOutputDTO.getNome());
         usuarioEntity.setLogin(usuarioOutputDTO.getLogin());
@@ -98,6 +152,7 @@ public class UsuarioMapper {
 
         return usuarioEntity;
     }
+
     public void updateUsuarioEntityFromDTO(UsuarioInputDTO usuarioInputDTO, UsuarioEntity usuarioEntity) {
         if (usuarioInputDTO == null || usuarioEntity == null) {
             return;
@@ -114,6 +169,7 @@ public class UsuarioMapper {
 
 
     }
+
     public SimpleUsuarioDTO toSimpleDTO(UsuarioEntity usuarioEntity) {
         if (usuarioEntity == null) {
             return null;

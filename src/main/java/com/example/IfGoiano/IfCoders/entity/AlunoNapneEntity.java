@@ -10,6 +10,7 @@ import jakarta.validation.constraints.NotNull;
 @Entity
 @Table(name = "aluno_napne")
 @Data
+@DiscriminatorValue("ALUNONAPNE")
 public class AlunoNapneEntity extends AlunoEntity {
 
     @NotNull   @Column(nullable = false)

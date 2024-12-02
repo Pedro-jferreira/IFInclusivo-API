@@ -1,13 +1,16 @@
 package com.example.IfGoiano.IfCoders.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+
 import java.io.Serializable;
 import java.sql.Timestamp;
-
+import java.time.LocalDateTime;
 
 
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -22,18 +25,19 @@ public class MessageEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull()
+
     private String text;
 
-    @NotNull
-    private Timestamp dateTime;
-    @NotNull
+
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+    private LocalDateTime dataCriacao;
+
     private Boolean visualizado;
-    @NotNull
+
     @ManyToOne(fetch = FetchType.EAGER)
     private UsuarioEntity userEnvia;
 
-    @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
     private UsuarioEntity userRecebe;
 

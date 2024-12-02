@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Data
+@DiscriminatorValue("ALUNO")
 public class AlunoEntity extends UsuarioEntity {
     @ManyToOne
     @JoinColumn(name = "curso_id")

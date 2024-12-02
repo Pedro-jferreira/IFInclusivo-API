@@ -22,17 +22,7 @@ public class UsuarioMapper {
 
         UsuarioEntity usuarioEntity ;
 
-        if (usuarioInputDTO instanceof ProfessorInputDTO) {
-            usuarioEntity = new ProfessorEntity();
-        } else if (usuarioInputDTO instanceof InterpreteInputDTO) {
-            usuarioEntity = new InterpreteEntity();
-        } else if (usuarioInputDTO instanceof TutorInputDTO) {
-            usuarioEntity = new TutorEntity();
-        } else if (usuarioInputDTO instanceof AlunoNapneInputDTO) {
-            usuarioEntity = new AlunoNapneEntity();
-        } else if (usuarioInputDTO instanceof AlunoInputDTO) {
-            usuarioEntity = new AlunoEntity();
-        } else throw new IllegalArgumentException("parce no usuario entitya paritir do input  1 deto falhou");
+        usuarioEntity = getUsuarioEntity(usuarioInputDTO);
 
         usuarioEntity.setNome(usuarioInputDTO.getNome());
         usuarioEntity.setLogin(usuarioInputDTO.getLogin());
@@ -42,6 +32,8 @@ public class UsuarioMapper {
 
         return usuarioEntity;
     }
+
+
 
     public UsuarioInputDTO toInputDTO(UsuarioEntity usuarioEntity) {
         if (usuarioEntity == null) {
@@ -67,7 +59,9 @@ public class UsuarioMapper {
 
         // Verifica o tipo da entidade e instancia o DTO correspondente
         if (usuarioEntity instanceof ProfessorEntity) {
-            usuarioOutputDTO = new ProfessorOutputDTO();
+            ProfessorOutputDTO p = new ProfessorOutputDTO();
+            p.setFormacao(((ProfessorEntity) usuarioEntity).getFormacao());
+            usuarioOutputDTO = p;
         } else if (usuarioEntity instanceof InterpreteEntity) {
             InterpreteOutputDTO interpreteOutputDTO = new InterpreteOutputDTO();
             interpreteOutputDTO.setSalary(((InterpreteEntity) usuarioEntity).getSalary());
@@ -86,9 +80,14 @@ public class UsuarioMapper {
             tutorOutputDTO.setEspecialidade(((TutorEntity) usuarioEntity).getEspecialidade());
             usuarioOutputDTO = tutorOutputDTO;
         } else if (usuarioEntity instanceof AlunoNapneEntity) {
-            usuarioOutputDTO = new AlunoNapneOutputDTO();
+            AlunoNapneOutputDTO a = getAlunoNapneOutputDTO((AlunoNapneEntity) usuarioEntity);
+            usuarioOutputDTO = a;
         } else if (usuarioEntity instanceof AlunoEntity) {
-            usuarioOutputDTO = new AlunoOutputDTO();
+            AlunoOutputDTO a = new AlunoOutputDTO();
+            CursoInputDTO c = new CursoInputDTO();
+            c.setNome(((AlunoEntity) usuarioEntity).getCurso().getNome());
+            a.setCurso(c);
+            usuarioOutputDTO = a;
         }else throw new IllegalArgumentException("parce to output  a partir do usuario entity 2 nao conseguiu identificar o tipo");
 
         usuarioOutputDTO.setId(usuarioEntity.getId());
@@ -111,24 +110,14 @@ public class UsuarioMapper {
         return usuarioOutputDTO;
     }
 
+
+
     public UsuarioEntity toEntity(UsuarioOutputDTO usuarioOutputDTO) {
         if (usuarioOutputDTO == null) {
             return null;
         }
 
-        UsuarioEntity usuarioEntity;
-
-        if (usuarioOutputDTO instanceof ProfessorOutputDTO) {
-            usuarioEntity = new ProfessorEntity();
-        } else if (usuarioOutputDTO instanceof InterpreteOutputDTO) {
-            usuarioEntity = new InterpreteEntity();
-        } else if (usuarioOutputDTO instanceof TutorOutputDTO) {
-            usuarioEntity = new TutorEntity();
-        } else if (usuarioOutputDTO instanceof AlunoNapneOutputDTO) {
-            usuarioEntity = new AlunoNapneEntity();
-        } else if (usuarioOutputDTO instanceof AlunoOutputDTO) {
-            usuarioEntity = new AlunoEntity();
-        } else throw new IllegalArgumentException("parce de to entity a partir do output falhou 3");
+        UsuarioEntity usuarioEntity = getUsuarioEntity(usuarioOutputDTO);
 
         usuarioEntity.setId(usuarioOutputDTO.getId());
         usuarioEntity.setNome(usuarioOutputDTO.getNome());
@@ -140,12 +129,7 @@ public class UsuarioMapper {
 
         // Se o DTO possuir ConfigAcblOutputDTO
         if (usuarioOutputDTO.getConfigAcessibilidadeEntity() != null) {
-            ConfigAcessibilidadeEntity configEntity = new ConfigAcessibilidadeEntity();
-            configEntity.setAudicao(usuarioOutputDTO.getConfigAcessibilidadeEntity().getAudicao());
-            configEntity.setZoom(usuarioOutputDTO.getConfigAcessibilidadeEntity().getZoom());
-            configEntity.setTema(usuarioOutputDTO.getConfigAcessibilidadeEntity().getTema());
-            configEntity.setId(usuarioOutputDTO.getConfigAcessibilidadeEntity().getId());
-            configEntity.setUsuario(usuarioEntity);
+            ConfigAcessibilidadeEntity configEntity = getConfigAcessibilidadeEntity(usuarioOutputDTO, usuarioEntity);
 
             usuarioEntity.setConfigAcessibilidadeEntity(configEntity);
         }
@@ -153,12 +137,16 @@ public class UsuarioMapper {
         return usuarioEntity;
     }
 
+
+
     public void updateUsuarioEntityFromDTO(UsuarioInputDTO usuarioInputDTO, UsuarioEntity usuarioEntity) {
         if (usuarioInputDTO == null || usuarioEntity == null) {
             return;
         }
 
+        usuarioEntity = getUsuarioEntity(usuarioInputDTO);
 
+        usuarioEntity.setId(usuarioEntity.getId());
         usuarioEntity.setNome(usuarioInputDTO.getNome());
         usuarioEntity.setLogin(usuarioInputDTO.getLogin());
         usuarioEntity.setSenha(usuarioInputDTO.getSenha());
@@ -181,4 +169,105 @@ public class UsuarioMapper {
         simpleUsuarioDTO.setDataCriacao(usuarioEntity.getDataCriacao());
         return simpleUsuarioDTO;
     }
+
+
+
+    private UsuarioEntity getUsuarioEntity(UsuarioInputDTO usuarioInputDTO) {
+        UsuarioEntity usuarioEntity;
+        if (usuarioInputDTO instanceof ProfessorInputDTO) {
+            ProfessorEntity p = new ProfessorEntity();
+            p.setFormacao(((ProfessorInputDTO) usuarioInputDTO).getFormacao());
+            usuarioEntity = p;
+        } else if (usuarioInputDTO instanceof InterpreteInputDTO) {
+            InterpreteEntity i = new InterpreteEntity();
+            i.setSalary(((InterpreteInputDTO) usuarioInputDTO).getSalary());
+            usuarioEntity = i;
+        } else if (usuarioInputDTO instanceof TutorInputDTO) {
+            TutorEntity t = new TutorEntity();
+            t.setEspecialidade(((TutorInputDTO) usuarioInputDTO).getEspecialidade());
+            usuarioEntity = t;
+        } else if (usuarioInputDTO instanceof AlunoNapneInputDTO) {
+            AlunoNapneEntity al = getAlunoNapneEntity((AlunoNapneInputDTO) usuarioInputDTO);
+            usuarioEntity = al;
+        } else if (usuarioInputDTO instanceof AlunoInputDTO) {
+            AlunoEntity al = new AlunoEntity();
+            CursoEntity c = new CursoEntity();
+            c.setNome(((AlunoInputDTO) usuarioInputDTO).getCurso().getNome());
+            al.setCurso(c);
+            usuarioEntity = al;
+        } else throw new IllegalArgumentException("parce no usuario entitya paritir do input  1 deto falhou");
+        return usuarioEntity;
+    }
+
+    private static AlunoNapneEntity getAlunoNapneEntity(AlunoNapneInputDTO usuarioInputDTO) {
+        AlunoNapneEntity al = new AlunoNapneEntity();
+        al.setAcompanhamento(usuarioInputDTO.getAcompanhamento());
+        al.setCondicao(usuarioInputDTO.getCondicao());
+        al.setLaudo(usuarioInputDTO.getLaudo());
+        al.setNecessidadeEscolar(usuarioInputDTO.getNecessidadeEscolar());
+        al.setNecessidadeEspecial(usuarioInputDTO.getNecessidadeEspecial());
+        al.setSituacao(usuarioInputDTO.getSituacao());
+        return al;
+    }
+
+    private static AlunoNapneOutputDTO getAlunoNapneOutputDTO(AlunoNapneEntity usuarioEntity) {
+        AlunoNapneOutputDTO a  = new AlunoNapneOutputDTO();
+        a.setAcompanhamento(usuarioEntity.getAcompanhamento());
+        a.setCondicao(usuarioEntity.getCondicao());
+        a.setLaudo(usuarioEntity.getLaudo());
+        a.setNecessidadeEscolar(usuarioEntity.getNecessidadeEscolar());
+        a.setNecessidadeEspecial(usuarioEntity.getNecessidadeEspecial());
+        a.setSituacao(usuarioEntity.getSituacao());
+        return a;
+    }
+
+    private static UsuarioEntity getUsuarioEntity(UsuarioOutputDTO usuarioOutputDTO) {
+        UsuarioEntity usuarioEntity;
+
+        if (usuarioOutputDTO instanceof ProfessorOutputDTO) {
+            ProfessorEntity p = new ProfessorEntity();
+            p.setFormacao(((ProfessorOutputDTO) usuarioOutputDTO).getFormacao());
+            usuarioEntity = p;
+        } else if (usuarioOutputDTO instanceof InterpreteOutputDTO) {
+            InterpreteEntity i = new InterpreteEntity();
+            i.setSalary(((InterpreteOutputDTO) usuarioOutputDTO).getSalary());
+            usuarioEntity = i;
+        } else if (usuarioOutputDTO instanceof TutorOutputDTO) {
+            TutorEntity t = new TutorEntity();
+            t.setEspecialidade(((TutorOutputDTO) usuarioOutputDTO).getEspecialidade());
+            usuarioEntity = t;
+        } else if (usuarioOutputDTO instanceof AlunoNapneOutputDTO) {
+            AlunoNapneEntity al = getAlunoNapneEntity((AlunoNapneOutputDTO) usuarioOutputDTO);
+            usuarioEntity = al;
+        } else if (usuarioOutputDTO instanceof AlunoOutputDTO) {
+            AlunoEntity al = new AlunoEntity();
+            CursoEntity c = new CursoEntity();
+            c.setNome(((AlunoOutputDTO) usuarioOutputDTO).getCurso().getNome());
+            al.setCurso(c);
+            usuarioEntity = al;
+        } else throw new IllegalArgumentException("parce de to entity a partir do output falhou 3");
+        return usuarioEntity;
+    }
+
+    private static AlunoNapneEntity getAlunoNapneEntity(AlunoNapneOutputDTO usuarioOutputDTO) {
+        AlunoNapneEntity al = new AlunoNapneEntity();
+        al.setAcompanhamento(usuarioOutputDTO.getAcompanhamento());
+        al.setCondicao(usuarioOutputDTO.getCondicao());
+        al.setLaudo(usuarioOutputDTO.getLaudo());
+        al.setNecessidadeEscolar(usuarioOutputDTO.getNecessidadeEscolar());
+        al.setNecessidadeEspecial(usuarioOutputDTO.getNecessidadeEspecial());
+        al.setSituacao(usuarioOutputDTO.getSituacao());
+        return al;
+    }
+
+    private static ConfigAcessibilidadeEntity getConfigAcessibilidadeEntity(UsuarioOutputDTO usuarioOutputDTO, UsuarioEntity usuarioEntity) {
+        ConfigAcessibilidadeEntity configEntity = new ConfigAcessibilidadeEntity();
+        configEntity.setAudicao(usuarioOutputDTO.getConfigAcessibilidadeEntity().getAudicao());
+        configEntity.setZoom(usuarioOutputDTO.getConfigAcessibilidadeEntity().getZoom());
+        configEntity.setTema(usuarioOutputDTO.getConfigAcessibilidadeEntity().getTema());
+        configEntity.setId(usuarioOutputDTO.getConfigAcessibilidadeEntity().getId());
+        configEntity.setUsuario(usuarioEntity);
+        return configEntity;
+    }
+
 }

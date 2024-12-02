@@ -3,7 +3,6 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.UsuarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
-import com.example.IfGoiano.IfCoders.entity.ProfessorEntity;
 import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
@@ -57,14 +56,5 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public boolean existsById(Long id) {
         return repository.existsById(id);
-    }
-
-    @Override
-    public UsuarioOutputDTO findUsuarioById(Long id) {
-
-        UsuarioEntity usuarioEntity = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
-        System.out.println("\n"+usuarioEntity.toString()+ "\n");
-
-        return  mapper.toOutputDTO(usuarioEntity);
     }
 }

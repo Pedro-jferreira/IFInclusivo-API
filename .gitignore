@@ -32,14 +32,11 @@ build/
 ### VS Code ###
 .vscode/
 
-### properties ###
-src/main/resources/application.properties
-src/main/resources/application-dev.properties
-src/main/resources/application-prod.properties
-src/main/resources/application-test.properties
-
-### Configuracao ###
-src/main/java/com/example/IfGoiano/IfCoders/config/ModelMapperConfig.java
-src/main/java/com/example/IfGoiano/IfCoders/config/SwaggerConfig.java
-src/main/java/com/example/IfGoiano/IfCoders/config/WebConfig.java
-src/main/java/com/example/IfGoiano/IfCoders/config/WebSocketConfig.java
+/src/main/resources/application.properties
+/src/main/resources/application-dev.properties
+/src/main/resources/application-prod.properties
+/src/main/resources/application-test.properties
+/src/main/java/com/example/IfGoiano/IfCoders/config/ModelMapperConfig.java
+/src/main/java/com/example/IfGoiano/IfCoders/config/SwaggerConfig.java
+/src/main/java/com/example/IfGoiano/IfCoders/config/WebConfig.java
+/src/main/java/com/example/IfGoiano/IfCoders/config/WebSocketConfig.java

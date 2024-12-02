@@ -48,6 +48,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     }
 
+
     @Override
     public void delete(Long id) {
         repository.deleteById(id);

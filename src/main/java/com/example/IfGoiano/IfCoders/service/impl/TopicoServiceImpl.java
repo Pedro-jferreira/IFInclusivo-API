@@ -2,12 +2,14 @@ package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TopicoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.ProfessorMapper;
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.TopicoEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 
 import com.example.IfGoiano.IfCoders.controller.mapper.TopicoMapper;
 import com.example.IfGoiano.IfCoders.repository.TopicoRepositoy;
+import com.example.IfGoiano.IfCoders.service.ProfessorService;
 import com.example.IfGoiano.IfCoders.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -26,6 +28,10 @@ public class TopicoServiceImpl  implements TopicoService {
 
     @Autowired
     private TopicoMapper mapper;
+    @Autowired
+    ProfessorService professorService;
+    @Autowired
+    ProfessorMapper professorMapper;
 
     @Override
     @Transactional
@@ -42,8 +48,12 @@ public class TopicoServiceImpl  implements TopicoService {
 
     @Override
     @Transactional
-    public TopicoOutputDTO save(TopicoInputDTO topico){
-            return findById(topicoRepository.save(mapper.toTopicoEntity(topico)).getId());
+    public TopicoOutputDTO save(TopicoInputDTO topico, Long idProfessor){
+        var professor = professorService.findById(idProfessor);
+
+        TopicoEntity topicoEntity = mapper.toTopicoEntity(topico);
+        topicoEntity.setProfessor(professorMapper.toProfessorEntity(professor));
+            return findById(topicoRepository.save(topicoEntity).getId());
     }
 
     @Override
@@ -64,7 +74,7 @@ public class TopicoServiceImpl  implements TopicoService {
     @Override
     public Page<TopicoOutputDTO> searchTopicByTermQuickly(String termo, int pagina, int tamanho) {
         Pageable pageable = PageRequest.of(pagina, tamanho);
-        return topicoRepository.findByTemaStartingWithIgnoreCase(termo, pageable)
+        return topicoRepository.findByTituloStartingWithIgnoreCase(termo, pageable)
                 .map(mapper::toTopicoOutputDTO);
     }
 

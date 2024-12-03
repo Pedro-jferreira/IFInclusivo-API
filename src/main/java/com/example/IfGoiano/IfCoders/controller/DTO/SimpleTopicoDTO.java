@@ -10,8 +10,7 @@ import java.time.LocalDateTime;
 public class SimpleTopicoDTO {
     private Long id;
     private String titulo;
-    private String tema;
-    private String descripcion;
+    private String descricao;
     private Categorias categoria;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;

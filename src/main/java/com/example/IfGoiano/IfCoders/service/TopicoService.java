@@ -13,7 +13,7 @@ public interface TopicoService {
 
     TopicoOutputDTO findById(Long id);
 
-    TopicoOutputDTO save(TopicoInputDTO topicoInputDTO);
+    TopicoOutputDTO save(TopicoInputDTO topicoInputDTO, Long idProfessor);
 
     TopicoOutputDTO update(Long id, TopicoInputDTO topicoDetails);
 

@@ -13,8 +13,8 @@ import java.util.List;
 public class TopicoOutputDTO {
     private Long id;
     private String titulo;
-    private String tema;
-    private Categorias descripcion;
+    private String descricao;
+    private Categorias categoria;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;
     private SimpleProfessorDTO professor;

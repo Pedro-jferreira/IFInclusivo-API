@@ -166,6 +166,7 @@ public class UsuarioMapper {
         simpleUsuarioDTO.setId(usuarioEntity.getId());
         simpleUsuarioDTO.setNome(usuarioEntity.getNome());
         simpleUsuarioDTO.setMatricula(usuarioEntity.getMatricula());
+        simpleUsuarioDTO.setBiografia(usuarioEntity.getBiografia());
         simpleUsuarioDTO.setDataCriacao(usuarioEntity.getDataCriacao());
         return simpleUsuarioDTO;
     }
@@ -190,11 +191,7 @@ public class UsuarioMapper {
             AlunoNapneEntity al = getAlunoNapneEntity((AlunoNapneInputDTO) usuarioInputDTO);
             usuarioEntity = al;
         } else if (usuarioInputDTO instanceof AlunoInputDTO) {
-            AlunoEntity al = new AlunoEntity();
-            CursoEntity c = new CursoEntity();
-            c.setNome(((AlunoInputDTO) usuarioInputDTO).getCurso().getNome());
-            al.setCurso(c);
-            usuarioEntity = al;
+            usuarioEntity = new AlunoEntity();;
         } else throw new IllegalArgumentException("parce no usuario entitya paritir do input  1 deto falhou");
         return usuarioEntity;
     }

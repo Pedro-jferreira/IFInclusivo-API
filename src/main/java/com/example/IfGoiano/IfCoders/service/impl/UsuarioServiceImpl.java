@@ -2,10 +2,12 @@ package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.UsuarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
 import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
+import com.example.IfGoiano.IfCoders.service.ConfigAcessibilidadeService;
 import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +21,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Autowired
     UsuarioRepository repository;
-
     @Autowired
     UsuarioMapper mapper;
+
+    @Autowired
+    ConfigAcessibilidadeService configAcessibilidadeService;
+    @Autowired
+    ConfigAcblMapper configAcblMapper;
 
     @Override
     public List<UsuarioOutputDTO> findAll() {
@@ -34,8 +40,11 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioOutputDTO save(UsuarioInputDTO usuarioId) {
-        return findById(repository.save(mapper.toEntity(usuarioId)).getId());
+    public UsuarioOutputDTO save(UsuarioInputDTO usuarioId, Long idConfigAc) {
+        var acesibilidade = configAcessibilidadeService.findById(idConfigAc);
+        UsuarioEntity usuarioEntity = mapper.toEntity(usuarioId);
+        usuarioEntity.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acesibilidade));
+        return findById(repository.save(usuarioEntity).getId());
     }
 
     @Override

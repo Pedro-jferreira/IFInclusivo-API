@@ -63,9 +63,14 @@ public class AlunoController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
-    public ResponseEntity<AlunoOutputDTO> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do aluno a ser cadastrado", required = true,
-            content = @Content(schema = @Schema(implementation = AlunoInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody AlunoInputDTO aluno) {
-        var savedAluno = alunoServiceImpl.save(aluno);
+    public ResponseEntity<AlunoOutputDTO> save(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do aluno a ser cadastrado",
+                    required = true,
+            content = @Content(schema = @Schema(implementation = AlunoInputDTO.class)))
+            @RequestParam Long idCurso,
+            @RequestParam Long idConfigAc,
+            @org.springframework.web.bind.annotation.RequestBody AlunoInputDTO aluno) {
+        var savedAluno = alunoServiceImpl.save(aluno,idCurso,idConfigAc);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedAluno.getId()).toUri();
         return ResponseEntity.created(location).body(savedAluno);

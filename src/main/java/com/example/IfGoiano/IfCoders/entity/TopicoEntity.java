@@ -25,9 +25,7 @@ public class TopicoEntity implements Serializable {
     @NotNull
     private String titulo;
     @NotNull
-    private String tema;
-    @NotNull
-    private String descripcion;
+    private String descricao;
     @NotNull
     private Categorias categoria;
     @CreationTimestamp

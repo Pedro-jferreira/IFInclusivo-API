@@ -18,7 +18,7 @@ public class PublicacaoOutputDTO {
     private String urlFoto;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao ;
-    private SimpleComentarioDTO usuario;
+    private SimpleUsuarioDTO usuario;
     private SimpleTopicoDTO topico;
     private List<SimpleComentarioDTO> comentarios;
     private List<SimpleUsuarioDTO> likeBy;

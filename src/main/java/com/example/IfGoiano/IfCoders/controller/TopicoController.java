@@ -68,8 +68,8 @@ public class TopicoController {
                     content = @Content) })
     @PostMapping
     public ResponseEntity<TopicoOutputDTO> save(@RequestBody(description = "Dados para criar um tópico", required = true,
-            content = @Content(schema = @Schema(implementation = TopicoInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody TopicoInputDTO topico) {
-        var topico1 = service.save(topico);
+            content = @Content(schema = @Schema(implementation = TopicoInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody TopicoInputDTO topico, @RequestParam Long idProfessor) {
+        var topico1 = service.save(topico,idProfessor);
         return ResponseEntity.status(HttpStatus.CREATED).body(topico1);
     }
 

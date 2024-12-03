@@ -11,7 +11,7 @@ public interface TutorService {
 
     TutorOutputDTO findById(Long id);
 
-    TutorOutputDTO save(TutorInputDTO tutorInputDTO);
+    TutorOutputDTO save(TutorInputDTO tutorInputDTO, Long idConfigAc);
 
     TutorOutputDTO update(TutorInputDTO tutorInputDTO, Long id);
 

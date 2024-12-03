@@ -2,9 +2,12 @@ package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TutorInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TutorOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.TutorMapper;
+import com.example.IfGoiano.IfCoders.entity.TutorEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.TutorRepository;
+import com.example.IfGoiano.IfCoders.service.ConfigAcessibilidadeService;
 import com.example.IfGoiano.IfCoders.service.TutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +20,13 @@ public class TutorServiceImpl implements TutorService {
 
     @Autowired
     private TutorRepository tutorRepository;
-
     @Autowired
     private TutorMapper tutorMapper;
+
+    @Autowired
+    ConfigAcessibilidadeService configAcessibilidadeService;
+    @Autowired
+    ConfigAcblMapper configAcblMapper;
 
     @Override
     public List<TutorOutputDTO> findAll(){
@@ -39,8 +46,11 @@ public class TutorServiceImpl implements TutorService {
 
     @Override
     @Transactional
-    public TutorOutputDTO save(TutorInputDTO tutorDTO) {
-        return findById(tutorRepository.save(tutorMapper.toTutorEntity(tutorDTO)).getId());
+    public TutorOutputDTO save(TutorInputDTO tutorDTO, Long idConfigAc) {
+        var acessibilidade = configAcessibilidadeService.findById(idConfigAc);
+        TutorEntity t = tutorMapper.toTutorEntity(tutorDTO);
+        t.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acessibilidade));
+        return findById(tutorRepository.save(t).getId());
 
     }
 

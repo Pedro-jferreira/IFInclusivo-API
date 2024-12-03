@@ -7,8 +7,6 @@ import lombok.Data;
 @Data
 public class TopicoInputDTO {
     private String titulo;
-    private String tema;
-    private String descripcion;
+    private String descricao;
     private Categorias categoria;
-    private SimpleProfessorDTO professor;
 }

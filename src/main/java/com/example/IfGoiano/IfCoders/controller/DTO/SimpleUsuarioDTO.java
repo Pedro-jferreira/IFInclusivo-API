@@ -10,6 +10,7 @@ public class SimpleUsuarioDTO {
     private Long id;
     private String nome;
     private Long matricula;
+    private String biografia;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;
 }

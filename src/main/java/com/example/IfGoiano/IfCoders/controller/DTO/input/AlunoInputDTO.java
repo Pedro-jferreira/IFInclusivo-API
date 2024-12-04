@@ -7,5 +7,5 @@ import lombok.EqualsAndHashCode;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class AlunoInputDTO extends UsuarioInputDTO{
-    private CursoInputDTO curso;
+    private Long curso;
 }

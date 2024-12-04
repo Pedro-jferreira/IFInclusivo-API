@@ -9,6 +9,7 @@ import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
 import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.AlunoRepository;
+import com.example.IfGoiano.IfCoders.repository.CursoRepository;
 import com.example.IfGoiano.IfCoders.service.AlunoService;
 import com.example.IfGoiano.IfCoders.service.ConfigAcessibilidadeService;
 import com.example.IfGoiano.IfCoders.service.CursoService;

@@ -29,8 +29,7 @@ public interface PublicacaoRepositoy extends JpaRepository<PublicacaoEntity,Long
         LOWER(c.content) LIKE LOWER(CONCAT('%', :termo, '%')) OR
         LOWER(cf.content) LIKE LOWER(CONCAT('%', :termo, '%')) OR
         LOWER(t.titulo) LIKE LOWER(CONCAT('%', :termo, '%')) OR
-        LOWER(t.tema) LIKE LOWER(CONCAT('%', :termo, '%')) OR
-        LOWER(t.descripcion) LIKE LOWER(CONCAT('%', :termo, '%'))
+        LOWER(t.descricao) LIKE LOWER(CONCAT('%', :termo, '%'))
     ORDER BY p.dataCriacao DESC
     """)
     Page<PublicacaoEntity> searchPublicacaoByTermDeeply(@Param("termo") String termo, Pageable pageable);

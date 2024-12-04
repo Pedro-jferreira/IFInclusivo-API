@@ -10,7 +10,7 @@ public interface InterpreteService {
 
     InterpreteOutputDTO findById(Long id);
 
-    InterpreteOutputDTO save(InterpreteInputDTO interpreteOutputDTO);
+    InterpreteOutputDTO save(InterpreteInputDTO interpreteOutputDTO, Long idConfigAc);
 
     InterpreteOutputDTO update(InterpreteInputDTO interpreteOutputDTO, Long id);
 

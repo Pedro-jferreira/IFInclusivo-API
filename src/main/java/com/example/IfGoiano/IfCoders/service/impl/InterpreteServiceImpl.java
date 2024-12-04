@@ -3,9 +3,12 @@ package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.InterpreteMapper;
+import com.example.IfGoiano.IfCoders.entity.InterpreteEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.InterpreteRepository;
+import com.example.IfGoiano.IfCoders.service.ConfigAcessibilidadeService;
 import com.example.IfGoiano.IfCoders.service.InterpreteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,11 @@ public class InterpreteServiceImpl implements InterpreteService {
 
     @Autowired
     InterpreteMapper interpreteMapper;
+
+    @Autowired
+    ConfigAcessibilidadeService configAcessibilidadeService;
+    @Autowired
+    ConfigAcblMapper configAcblMapper;
 
     @Override
     public List<InterpreteOutputDTO> findAll() {
@@ -39,8 +47,11 @@ public class InterpreteServiceImpl implements InterpreteService {
 
     @Override
     @Transactional
-    public InterpreteOutputDTO save(InterpreteInputDTO interpreteInputDTO) {
-        return findById(interpreteRepository.save(interpreteMapper.toInterpreteEntity(interpreteInputDTO)).getId());
+    public InterpreteOutputDTO save(InterpreteInputDTO interpreteInputDTO, Long idConfigAc) {
+        var acessibilidade = configAcessibilidadeService.findById(idConfigAc);
+        InterpreteEntity i = interpreteMapper.toInterpreteEntity(interpreteInputDTO);
+        i.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acessibilidade));
+        return findById(interpreteRepository.save(i).getId());
     }
 
     @Override

@@ -3,11 +3,15 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.AlunoMapper;
+import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
+import com.example.IfGoiano.IfCoders.controller.mapper.CursoMapper;
 import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
+import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.AlunoRepository;
 import com.example.IfGoiano.IfCoders.repository.CursoRepository;
 import com.example.IfGoiano.IfCoders.service.AlunoService;
+import com.example.IfGoiano.IfCoders.service.ConfigAcessibilidadeService;
 import com.example.IfGoiano.IfCoders.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,7 +28,13 @@ public class AlunoServiceImpl implements AlunoService {
     @Autowired
     private AlunoMapper mapper;
     @Autowired
-    private CursoRepository cursoRepository; // não sei se e a meelhor forma mas por enquanto vamos usar essa ideia
+    CursoService cursoService;
+    @Autowired
+    CursoMapper cursoMapper;
+    @Autowired
+    ConfigAcessibilidadeService configAcessibilidadeService;
+    @Autowired
+    ConfigAcblMapper configAcblMapper;
 
 
     @Override
@@ -40,22 +50,20 @@ public class AlunoServiceImpl implements AlunoService {
 
     @Override
     @Transactional
-    public AlunoOutputDTO save(AlunoInputDTO aluno) {
-        var curso = cursoRepository.findById(aluno.getCurso()).get();
-        if (curso == null) {
-            throw new ResourceNotFoundException("Curso not found curso id: " + aluno.getCurso());
-        }
-        AlunoEntity alunoEntity = mapper.toAlunoEntity(aluno);
-        alunoEntity.setCurso(curso);
-
-        return findById(alunoRepository.save(alunoEntity).getId());
+    public AlunoOutputDTO save(AlunoInputDTO aluno, Long idCurso, Long idConfigAc) {
+        var curso = cursoService.findById(idCurso);
+        var acessibilidade = configAcessibilidadeService.findById(idConfigAc);
+        AlunoEntity a = mapper.toAlunoEntity(aluno);
+        a.setCurso(cursoMapper.toCursoEntity(curso));
+        a.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acessibilidade));
+        return findById( alunoRepository.save(a).getId());
     }
 
     @Override
     @Transactional
     public AlunoOutputDTO update(Long id, AlunoInputDTO alunoDetails) {
         var aluno = alunoRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-        mapper.updateAlunoEntityFromDTO(alunoDetails, aluno);
+        mapper.updateAlunoEntityFromDTO( alunoDetails,aluno);
         return mapper.toAlunoOutputDTO(alunoRepository.save(aluno));
     }
 

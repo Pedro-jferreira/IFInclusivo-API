@@ -85,4 +85,18 @@ public class PublicacaoServiceImpl implements PublicacaoService {
     public void delete(Long id) {
         repositoy.delete(mapper.toPublicacaoEntity(findById(id)));
     }
+
+    @Override
+    public void setTopico(PublicacaoOutputDTO publicacaoOutputDTO) {
+        repositoy.save(mapper.toPublicacaoEntity(publicacaoOutputDTO));
+
+    }
+
+    @Override
+    public Page<PublicacaoOutputDTO> findPublicacaobyTopico(Long idTopico, int pagina, int tamanho) {
+        Pageable  pageable = PageRequest.of(pagina,tamanho);
+        return repositoy.findByTopicoId(idTopico,pageable).map(mapper::toPublicacaoOutputDTO);
+    }
+
+
 }

@@ -122,5 +122,13 @@ public class PublicacaoController {
         Page<PublicacaoOutputDTO> resultados = service.searchPublicacaoByTermDeeply(termo, pagina, tamanho);
         return ResponseEntity.ok(resultados);
     }
+    @GetMapping("/buscar-topico")
+    public ResponseEntity<Page<PublicacaoOutputDTO>> buscarPorTopico(
+            @RequestParam Long idTopico,
+            @RequestParam(defaultValue = "0") int pagina,
+            @RequestParam(defaultValue = "10") int tamanho) {
+        Page<PublicacaoOutputDTO> resultados = service.findPublicacaobyTopico(idTopico, pagina, tamanho);
+        return ResponseEntity.ok(resultados);
+    }
 }
 

@@ -34,4 +34,7 @@ public interface PublicacaoRepositoy extends JpaRepository<PublicacaoEntity,Long
     """)
     Page<PublicacaoEntity> searchPublicacaoByTermDeeply(@Param("termo") String termo, Pageable pageable);
 
+
+    Page<PublicacaoEntity> findByTopicoId(Long topicoId, Pageable pageable);
+
 }

@@ -131,4 +131,11 @@ public class TopicoController {
         return ResponseEntity.ok(resultados);
     }
 
+    @PutMapping("/add-publicacao")
+    public ResponseEntity<TopicoOutputDTO> addPublicacao(
+            @RequestParam Long idPublicacao,
+            @RequestParam Long idTopico){
+        return ResponseEntity.ok(service.addPublicacaoToTopico(idPublicacao, idTopico));
+    }
+
 }

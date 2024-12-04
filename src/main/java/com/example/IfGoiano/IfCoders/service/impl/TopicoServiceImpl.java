@@ -3,13 +3,17 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TopicoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.ProfessorMapper;
+import com.example.IfGoiano.IfCoders.controller.mapper.PublicacaoMapper;
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
+import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
 import com.example.IfGoiano.IfCoders.entity.TopicoEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 
 import com.example.IfGoiano.IfCoders.controller.mapper.TopicoMapper;
+import com.example.IfGoiano.IfCoders.repository.PublicacaoRepositoy;
 import com.example.IfGoiano.IfCoders.repository.TopicoRepositoy;
 import com.example.IfGoiano.IfCoders.service.ProfessorService;
+import com.example.IfGoiano.IfCoders.service.PublicacaoService;
 import com.example.IfGoiano.IfCoders.service.TopicoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,13 +29,19 @@ import java.util.stream.Collectors;
 public class TopicoServiceImpl  implements TopicoService {
     @Autowired
     private TopicoRepositoy topicoRepository;
-
     @Autowired
     private TopicoMapper mapper;
+
     @Autowired
     ProfessorService professorService;
     @Autowired
     ProfessorMapper professorMapper;
+
+    @Autowired
+    PublicacaoService publicacaoService;
+    @Autowired
+    PublicacaoMapper publicacaoMapper;
+
 
     @Override
     @Transactional
@@ -90,4 +100,15 @@ public class TopicoServiceImpl  implements TopicoService {
     public void delete(Long id) {
         topicoRepository.delete(mapper.toTopicoEntity(findById(id)));
     }
+    @Override
+    @Transactional
+    public TopicoOutputDTO addPublicacaoToTopico(Long idPublicacao, Long idTopico) {
+        PublicacaoEntity publicacao = publicacaoMapper.toPublicacaoEntity(publicacaoService.findById(idPublicacao));
+        var topico = topicoRepository.findById(idTopico).orElseThrow(()-> new ResourceNotFoundException(idTopico));
+        publicacao.setTopico(topico);
+        topico.getPublicacoes().add(publicacao);
+        publicacaoService.setTopico(publicacaoMapper.toPublicacaoOutputDTO(publicacao));
+        return findById(topico.getId());
+    }
+
 }

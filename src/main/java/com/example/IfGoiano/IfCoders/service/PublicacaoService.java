@@ -21,4 +21,8 @@ public interface PublicacaoService {
     Page<PublicacaoOutputDTO> searchPublicacaoByTermDeeply(String termo, int pagina, int tamanho);
 
     void delete(Long id);
+
+    void setTopico(PublicacaoOutputDTO publicacaoOutputDTO);
+
+    Page<PublicacaoOutputDTO> findPublicacaobyTopico(Long idTopico, int pagina, int tamanho);
 }

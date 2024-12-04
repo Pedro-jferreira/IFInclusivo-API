@@ -4,6 +4,7 @@ import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
+import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
@@ -58,9 +59,14 @@ public class LibrasServiceImpl implements LibrasService {
     }
 
     public LibrasOutputDTO sugereLibras(LibrasInputDTO libras, Long idUser){
-        var usuario =  usuarioService.findById(idUser);
+        var usuario =usuarioService.findById(idUser)   ;
+        if(usuario == null){
+          throw  new ResourceNotFoundException("User not found");
+        }
+
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
         librasEntity.setSugeriu(usuarioMapper.toEntity(usuario));
+        librasEntity.setStatus(Status.EMANALISE);
         return findById(repository.save(librasEntity).getId());
     }
 

@@ -30,8 +30,8 @@ public class LibrasEntity implements Serializable {
     private Categorias categorias;
 
 
-    @ManyToMany
-    private List<InterpreteEntity> interpreteAnalise = new ArrayList<>();
+    @ManyToMany(mappedBy = "libras")
+    private List<InterpreteEntity> interprete = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)

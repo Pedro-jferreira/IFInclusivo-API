@@ -11,6 +11,7 @@ import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
 import com.example.IfGoiano.IfCoders.service.LibrasService;
 import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -42,15 +43,21 @@ public class LibrasServiceImpl implements LibrasService {
         return mapper.toLibrasOutputDTO(repository.save(libraAux));
     }
 
-    public List<LibrasOutputDTO> findAll() {
-        return repository.findAll().stream().map(mapper::toLibrasOutputDTO).collect(Collectors.toList());
+    public List<LibrasOutputDTO> findAll(int pag, int itens) {
+
+        return repository.findAll(PageRequest.of(pag,itens)).stream().map(mapper::toLibrasOutputDTO).collect(Collectors.toList());
     }
+
+//    public List<LibrasOutputDTO> getLibrasAprovadas(){
+//
+//    }
 
 
     public void delete(Long id) {
         repository.deleteById(id);
     }
 
+    // Adicionar regra de negocios nesse metodo de criar libras
     public LibrasOutputDTO save(LibrasInputDTO libras){
 
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);

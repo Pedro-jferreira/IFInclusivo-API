@@ -2,10 +2,7 @@ package com.example.IfGoiano.IfCoders.service;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
-import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
-import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
-import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,7 +11,7 @@ import java.util.List;
 @Service
 public interface LibrasService {
 
-    List<LibrasOutputDTO> findAll();
+    List<LibrasOutputDTO> findAll(int pag,int itens);
 
     LibrasOutputDTO findById(Long id);
 

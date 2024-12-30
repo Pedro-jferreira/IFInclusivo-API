@@ -80,9 +80,9 @@ public class LibrasServiceImpl implements LibrasService {
             return findById(repository.save(librasEntity).getId());
         }
         if (libra.getStatus() == Status.EMANALISE) {
-            librasEntity.getSugeriu().add(usuarioMapper.toEntity(usuario));
-            librasEntity.setId(libra.getId());
-            return findById(repository.save(librasEntity).getId());
+            libra.getSugeriu().add(usuarioMapper.toEntity(usuario));
+            libra.setId(libra.getId());
+            return findById(repository.save(libra).getId());
         } else {
             throw new RuntimeException("Libras existed");
         }

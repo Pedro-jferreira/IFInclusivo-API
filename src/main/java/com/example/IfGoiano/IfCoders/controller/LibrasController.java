@@ -29,18 +29,18 @@ public class LibrasController {
     @Autowired
     LibrasServiceImpl librasService;
 
-    @Operation(summary = "Buscar todos os sinais", tags = "Sinais de Libras")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Found all signs",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = InterpreteOutputDTO.class)) }),
-            @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content)
-    })
-    @GetMapping("/findall")
-    public ResponseEntity<List<LibrasOutputDTO>> findAll(){
-        return new ResponseEntity<>(librasService.findAll(), HttpStatus.OK);
-    }
+//    @Operation(summary = "Buscar todos os sinais", tags = "Sinais de Libras")
+//    @ApiResponses(value = {
+//            @ApiResponse(responseCode = "200", description = "Found all signs",
+//                    content = { @Content(mediaType = "application/json",
+//                            schema = @Schema(implementation = InterpreteOutputDTO.class)) }),
+//            @ApiResponse(responseCode = "500", description = "Internal server error",
+//                    content = @Content)
+//    })
+//    @GetMapping("/findall")
+//    public ResponseEntity<List<LibrasOutputDTO>> findAll(){
+//        return new ResponseEntity<>(librasService.findAll(), HttpStatus.OK);
+//    }
 
     @Operation(summary = "Buscar sinal por ID", tags = "Sinais de Libras")
     @ApiResponses(value = {
@@ -84,9 +84,10 @@ public class LibrasController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<LibrasOutputDTO>> getAllLibras(){
+    public ResponseEntity<List<LibrasOutputDTO>> getAllLibras( @RequestParam int pag,
+                                                               @RequestParam int itens){
 
-        return new ResponseEntity<>(librasService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(librasService.findAll(pag,itens), HttpStatus.OK);
     }
 
 

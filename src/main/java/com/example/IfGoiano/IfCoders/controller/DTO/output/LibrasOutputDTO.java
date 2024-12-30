@@ -18,7 +18,7 @@ public class LibrasOutputDTO {
     private String justificativa;
     private Status status;
     private Categorias categorias;
-    private SimpleUsuarioDTO sugeriu;
+    private List<SimpleUsuarioDTO> sugeriu;
     private List<SimpleInterpreteDTO> interpreteAnalise;
 
 }

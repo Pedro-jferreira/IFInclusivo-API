@@ -6,6 +6,7 @@ import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
+import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
 import com.example.IfGoiano.IfCoders.service.LibrasService;
@@ -27,25 +28,25 @@ public class LibrasServiceImpl implements LibrasService {
     LibrasMapper mapper;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioServiceImpl usuarioService;
     @Autowired
     private UsuarioMapper usuarioMapper;
 
     public LibrasOutputDTO findById(Long id) {
-        var libras = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
+        var libras = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Libras not found"));
         return mapper.toLibrasOutputDTO(libras);
     }
 
 
     public LibrasOutputDTO update(LibrasInputDTO libras, Long id) {
-        var libraAux = repository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Libras not found"));
-        mapper.updateLibrasEntityFromDTO(libras,libraAux);
+        var libraAux = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Libras not found"));
+        mapper.updateLibrasEntityFromDTO(libras, libraAux);
         return mapper.toLibrasOutputDTO(repository.save(libraAux));
     }
 
     public List<LibrasOutputDTO> findAll(int pag, int itens) {
 
-        return repository.findAll(PageRequest.of(pag,itens)).stream().map(mapper::toLibrasOutputDTO).collect(Collectors.toList());
+        return repository.findAll(PageRequest.of(pag, itens)).stream().map(mapper::toLibrasOutputDTO).collect(Collectors.toList());
     }
 
 //    public List<LibrasOutputDTO> getLibrasAprovadas(){
@@ -58,23 +59,35 @@ public class LibrasServiceImpl implements LibrasService {
     }
 
     // Adicionar regra de negocios nesse metodo de criar libras
-    public LibrasOutputDTO save(LibrasInputDTO libras){
+    public LibrasOutputDTO save(LibrasInputDTO libras) {
 
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
         this.repository.save(librasEntity);
         return mapper.toLibrasOutputDTO(librasEntity);
     }
 
-    public LibrasOutputDTO sugereLibras(LibrasInputDTO libras, Long idUser){
-        var usuario =usuarioService.findById(idUser)   ;
-        if(usuario == null){
-          throw  new ResourceNotFoundException("User not found");
+    public LibrasOutputDTO sugereLibras(LibrasInputDTO libras, Long idUser) {
+        var usuario = usuarioService.findById(idUser);
+        if (usuario == null) {
+            throw new ResourceNotFoundException("User not found");
         }
 
+        var libra = repository.findByPalavra(libras.getPalavra());
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
-        librasEntity.setSugeriu(usuarioMapper.toEntity(usuario));
-        librasEntity.setStatus(Status.EMANALISE);
-        return findById(repository.save(librasEntity).getId());
+        if (libra == null) {
+            librasEntity.getSugeriu().add(usuarioMapper.toEntity(usuario));
+            librasEntity.setStatus(Status.EMANALISE);
+            return findById(repository.save(librasEntity).getId());
+        }
+        if (libra.getStatus() == Status.EMANALISE) {
+            librasEntity.getSugeriu().add(usuarioMapper.toEntity(usuario));
+            librasEntity.setId(libra.getId());
+            return findById(repository.save(librasEntity).getId());
+        } else {
+            throw new RuntimeException("Libras existed");
+        }
+
+
     }
 
 }

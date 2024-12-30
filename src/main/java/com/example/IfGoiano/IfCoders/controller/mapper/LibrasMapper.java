@@ -9,6 +9,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class LibrasMapper {
 
@@ -41,7 +44,12 @@ public class LibrasMapper {
         dto.setFoto(librasEntity.getFoto());
         dto.setJustificativa(librasEntity.getJustificativa());
         dto.setStatus(librasEntity.getStatus());
-        SimpleUsuarioDTO sugeriu = usuarioMapper.toSimpleDTO(librasEntity.getSugeriu());
+
+        List<SimpleUsuarioDTO> sugeriu = new ArrayList<>();
+        for(int i = 0; i < librasEntity.getSugeriu().size(); i++){
+
+            sugeriu.add(modelMapper.map(librasEntity.getSugeriu().get(i), SimpleUsuarioDTO.class));
+        }
         dto.setSugeriu(sugeriu);
         dto.setCategorias(librasEntity.getCategorias());
         return dto;

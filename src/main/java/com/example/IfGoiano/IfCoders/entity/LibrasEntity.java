@@ -33,8 +33,11 @@ public class LibrasEntity implements Serializable {
     @ManyToMany(mappedBy = "libras")
     private List<InterpreteEntity> interprete = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    private UsuarioEntity sugeriu;
+    @ManyToMany
+    @JoinTable(
+            name="sugeriu_libras",
+            joinColumns = @JoinColumn(name = "libras_id"),
+            inverseJoinColumns = @JoinColumn(name ="usuario_id" ))
+    private List<UsuarioEntity> sugeriu = new ArrayList<>();
 
 }

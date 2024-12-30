@@ -45,7 +45,7 @@ public class UsuarioEntity {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<PublicacaoEntity> publicacaoEntities = new ArrayList<>();
 
-    @OneToMany(mappedBy = "sugeriu", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "sugeriu", cascade = CascadeType.ALL)
     private List<LibrasEntity> librasEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "userEnvia", cascade = CascadeType.ALL)

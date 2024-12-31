@@ -12,7 +12,9 @@ import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
 import com.example.IfGoiano.IfCoders.service.LibrasService;
 import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,6 +46,30 @@ public class LibrasServiceImpl implements LibrasService {
         return mapper.toLibrasOutputDTO(repository.save(libraAux));
     }
 
+    @Override
+    public Page<LibrasOutputDTO> findByPalavra(String palavra, int pag, int itens) {
+        Pageable  pageable = PageRequest.of(pag,itens);
+        return  repository.findByPalavra(palavra,pageable).map(mapper::toLibrasOutputDTO);
+    }
+
+    @Override
+    public Page<LibrasOutputDTO> findByStatus(Status status, int pag, int itens) {
+        Pageable  pageable = PageRequest.of(pag,itens);
+        return repository.findByStatus(status,pageable).map(mapper::toLibrasOutputDTO);
+    }
+
+    @Override
+    public Page<LibrasOutputDTO> searchLibrasByDeeply(String search, int pag, int itens) {
+       Pageable pageable = PageRequest.of(pag,itens);
+       return repository.searchLibrasByDeeply(search,pageable).map(mapper::toLibrasOutputDTO);
+    }
+
+    @Override
+    public LibrasOutputDTO findByPalavra(String palavra) {
+      var libras = repository.findByPalavra(palavra).orElseThrow(() -> new ResourceNotFoundException("Libras not found"));
+      return mapper.toLibrasOutputDTO(libras);
+    }
+
     public List<LibrasOutputDTO> findAll(int pag, int itens) {
 
         return repository.findAll(PageRequest.of(pag, itens)).stream().map(mapper::toLibrasOutputDTO).collect(Collectors.toList());
@@ -72,7 +98,7 @@ public class LibrasServiceImpl implements LibrasService {
             throw new ResourceNotFoundException("User not found");
         }
 
-        var libra = repository.findByPalavra(libras.getPalavra());
+        var libra = repository.findByPalavra(libras.getPalavra()).get();
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
         if (libra == null) {
             librasEntity.getSugeriu().add(usuarioMapper.toEntity(usuario));

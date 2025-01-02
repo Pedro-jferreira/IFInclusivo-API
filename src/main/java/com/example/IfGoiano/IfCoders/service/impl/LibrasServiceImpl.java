@@ -53,8 +53,7 @@ public class LibrasServiceImpl implements LibrasService {
     }
 
     @Override
-    public Page<LibrasOutputDTO> findByStatus(Status status, int pag, int itens) {
-        Pageable  pageable = PageRequest.of(pag,itens);
+    public Page<LibrasOutputDTO> findByStatus(Status status, Pageable pageable) {
         return repository.findByStatus(status,pageable).map(mapper::toLibrasOutputDTO);
     }
 

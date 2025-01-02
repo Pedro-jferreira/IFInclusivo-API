@@ -104,14 +104,15 @@ public class LibrasController {
 
     @GetMapping("/busca-profunda")
     public ResponseEntity<Page<LibrasOutputDTO>> buscaProfundaLibras
-            (String palavra, @RequestParam(defaultValue = "0") int pag, @RequestParam(defaultValue = "10") int itens) {
+            (@RequestParam String palavra, @RequestParam(defaultValue = "0") int pag, @RequestParam(defaultValue = "10") int itens) {
         Page<LibrasOutputDTO> resultados = this.librasService.searchLibrasByDeeply(palavra, pag, itens);
         return ResponseEntity.ok(resultados);
     }
 
     @GetMapping("/busca-status")
     public ResponseEntity<Page<LibrasOutputDTO>> findByStatus(
-            @RequestParam Status status, @RequestParam(defaultValue = "0") int pag, @RequestParam(defaultValue = "10") int itens){
+            @RequestParam Status status, @RequestParam(defaultValue = "0") int pag,
+            @RequestParam(defaultValue = "10") int itens){
        Page<LibrasOutputDTO> resultados = this.librasService.findByStatus(status,pag,itens);
 
        return ResponseEntity.ok(resultados);

@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -111,9 +112,8 @@ public class LibrasController {
 
     @GetMapping("/busca-status")
     public ResponseEntity<Page<LibrasOutputDTO>> findByStatus(
-            @RequestParam Status status, @RequestParam(defaultValue = "0") int pag,
-            @RequestParam(defaultValue = "10") int itens){
-       Page<LibrasOutputDTO> resultados = this.librasService.findByStatus(status,pag,itens);
+            @RequestParam Status status, Pageable pageable) {
+       Page<LibrasOutputDTO> resultados = this.librasService.findByStatus(status,pageable);
 
        return ResponseEntity.ok(resultados);
     }

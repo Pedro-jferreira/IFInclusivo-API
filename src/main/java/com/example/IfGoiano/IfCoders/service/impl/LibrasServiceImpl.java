@@ -75,9 +75,6 @@ public class LibrasServiceImpl implements LibrasService {
         return repository.findAll(PageRequest.of(pag, itens)).stream().map(mapper::toLibrasOutputDTO).collect(Collectors.toList());
     }
 
-//    public List<LibrasOutputDTO> getLibrasAprovadas(){
-//
-//    }
 
 
     public void delete(Long id) {
@@ -107,7 +104,6 @@ public class LibrasServiceImpl implements LibrasService {
         }
         if (libra.getStatus() == Status.EMANALISE) {
             libra.getSugeriu().add(usuarioMapper.toEntity(usuario));
-            libra.setId(libra.getId());
             return findById(repository.save(libra).getId());
         } else {
             throw new RuntimeException("Libras existed");

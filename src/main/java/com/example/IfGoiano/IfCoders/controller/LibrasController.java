@@ -31,18 +31,7 @@ public class LibrasController {
     @Autowired
     LibrasServiceImpl librasService;
 
-//    @Operation(summary = "Buscar todos os sinais", tags = "Sinais de Libras")
-//    @ApiResponses(value = {
-//            @ApiResponse(responseCode = "200", description = "Found all signs",
-//                    content = { @Content(mediaType = "application/json",
-//                            schema = @Schema(implementation = InterpreteOutputDTO.class)) }),
-//            @ApiResponse(responseCode = "500", description = "Internal server error",
-//                    content = @Content)
-//    })
-//    @GetMapping("/findall")
-//    public ResponseEntity<List<LibrasOutputDTO>> findAll(){
-//        return new ResponseEntity<>(librasService.findAll(), HttpStatus.OK);
-//    }
+
 
     @Operation(summary = "Buscar sinal por ID", tags = "Sinais de Libras")
     @ApiResponses(value = {
@@ -122,7 +111,7 @@ public class LibrasController {
 
     @GetMapping("/busca-status")
     public ResponseEntity<Page<LibrasOutputDTO>> findByStatus(
-            Status status, @RequestParam(defaultValue = "0") int pag, @RequestParam(defaultValue = "10") int itens){
+            @RequestParam Status status, @RequestParam(defaultValue = "0") int pag, @RequestParam(defaultValue = "10") int itens){
        Page<LibrasOutputDTO> resultados = this.librasService.findByStatus(status,pag,itens);
 
        return ResponseEntity.ok(resultados);

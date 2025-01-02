@@ -13,5 +13,5 @@ public class LibrasInputDTO {
     private String foto;
     private String justificativa;
     private Status status;
-    private Categorias categoria;
+    private Categorias categorias;
 }

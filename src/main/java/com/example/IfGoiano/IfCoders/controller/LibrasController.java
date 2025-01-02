@@ -5,6 +5,7 @@ import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
+import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import com.example.IfGoiano.IfCoders.service.impl.LibrasServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -118,6 +119,17 @@ public class LibrasController {
         Page<LibrasOutputDTO> resultados = this.librasService.searchLibrasByDeeply(palavra, pag, itens);
         return ResponseEntity.ok(resultados);
     }
+
+    @GetMapping("/busca-status")
+    public ResponseEntity<Page<LibrasOutputDTO>> findByStatus(
+            Status status, @RequestParam(defaultValue = "0") int pag, @RequestParam(defaultValue = "10") int itens){
+       Page<LibrasOutputDTO> resultados = this.librasService.findByStatus(status,pag,itens);
+
+       return ResponseEntity.ok(resultados);
+    }
+
+
+
 
 
 }

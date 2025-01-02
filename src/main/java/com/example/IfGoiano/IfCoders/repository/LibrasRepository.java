@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public interface LibrasRepository extends JpaRepository<LibrasEntity, Long> {
 
@@ -25,7 +27,7 @@ public interface LibrasRepository extends JpaRepository<LibrasEntity, Long> {
             "OR LOWER(l.descricao) LIKE LOWER(CONCAT('%',:search, '%')) ")
     Page<LibrasEntity> searchLibrasByDeeply(@Param("search") String search, Pageable pageable);
 
-    LibrasEntity findByPalavra(String palavra);
+    Optional<LibrasEntity> findByPalavra(String palavra);
 
 
 }

@@ -24,7 +24,7 @@ public interface LibrasService {
 
     LibrasOutputDTO update(LibrasInputDTO librasInputDTO ,Long id);
 
-    Page<LibrasOutputDTO> findByPalavra(String palavra, int pag, int itens);
+    Page<LibrasOutputDTO> findByPalavra(String palavra, Pageable pageable);
 
     Page<LibrasOutputDTO> findByStatus(Status status,Pageable pageable);
 

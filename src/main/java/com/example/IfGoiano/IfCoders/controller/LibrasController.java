@@ -118,8 +118,8 @@ public class LibrasController {
     }
 
 
+    @GetMapping("/busca-palavras")
     public ResponseEntity<Page<LibrasOutputDTO>> findByPalavras(@RequestParam String palavra, Pageable pageable) {
-
         Page<LibrasOutputDTO> palavras = this.librasService.findByPalavra(palavra, pageable);
         return ResponseEntity.ok(palavras);
 

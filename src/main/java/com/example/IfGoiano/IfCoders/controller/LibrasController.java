@@ -104,8 +104,8 @@ public class LibrasController {
 
     @GetMapping("/busca-profunda")
     public ResponseEntity<Page<LibrasOutputDTO>> buscaProfundaLibras
-            (@RequestParam String palavra, @RequestParam(defaultValue = "0") int pag, @RequestParam(defaultValue = "10") int itens) {
-        Page<LibrasOutputDTO> resultados = this.librasService.searchLibrasByDeeply(palavra, pag, itens);
+            (@RequestParam String palavra, Pageable pageable) {
+        Page<LibrasOutputDTO> resultados = this.librasService.searchLibrasByDeeply(palavra, pageable);
         return ResponseEntity.ok(resultados);
     }
 

@@ -57,8 +57,7 @@ public class LibrasServiceImpl implements LibrasService {
     }
 
     @Override
-    public Page<LibrasOutputDTO> searchLibrasByDeeply(String search, int pag, int itens) {
-       Pageable pageable = PageRequest.of(pag,itens);
+    public Page<LibrasOutputDTO> searchLibrasByDeeply(String search, Pageable pageable) {
        return repository.searchLibrasByDeeply(search,pageable).map(mapper::toLibrasOutputDTO);
     }
 

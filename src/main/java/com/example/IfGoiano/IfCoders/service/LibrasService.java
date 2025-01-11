@@ -28,7 +28,7 @@ public interface LibrasService {
 
     Page<LibrasOutputDTO> findByStatus(Status status,Pageable pageable);
 
-    Page<LibrasOutputDTO> searchLibrasByDeeply(String search, int pag, int itens);
+    Page<LibrasOutputDTO> searchLibrasByDeeply(String search, Pageable pageable);
 
     LibrasOutputDTO findByPalavra(String palavra);
 

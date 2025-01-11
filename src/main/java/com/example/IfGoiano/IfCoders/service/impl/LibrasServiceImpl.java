@@ -47,8 +47,7 @@ public class LibrasServiceImpl implements LibrasService {
     }
 
     @Override
-    public Page<LibrasOutputDTO> findByPalavra(String palavra, int pag, int itens) {
-        Pageable  pageable = PageRequest.of(pag,itens);
+    public Page<LibrasOutputDTO> findByPalavra(String palavra, Pageable pageable) {
         return  repository.findByPalavra(palavra,pageable).map(mapper::toLibrasOutputDTO);
     }
 

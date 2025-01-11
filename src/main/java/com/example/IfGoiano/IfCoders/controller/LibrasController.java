@@ -33,7 +33,6 @@ public class LibrasController {
     LibrasServiceImpl librasService;
 
 
-
     @Operation(summary = "Buscar sinal por ID", tags = "Sinais de Libras")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the sign",
@@ -113,13 +112,18 @@ public class LibrasController {
     @GetMapping("/busca-status")
     public ResponseEntity<Page<LibrasOutputDTO>> findByStatus(
             @RequestParam Status status, Pageable pageable) {
-       Page<LibrasOutputDTO> resultados = this.librasService.findByStatus(status,pageable);
+        Page<LibrasOutputDTO> resultados = this.librasService.findByStatus(status, pageable);
 
-       return ResponseEntity.ok(resultados);
+        return ResponseEntity.ok(resultados);
     }
 
 
+    public ResponseEntity<Page<LibrasOutputDTO>> findByPalavras(@RequestParam String palavra, Pageable pageable) {
 
+        Page<LibrasOutputDTO> palavras = this.librasService.findByPalavra(palavra, pageable);
+        return ResponseEntity.ok(palavras);
+
+    }
 
 
 }

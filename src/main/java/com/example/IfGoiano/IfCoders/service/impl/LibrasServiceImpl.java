@@ -92,16 +92,16 @@ public class LibrasServiceImpl implements LibrasService {
             throw new ResourceNotFoundException("User not found");
         }
 
-        var libra = repository.findByPalavra(libras.getPalavra()).get();
+        var libra = repository.findByPalavra(libras.getPalavra());
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
-        if (libra == null) {
+        if (libra.isEmpty()) {
             librasEntity.getSugeriu().add(usuarioMapper.toEntity(usuario));
             librasEntity.setStatus(Status.EMANALISE);
             return findById(repository.save(librasEntity).getId());
         }
-        if (libra.getStatus() == Status.EMANALISE) {
-            libra.getSugeriu().add(usuarioMapper.toEntity(usuario));
-            return findById(repository.save(libra).getId());
+        if (libra.get().getStatus() == Status.EMANALISE) {
+            libra.get().getSugeriu().add(usuarioMapper.toEntity(usuario));
+            return findById(repository.save(libra.get()).getId());
         } else {
             throw new RuntimeException("Libras existed");
         }

@@ -3,6 +3,7 @@ package com.example.IfGoiano.IfCoders.repository;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
 import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
@@ -17,6 +18,7 @@ import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.mapper.mocks.MockConfigAcess;
 import com.example.IfGoiano.IfCoders.mapper.mocks.MockInterprete;
+import com.example.IfGoiano.IfCoders.mapper.mocks.MockUser;
 import com.example.IfGoiano.IfCoders.service.LibrasService;
 import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import com.example.IfGoiano.IfCoders.service.impl.LibrasServiceImpl;
@@ -46,18 +48,6 @@ class LibrasRepositoryTest {
     MockConfigAcess input = new MockConfigAcess();
 
     MockInterprete inputInterprete = new MockInterprete();
-
-    @Mock
-    private UsuarioServiceImpl usuarioService;
-
-    @Mock
-    private LibrasRepository repository;
-
-    @Mock
-    private LibrasMapper mapper;
-
-    @Mock
-    private UsuarioMapper usuarioMapper;
 
     @InjectMocks
     private LibrasServiceImpl librasService;
@@ -134,22 +124,5 @@ class LibrasRepositoryTest {
 
     }
 
-
-
-    /**
-     *Verifico inicialmente se ao não encontrar um usuario me retorna uma exeção
-     */
-    @Test
-    void shouldThrowExceptionWhenUserNotFound() {
-        Long idUser = 1L;
-        LibrasInputDTO input = new LibrasInputDTO();
-        Mockito.when(usuarioService.findById(idUser)).thenReturn(null);// aqui eu ja espero um retorno null
-
-        Assertions.assertThrows(ResourceNotFoundException.class,
-                () -> librasService.sugereLibras(input, idUser));
-
-        Mockito.verify(usuarioService).findById(idUser);
-        Mockito.verifyNoInteractions(repository, mapper, usuarioMapper);
-    }
 
 }

@@ -14,29 +14,19 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.example.IfGoiano.IfCoders.entity.InterpreteEntity;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
-import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
-import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.mapper.mocks.MockConfigAcess;
 import com.example.IfGoiano.IfCoders.mapper.mocks.MockInterprete;
-import com.example.IfGoiano.IfCoders.mapper.mocks.MockUser;
-import com.example.IfGoiano.IfCoders.service.LibrasService;
-import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import com.example.IfGoiano.IfCoders.service.impl.LibrasServiceImpl;
-import com.example.IfGoiano.IfCoders.service.impl.UsuarioServiceImpl;
 import jakarta.persistence.EntityManager;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
-
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -74,7 +64,6 @@ class LibrasRepositoryTest {
 
         return interpreteEntity;
     }
-
 
 
     @Test
@@ -115,7 +104,8 @@ class LibrasRepositoryTest {
         librasEntity.setUrl("First url" + 1L);
         librasEntity.setJustificativa("First justificativa" + 1L);
         librasEntity.setVideo("First video" + 1L);
-        librasEntity.setCategorias(Categorias.REDES);;
+        librasEntity.setCategorias(Categorias.REDES);
+        ;
         librasEntity.getSugeriu().add(null);
 
         Assertions.assertThrows(NullPointerException.class, () -> librasService.searchLibrasByDeeply

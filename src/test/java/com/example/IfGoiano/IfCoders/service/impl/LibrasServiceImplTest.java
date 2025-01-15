@@ -98,7 +98,7 @@ class LibrasServiceImplTest {
 
         LibrasOutputDTO output = new LibrasOutputDTO();
         output.setId(1L);
-        output.setStatus(Status.EMANALISE);
+
 
         // Configuração dos mocks
         Mockito.when(usuarioService.findById(1L)).thenReturn(usuarioOutputDTO);
@@ -117,7 +117,7 @@ class LibrasServiceImplTest {
         Mockito.verify(repository).save(librasEntity);
 
         // Verificações
-        Assertions.assertEquals(output.getStatus(), result.getStatus());
+        Assertions.assertEquals(Status.EMANALISE, result.getStatus());
 
 
     }

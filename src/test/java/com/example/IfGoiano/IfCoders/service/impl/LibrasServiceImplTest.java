@@ -75,14 +75,12 @@ class LibrasServiceImplTest {
 
     //CASE1 Existe um usuario no banco de dados, ESSA LIBRAS AINDA NÂO EXISTE, E SE EXISTE ESTA COM O STATUS-EM-ANALISE
     //LOGO PODE SE SUGERIR
-
     @Test
     @DisplayName("Should sugest Libras Sucess")
     void shouldCreateNewLibrasWhenNotFound() {
 
         UsuarioEntity usuarioEntity = this.inputUser.mockUser(1L); //criando um user e mockando
         UsuarioEntity expected = usuarioEntity;
-        //when(this.usuarioRepository.save(usuarioEntity)).thenReturn(expected);
 
         UsuarioOutputDTO usuarioOutputDTO = new UsuarioOutputDTO();
         usuarioOutputDTO.setId(1L);
@@ -120,8 +118,33 @@ class LibrasServiceImplTest {
 
         // Verificações
         Assertions.assertEquals(output.getStatus(), result.getStatus());
-        System.out.println("Status do outuput:"+output.getStatus()+ "Status do result " + result.getStatus());
 
+
+    }
+
+    @Test
+    void shouldThrowExceptionWhenLibrasStatusIsNotEmAnalise() {
+        Long idUser = 1L;
+        LibrasInputDTO input = new LibrasInputDTO();
+        input.setPalavra("example");
+        UsuarioEntity usuario = new UsuarioEntity();
+        usuario.setId(1L);
+
+        UsuarioOutputDTO usuarioOutputDTO = new UsuarioOutputDTO();
+        usuarioOutputDTO.setId(1L);
+
+        LibrasEntity existingEntity = new LibrasEntity();
+        existingEntity.setStatus(Status.APROVADO);
+
+        Mockito.when(usuarioService.findById(idUser)).thenReturn(usuarioOutputDTO);
+        Mockito.when(repository.findByPalavra("example")).thenReturn(Optional.of(existingEntity));
+
+        Assertions.assertThrows(RuntimeException.class,
+                () -> librasService.sugereLibras(input, idUser));
+
+        Mockito.verify(usuarioService).findById(idUser);
+        Mockito.verify(repository).findByPalavra("example");
+        Mockito.verifyNoMoreInteractions(repository);
     }
 
 }

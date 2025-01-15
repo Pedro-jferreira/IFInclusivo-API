@@ -85,14 +85,6 @@ class LibrasRepositoryTest {
         return interpreteEntity;
     }
 
-//    private ConfigAcessibilidadeEntity createConfigAcessibilidadeEntity(ConfigAcblInputDTO config) {
-//        ConfigAcessibilidadeEntity configAcessibilidadeEntity = new ConfigAcessibilidadeEntity();
-//        config.setAudicao(config.getAudicao());
-//        config.setTema(config.getTema());
-//        config.setZoom(config.getZoom());
-//        this.entityManager.persist(config);
-//        return configAcessibilidadeEntity;
-//    }
 
 
     @Test
@@ -118,6 +110,27 @@ class LibrasRepositoryTest {
         assertNotNull(result.getContent());
         assertNotNull(result.getContent().get(0).getInterprete());
         assertEquals("First foto1", result.getContent().get(0).getFoto());
+
+    }
+
+    @Test
+    @DisplayName("should create Libras successfully from DB")
+    void searchLibrasByDeeplyFailure() {
+        LibrasEntity librasEntity = new LibrasEntity();
+        librasEntity.setId(1L);
+        librasEntity.setStatus(Status.APROVADO);
+        librasEntity.setFoto("First foto" + 1L);
+        librasEntity.setDescricao("First descricao" + 1L);
+        librasEntity.setPalavra("First palavra" + 1L);
+        librasEntity.setUrl("First url" + 1L);
+        librasEntity.setJustificativa("First justificativa" + 1L);
+        librasEntity.setVideo("First video" + 1L);
+        librasEntity.setCategorias(Categorias.REDES);;
+        librasEntity.getSugeriu().add(null);
+
+        Assertions.assertThrows(NullPointerException.class, () -> librasService.searchLibrasByDeeply
+                ("First", PageRequest.of(0, 1)));
+
 
     }
 

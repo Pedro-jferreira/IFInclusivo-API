@@ -18,7 +18,7 @@ public interface LibrasService {
 
     LibrasOutputDTO findById(Long id);
 
-    LibrasOutputDTO save(LibrasInputDTO librasInputDTO );
+    LibrasOutputDTO save(LibrasInputDTO librasInputDTO, Long idInterprete );
 
     LibrasOutputDTO sugereLibras(LibrasInputDTO librasInputDTO,Long id );
 

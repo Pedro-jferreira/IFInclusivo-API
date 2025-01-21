@@ -57,8 +57,8 @@ public class LibrasController {
                     content = @Content)})
     @PostMapping
     public ResponseEntity<LibrasOutputDTO> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do sinal a ser cadastrado", required = true,
-            content = @Content(schema = @Schema(implementation = LibrasInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody LibrasInputDTO sinais) {
-        return new ResponseEntity<>(librasService.save(sinais), HttpStatus.CREATED);
+            content = @Content(schema = @Schema(implementation = LibrasInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody LibrasInputDTO sinais, @RequestParam Long idInterprete) {
+        return new ResponseEntity<>(librasService.save(sinais,idInterprete), HttpStatus.CREATED);
     }
 
 

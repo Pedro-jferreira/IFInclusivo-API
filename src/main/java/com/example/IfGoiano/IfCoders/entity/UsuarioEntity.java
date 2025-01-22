@@ -36,7 +36,8 @@ public class UsuarioEntity {
     private LocalDateTime dataCriacao;
 
 
-    @OneToOne
+
+    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
     private ConfigAcessibilidadeEntity configAcessibilidadeEntity;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)

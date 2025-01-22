@@ -66,9 +66,8 @@ public class AlunoNapneController {
                     required = true,
             content = @Content(schema = @Schema(implementation = AlunoNapneInputDTO.class)))
             @RequestParam Long idCurso,
-            @RequestParam Long idConfigAc,
             @org.springframework.web.bind.annotation.RequestBody AlunoNapneInputDTO aluno) {
-        return new ResponseEntity<>(alunoNapneService.save(aluno,idCurso,idConfigAc), HttpStatus.CREATED);
+        return new ResponseEntity<>(alunoNapneService.save(aluno,idCurso), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Atualizar um aluno NAPNE por ID", tags = "Aluno NAPNE")

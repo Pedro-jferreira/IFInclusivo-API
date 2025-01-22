@@ -25,12 +25,22 @@ public class ConfigAcblMapper {
 
     // De Entity para OutputDTO
     public ConfigAcblOutputDTO toConfigAcblOutputDTO(ConfigAcessibilidadeEntity configAcblEntity) {
-        return modelMapper.map(configAcblEntity, ConfigAcblOutputDTO.class);
+        ConfigAcblOutputDTO dto = new ConfigAcblOutputDTO();
+        dto.setId(configAcblEntity.getId());
+        dto.setZoom(configAcblEntity.getZoom());
+        dto.setTema(configAcblEntity.getTema());
+        dto.setAudicao(configAcblEntity.getAudicao());
+        return dto;
     }
 
     // De OutputDTO para Entity
     public ConfigAcessibilidadeEntity toConfigAcblEntity(ConfigAcblOutputDTO configAcblOutputDTO) {
-        return modelMapper.map(configAcblOutputDTO, ConfigAcessibilidadeEntity.class);
+        ConfigAcessibilidadeEntity entity = new ConfigAcessibilidadeEntity();
+        entity.setId(configAcblOutputDTO.getId());
+        entity.setTema(configAcblOutputDTO.getTema());
+        entity.setZoom(configAcblOutputDTO.getZoom());
+        entity.setAudicao(configAcblOutputDTO.getAudicao());
+        return entity;
     }
 
     // Atualiza a Entity com base no InputDTO

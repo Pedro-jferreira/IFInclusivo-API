@@ -24,10 +24,7 @@ public class ProfessorServiceImpl implements ProfessorService {
     @Autowired
     ProfessorMapper professorMapper;
 
-    @Autowired
-    ConfigAcessibilidadeService configAcessibilidadeService;
-    @Autowired
-    ConfigAcblMapper configAcblMapper;
+
 
     @Override
     public List<ProfessorOutputDTO> findAll() {
@@ -46,10 +43,8 @@ public class ProfessorServiceImpl implements ProfessorService {
 
     @Override
     @Transactional
-    public ProfessorOutputDTO save(ProfessorInputDTO professorInput, Long idConfigAc) {
-        var acessibilidade = configAcessibilidadeService.findById(idConfigAc);
+    public ProfessorOutputDTO save(ProfessorInputDTO professorInput) {
         ProfessorEntity p = professorMapper.toProfessorEntity(professorInput);
-        p.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acessibilidade));
        return findById(professorRepository.save(p).getId());
     }
 

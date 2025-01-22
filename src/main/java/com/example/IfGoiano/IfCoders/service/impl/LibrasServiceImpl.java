@@ -6,11 +6,9 @@ import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
-import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
 import com.example.IfGoiano.IfCoders.service.LibrasService;
-import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -29,6 +27,8 @@ public class LibrasServiceImpl implements LibrasService {
     @Autowired
     LibrasMapper mapper;
 
+    @Autowired
+    private CreateLibras createLibras;
     @Autowired
     private UsuarioServiceImpl usuarioService;
     @Autowired
@@ -79,11 +79,8 @@ public class LibrasServiceImpl implements LibrasService {
     }
 
     // Adicionar regra de negocios nesse metodo de criar libras
-    public LibrasOutputDTO save(LibrasInputDTO libras) {
-
-        LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
-        this.repository.save(librasEntity);
-        return mapper.toLibrasOutputDTO(librasEntity);
+    public LibrasOutputDTO save(LibrasInputDTO libras, Long idInterprete) {
+      return this.createLibras.createLibras(libras, idInterprete);
     }
 
     public LibrasOutputDTO sugereLibras(LibrasInputDTO libras, Long idUser) {

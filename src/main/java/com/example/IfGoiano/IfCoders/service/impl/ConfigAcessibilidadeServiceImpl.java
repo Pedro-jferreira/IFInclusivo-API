@@ -3,9 +3,16 @@ package com.example.IfGoiano.IfCoders.service.impl;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ConfigAcblInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ConfigAcblOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
+import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
+import com.example.IfGoiano.IfCoders.entity.ConfigAcessibilidadeEntity;
+import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.ConfigAcessibilidadeRepository;
+import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
 import com.example.IfGoiano.IfCoders.service.ConfigAcessibilidadeService;
+import com.example.IfGoiano.IfCoders.service.UsuarioService;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,6 +26,8 @@ public class ConfigAcessibilidadeServiceImpl implements ConfigAcessibilidadeServ
     private ConfigAcessibilidadeRepository repository;
     @Autowired
     ConfigAcblMapper mapper;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
 
     @Override
     public List<ConfigAcblOutputDTO> findAll() {
@@ -33,8 +42,14 @@ public class ConfigAcessibilidadeServiceImpl implements ConfigAcessibilidadeServ
 
     @Override
     @Transactional
-    public ConfigAcblOutputDTO save(ConfigAcblInputDTO configAcessibilidadeEntity) {
-         return findById(repository.save(mapper.toConfigAcblEntity(configAcessibilidadeEntity)).getId());
+    public ConfigAcblOutputDTO save(ConfigAcblInputDTO configAcblInputDTO, Long userId) {
+
+        UsuarioEntity usuario = usuarioRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Usuário com ID " + userId + " não encontrado!"));
+        ConfigAcessibilidadeEntity entity = mapper.toConfigAcblEntity(configAcblInputDTO);
+        entity.setUsuario(usuario);
+        ConfigAcessibilidadeEntity savedEntity = repository.save(entity);
+        return mapper.toConfigAcblOutputDTO(savedEntity);
     }
 
     @Override

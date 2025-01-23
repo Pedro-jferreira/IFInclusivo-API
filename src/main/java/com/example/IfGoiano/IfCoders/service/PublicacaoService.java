@@ -22,7 +22,6 @@ public interface PublicacaoService {
 
     void delete(Long id);
 
-    void setTopico(PublicacaoOutputDTO publicacaoOutputDTO);
 
     Page<PublicacaoOutputDTO> findPublicacaobyTopico(Long idTopico, int pagina, int tamanho);
 }

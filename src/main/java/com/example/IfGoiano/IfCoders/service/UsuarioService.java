@@ -10,7 +10,7 @@ public interface UsuarioService {
 
     UsuarioOutputDTO findById(Long id);
 
-    UsuarioOutputDTO save(UsuarioInputDTO usuarioId, Long idConfigAc);
+    UsuarioOutputDTO save(UsuarioInputDTO usuario);
 
     UsuarioOutputDTO update(UsuarioInputDTO usuarioDaiteils, Long id);
 

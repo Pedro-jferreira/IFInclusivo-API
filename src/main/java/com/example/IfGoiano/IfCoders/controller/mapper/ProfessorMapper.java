@@ -9,10 +9,13 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.ProfessorOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.ProfessorEntity;
 import com.example.IfGoiano.IfCoders.entity.TopicoEntity;
 import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +23,24 @@ import java.util.List;
 public class ProfessorMapper {
     @Autowired
     ModelMapper modelMapper;
+    @Lazy
+    @Autowired
+    TopicoMapper topicoMapper;
+    @Autowired
+    ConfigAcblMapper configAcblMapper;
 
 
     public ProfessorEntity toProfessorEntity(ProfessorInputDTO professorInputDTO){
-        return modelMapper.map(professorInputDTO, ProfessorEntity.class);
+        ProfessorEntity entity = new ProfessorEntity();
+        entity.setNome(professorInputDTO.getNome());
+        entity.setLogin(professorInputDTO.getLogin());
+        entity.setSenha(professorInputDTO.getSenha());
+        entity.setMatricula(professorInputDTO.getMatricula());
+        entity.setBiografia(professorInputDTO.getBiografia());
+        entity.setFormacao(professorInputDTO.getFormacao());
+        return entity;
     }
+
     public ProfessorEntity toProfessorEntity(ProfessorOutputDTO professorOutputDTO){
         return modelMapper.map(professorOutputDTO, ProfessorEntity.class);
     }
@@ -39,38 +55,32 @@ public class ProfessorMapper {
         p.setMatricula(professorEntity.getMatricula());
         p.setDataCriacao(professorEntity.getDataCriacao());
         p.setFormacao(professorEntity.getFormacao());
-        ConfigAcblOutputDTO a = new ConfigAcblOutputDTO();
-        a.setId(professorEntity.getConfigAcessibilidadeEntity().getId());
-        a.setTema(professorEntity.getConfigAcessibilidadeEntity().getTema());
-        a.setAudicao(professorEntity.getConfigAcessibilidadeEntity().getAudicao());
-        a.setZoom(professorEntity.getConfigAcessibilidadeEntity().getZoom());
-        p.setConfigAcessibilidadeEntity(a);
 
-        List<SimpleTopicoDTO> st = new ArrayList<>();
-        for (TopicoEntity t :professorEntity.getTopicos()) {
-            SimpleTopicoDTO aux = new SimpleTopicoDTO();
-            aux.setId(t.getId());
-            aux.setTitulo(t.getTitulo());
-            aux.setDescricao(t.getDescricao());
-            aux.setDataCriacao(t.getDataCriacao());
-            aux.setCategoria(t.getCategoria());
-            SimpleProfessorDTO sp = new SimpleProfessorDTO();
-            sp.setId(t.getProfessor().getId());
-            sp.setNome(t.getProfessor().getNome());
-            sp.setMatricula(t.getProfessor().getMatricula());
-            sp.setBiografia(t.getProfessor().getBiografia());
-            sp.setDataCriacao(t.getProfessor().getDataCriacao());
-            aux.setProfessor(sp);
-            st.add(aux);
+        if (professorEntity.getConfigAcessibilidadeEntity()!= null) {
+            p.setConfigAcessibilidadeEntity(configAcblMapper.
+                    toConfigAcblOutputDTO(professorEntity.
+                            getConfigAcessibilidadeEntity()));
         }
-        p.setTopicos(st);
+
+        if (!professorEntity.getTopicos().isEmpty()){
+            for (TopicoEntity t : professorEntity.getTopicos())
+                p.getTopicos().add(topicoMapper.toSimpleTopicoDTO(t));
+        }
 
         return p;
     }
 
     public SimpleProfessorDTO toSimpleProfessorDTO(ProfessorEntity professorEntity){
-        return modelMapper.map(professorEntity, SimpleProfessorDTO.class);
+        SimpleProfessorDTO p = new SimpleProfessorDTO();
+        p.setId(professorEntity.getId());
+        p.setNome(professorEntity.getNome());
+        p.setMatricula(professorEntity.getMatricula());
+        p.setBiografia(professorEntity.getBiografia());
+        p.setDataCriacao(professorEntity.getDataCriacao());
+        p.setFormacao(professorEntity.getFormacao());
+        return p;
     }
+
 
     public void updateProfessorEntityFromDTO(ProfessorInputDTO professorDeitails, ProfessorEntity professorEntity){
         modelMapper.map(professorDeitails, professorEntity);

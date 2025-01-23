@@ -23,10 +23,6 @@ public class TutorServiceImpl implements TutorService {
     @Autowired
     private TutorMapper tutorMapper;
 
-    @Autowired
-    ConfigAcessibilidadeService configAcessibilidadeService;
-    @Autowired
-    ConfigAcblMapper configAcblMapper;
 
     @Override
     public List<TutorOutputDTO> findAll(){
@@ -46,10 +42,8 @@ public class TutorServiceImpl implements TutorService {
 
     @Override
     @Transactional
-    public TutorOutputDTO save(TutorInputDTO tutorDTO, Long idConfigAc) {
-        var acessibilidade = configAcessibilidadeService.findById(idConfigAc);
+    public TutorOutputDTO save(TutorInputDTO tutorDTO) {
         TutorEntity t = tutorMapper.toTutorEntity(tutorDTO);
-        t.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acessibilidade));
         return findById(tutorRepository.save(t).getId());
 
     }

@@ -15,7 +15,7 @@ public interface TopicoRepositoy extends JpaRepository<TopicoEntity,Long> {
     Page<TopicoEntity> findByTituloStartingWithIgnoreCase(String termo, Pageable pageable);
 
     @Query("SELECT DISTINCT t FROM TopicoEntity t " +
-            "LEFT JOIN t.publicacoes p " +
+            "LEFT JOIN t.publicacaoEntities p " +
             "WHERE LOWER(t.titulo) LIKE LOWER(CONCAT('%', :termo, '%')) " +
             "OR LOWER(t.descricao) LIKE LOWER(CONCAT('%', :termo, '%')) " +
             "OR LOWER(p.titulo) LIKE LOWER(CONCAT('%', :termo, '%')) " +

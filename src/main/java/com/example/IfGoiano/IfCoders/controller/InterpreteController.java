@@ -67,9 +67,9 @@ public class InterpreteController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do intérprete a ser cadastrado",
                     required = true,
             content = @Content(schema = @Schema(implementation = InterpreteInputDTO.class)))
-            @RequestParam Long idConfigAc,
+
             @org.springframework.web.bind.annotation.RequestBody InterpreteInputDTO interprete) {
-        return new ResponseEntity<>(interpreteService.save(interprete,idConfigAc), HttpStatus.CREATED);
+        return new ResponseEntity<>(interpreteService.save(interprete), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Atualizar um intérprete por ID", tags = "Intérprete")

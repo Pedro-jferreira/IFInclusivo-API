@@ -10,7 +10,7 @@ public interface ProfessorService {
 
     ProfessorOutputDTO findById(Long id);
 
-    ProfessorOutputDTO save(ProfessorInputDTO professorInputDTO, Long idConfigAc);
+    ProfessorOutputDTO save(ProfessorInputDTO professorInputDTO);
 
     ProfessorOutputDTO update(ProfessorInputDTO professorInputDTO, Long id);
 

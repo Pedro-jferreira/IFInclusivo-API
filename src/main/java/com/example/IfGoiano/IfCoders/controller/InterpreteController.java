@@ -1,9 +1,12 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
-import com.example.IfGoiano.IfCoders.controller.DTO.input.CursoInputDTO;
+
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.RequestAnalisePalavra;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
+import com.example.IfGoiano.IfCoders.service.impl.AnalisarLibras;
 import com.example.IfGoiano.IfCoders.service.impl.InterpreteServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -25,6 +28,9 @@ public class InterpreteController {
 
     @Autowired
     InterpreteServiceImpl interpreteService;
+
+    @Autowired
+    AnalisarLibras analisarLibras;
 
     @Operation(summary = "Buscar todos os intérpretes", tags = "Intérprete")
     @ApiResponses(value = {
@@ -104,5 +110,12 @@ public class InterpreteController {
         interpreteService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
+    }
+
+
+    @PostMapping("/analisar/{idInterprete}")
+    public ResponseEntity<LibrasOutputDTO> analisarLibras(@RequestBody RequestAnalisePalavra requestAnalisePalavra, @PathVariable Long idInterprete){
+
+        return new ResponseEntity<>(this.analisarLibras.analisarPalavra(requestAnalisePalavra, idInterprete), HttpStatus.CREATED);
     }
 }

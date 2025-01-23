@@ -22,11 +22,7 @@ public class ComentarioMapper {
     private ModelMapper modelMapper;
 
     public SimpleComentarioDTO toSimpleComentarioDTO(ComentarioEntity comentarioEntity) {
-        SimpleComentarioDTO dto = new SimpleComentarioDTO();
-        dto.setId(comentarioEntity.getId());
-        dto.setContent(comentarioEntity.getContent());
-        dto.setDataCriacao(comentarioEntity.getDataCriacao());
-        return dto;
+        return modelMapper.map(comentarioEntity, SimpleComentarioDTO.class);
     }
 
     public ComentarioEntity toComentarioEntity(SimpleComentarioDTO simpleComentarioDTO) {

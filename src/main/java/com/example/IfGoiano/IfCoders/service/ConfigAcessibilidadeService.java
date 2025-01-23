@@ -11,7 +11,7 @@ public interface ConfigAcessibilidadeService {
 
     ConfigAcblOutputDTO findById(Long id);
 
-    ConfigAcblOutputDTO save(ConfigAcblInputDTO configAcessibilidadeEntity, Long userId);
+    ConfigAcblOutputDTO save(ConfigAcblInputDTO configAcessibilidadeEntity);
 
     ConfigAcblOutputDTO update(Long id, ConfigAcblInputDTO configAcessibilidadeEntityDetails);
 

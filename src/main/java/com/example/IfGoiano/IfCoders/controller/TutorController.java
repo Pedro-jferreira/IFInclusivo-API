@@ -69,8 +69,9 @@ public class TutorController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados para cadastrar um tutor",
                     required = true,
             content = @Content(schema = @Schema(implementation = TutorInputDTO.class)))
+            @RequestParam Long idConfigAc,
             @org.springframework.web.bind.annotation.RequestBody TutorInputDTO tutor) {
-        return new ResponseEntity<>(service.save(tutor), HttpStatus.CREATED);
+        return new ResponseEntity<>(service.save(tutor,idConfigAc), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Atualizar um tutor por ID", tags = "Tutor")

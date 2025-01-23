@@ -31,6 +31,10 @@ public class AlunoServiceImpl implements AlunoService {
     CursoService cursoService;
     @Autowired
     CursoMapper cursoMapper;
+    @Autowired
+    ConfigAcessibilidadeService configAcessibilidadeService;
+    @Autowired
+    ConfigAcblMapper configAcblMapper;
 
 
     @Override
@@ -46,10 +50,12 @@ public class AlunoServiceImpl implements AlunoService {
 
     @Override
     @Transactional
-    public AlunoOutputDTO save(AlunoInputDTO aluno, Long idCurso) {
+    public AlunoOutputDTO save(AlunoInputDTO aluno, Long idCurso, Long idConfigAc) {
         var curso = cursoService.findById(idCurso);
+        var acessibilidade = configAcessibilidadeService.findById(idConfigAc);
         AlunoEntity a = mapper.toAlunoEntity(aluno);
         a.setCurso(cursoMapper.toCursoEntity(curso));
+        a.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acessibilidade));
         return findById( alunoRepository.save(a).getId());
     }
 

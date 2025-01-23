@@ -62,13 +62,9 @@ public class ConfigAcessibilidadeController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping
-    public ResponseEntity<ConfigAcblOutputDTO> save(
-                   @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados da configuração de acessibilidade a ser cadastrada",
-                    required = true,
-                    content = @Content(schema = @Schema(implementation = ConfigAcblInputDTO.class)))
-                   @org.springframework.web.bind.annotation.RequestBody ConfigAcblInputDTO configAcessibilidadeEntity,
-                   @RequestParam Long userId) {
-        var savedConfigAcessibilidadeEntity = configAcessibilidadeServiceImpl.save(configAcessibilidadeEntity,userId);
+    public ResponseEntity<ConfigAcblOutputDTO> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados da configuração de acessibilidade a ser cadastrada", required = true,
+            content = @Content(schema = @Schema(implementation = ConfigAcblInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody ConfigAcblInputDTO configAcessibilidadeEntity) {
+        var savedConfigAcessibilidadeEntity = configAcessibilidadeServiceImpl.save(configAcessibilidadeEntity);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedConfigAcessibilidadeEntity.getId()).toUri();
         return ResponseEntity.created(location).body(savedConfigAcessibilidadeEntity);

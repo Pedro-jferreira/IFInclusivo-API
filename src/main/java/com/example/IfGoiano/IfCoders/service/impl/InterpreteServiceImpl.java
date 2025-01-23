@@ -18,11 +18,17 @@ import java.util.List;
 
 @Service
 public class InterpreteServiceImpl implements InterpreteService {
+
     @Autowired
     InterpreteRepository interpreteRepository;
+
     @Autowired
     InterpreteMapper interpreteMapper;
 
+    @Autowired
+    ConfigAcessibilidadeService configAcessibilidadeService;
+    @Autowired
+    ConfigAcblMapper configAcblMapper;
 
     @Override
     public List<InterpreteOutputDTO> findAll() {
@@ -41,8 +47,10 @@ public class InterpreteServiceImpl implements InterpreteService {
 
     @Override
     @Transactional
-    public InterpreteOutputDTO save(InterpreteInputDTO interpreteInputDTO) {
+    public InterpreteOutputDTO save(InterpreteInputDTO interpreteInputDTO, Long idConfigAc) {
+        var acessibilidade = configAcessibilidadeService.findById(idConfigAc);
         InterpreteEntity i = interpreteMapper.toInterpreteEntity(interpreteInputDTO);
+        i.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acessibilidade));
         return findById(interpreteRepository.save(i).getId());
     }
 

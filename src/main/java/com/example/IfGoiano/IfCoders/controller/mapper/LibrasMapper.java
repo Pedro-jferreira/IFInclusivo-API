@@ -56,7 +56,7 @@ public class LibrasMapper {
           intepreteAnalise.add(modelMapper.map(librasEntity.getInterprete().get(i), SimpleInterpreteDTO.class));
         }
         dto.setSugeriu(sugeriu);
-        dto.setInterpreteAnalise(intepreteAnalise);
+        dto.setInterprete(intepreteAnalise);
         dto.setCategorias(librasEntity.getCategorias());
         return dto;
     }

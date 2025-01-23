@@ -38,9 +38,7 @@ public class TopicoServiceImpl  implements TopicoService {
     ProfessorMapper professorMapper;
 
     @Autowired
-    PublicacaoService publicacaoService;
-    @Autowired
-    PublicacaoMapper publicacaoMapper;
+    PublicacaoRepositoy publicacaoRepositoy;
 
 
     @Override
@@ -53,6 +51,7 @@ public class TopicoServiceImpl  implements TopicoService {
     @Transactional
     public TopicoOutputDTO findById(Long id) {
         var topico = topicoRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+
         return mapper.toTopicoOutputDTO(topico);
     }
 
@@ -103,12 +102,26 @@ public class TopicoServiceImpl  implements TopicoService {
     @Override
     @Transactional
     public TopicoOutputDTO addPublicacaoToTopico(Long idPublicacao, Long idTopico) {
-        PublicacaoEntity publicacao = publicacaoMapper.toPublicacaoEntity(publicacaoService.findById(idPublicacao));
-        var topico = topicoRepository.findById(idTopico).orElseThrow(()-> new ResourceNotFoundException(idTopico));
-        publicacao.setTopico(topico);
-        topico.getPublicacoes().add(publicacao);
-        publicacaoService.setTopico(publicacaoMapper.toPublicacaoOutputDTO(publicacao));
+
+        PublicacaoEntity publicacao = publicacaoRepositoy.findById(idPublicacao)
+                .orElseThrow(() -> new ResourceNotFoundException("publicacao não encontrado: " + idPublicacao));
+        TopicoEntity topico = topicoRepository.findById(idTopico)
+                .orElseThrow(() -> new ResourceNotFoundException("Tópico não encontrado: " + idTopico));
+
+
+        if (!publicacao.getTopicoEntities().contains(topico)) {
+            publicacao.getTopicoEntities().add(topico);
+        }
+        if (!topico.getPublicacaoEntities().contains(publicacao)) {
+            topico.getPublicacaoEntities().add(publicacao);
+        }
+
+        // Persiste as mudanças
+        publicacaoRepositoy.save(publicacao); // Salva publicacao
+        topicoRepository.save(topico);      // Salva topico
+
         return findById(topico.getId());
     }
+
 
 }

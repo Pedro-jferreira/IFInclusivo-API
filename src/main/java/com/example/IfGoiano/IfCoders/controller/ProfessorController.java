@@ -64,9 +64,8 @@ public class ProfessorController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do professor a ser cadastrado",
                     required = true,
             content = @Content(schema = @Schema(implementation = ProfessorInputDTO.class)))
-            @RequestParam Long idConfigAc,
             @org.springframework.web.bind.annotation.RequestBody ProfessorInputDTO professor) {
-        return new ResponseEntity<>(professorService.save(professor,idConfigAc), HttpStatus.CREATED);
+        return new ResponseEntity<>(professorService.save(professor), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Atualizar um professor por ID", tags = "Professor")

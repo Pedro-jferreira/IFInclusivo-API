@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import jakarta.persistence.*;
@@ -34,14 +35,14 @@ public class PublicacaoEntity implements Serializable {
     @JoinColumn(name = "usuario_id")
     private UsuarioEntity usuario;
 
-    @ManyToOne
-    @JoinColumn(name = "topico_id")
-    private TopicoEntity topico;
-
     @OneToMany(mappedBy = "publicacao",cascade = CascadeType.ALL)
     private List<ComentarioEntity> comentarios = new ArrayList<>();
 
     @ManyToMany(mappedBy = "likes")
     private List<UsuarioEntity> likeBy = new ArrayList<>();
+
+    @JsonIgnore
+    @ManyToMany(mappedBy = "publicacaoEntities")
+    private List<TopicoEntity> topicoEntities = new ArrayList<>();
 
 }

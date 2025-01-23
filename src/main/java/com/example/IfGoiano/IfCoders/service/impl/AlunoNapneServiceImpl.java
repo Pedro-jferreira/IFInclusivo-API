@@ -33,10 +33,7 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
     CursoService cursoService;
     @Autowired
     CursoMapper cursoMapper;
-    @Autowired
-    ConfigAcessibilidadeService configAcessibilidadeService;
-    @Autowired
-    ConfigAcblMapper configAcblMapper;
+
 
 
     @Override
@@ -55,12 +52,10 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
 
     @Override
     @Transactional
-    public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput, Long idCurso, Long idConfigAc) {
+    public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput, Long idCurso) {
         var curso = cursoService.findById(idCurso);
-        var acessibilidade = configAcessibilidadeService.findById(idConfigAc);
         AlunoNapneEntity a = alunoNapneMapper.toAlunoNapneEntity(alunoNapneInput);
         a.setCurso(cursoMapper.toCursoEntity(curso));
-        a.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acessibilidade));
         return findById(alunoNapneRepository.save(a).getId());
     }
 

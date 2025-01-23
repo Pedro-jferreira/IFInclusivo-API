@@ -11,7 +11,7 @@ public interface AlunoService {
 
     AlunoOutputDTO findById(Long id);
 
-    AlunoOutputDTO save(AlunoInputDTO aluno, Long idCurso, Long idConfigAc);
+    AlunoOutputDTO save(AlunoInputDTO aluno, Long idCurso);
 
     AlunoOutputDTO update(Long id, AlunoInputDTO alunoDetails);
 

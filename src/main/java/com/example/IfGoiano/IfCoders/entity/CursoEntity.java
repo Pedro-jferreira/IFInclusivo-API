@@ -4,6 +4,7 @@ import lombok.Data;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,5 +17,5 @@ public class CursoEntity {
     private String nome;
 
     @OneToMany(mappedBy = "curso", cascade = CascadeType.ALL)
-    private List<AlunoEntity> alunos;
+    private List<AlunoEntity> alunos = new ArrayList<>();
 }

@@ -65,6 +65,7 @@ public class TopicoMapper {
                 output.getPublicacoes().add(publicacaoMapper.toSimplePublicacaoDTO(publicacaoEntity));
             }
         }
+        output.setQuantidadePublicacoes(topicoEntity.getPublicacaoEntities().size());
 
         return output;
     }

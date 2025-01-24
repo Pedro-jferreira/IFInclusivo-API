@@ -12,7 +12,7 @@ public interface ComentarioService {
 
     ComentarioOutputDTO findById(Long id);
 
-    ComentarioOutputDTO save(Long idUser,Long idPublicacao,ComentarioInputDTO comentarioInputDTO);
+    ComentarioOutputDTO save(Long idUser,Long idPublicacao,Long idComentarioPai,ComentarioInputDTO comentarioInputDTO);
 
     ComentarioOutputDTO update(Long id, ComentarioInputDTO comentarioDeitails);
 

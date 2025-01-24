@@ -23,7 +23,9 @@ public class ComentarioOutputDTO {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;
     private SimpleComentarioDTO comentarioPai;
+    @JsonIgnore
     private List<SimpleComentarioDTO> comentariosFilhos = new ArrayList<>();
+    @JsonIgnore
     private List<SimpleUsuarioDTO> usefulBy = new ArrayList<>();
 
     @JsonProperty("quantidadeComentariosfilhos")

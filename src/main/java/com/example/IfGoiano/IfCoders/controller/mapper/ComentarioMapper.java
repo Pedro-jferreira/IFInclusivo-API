@@ -2,18 +2,14 @@ package com.example.IfGoiano.IfCoders.controller.mapper;
 
 
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
 import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class ComentarioMapper {
@@ -22,6 +18,7 @@ public class ComentarioMapper {
     private ModelMapper modelMapper;
     @Autowired
     private UsuarioMapper usuarioMapper;
+    @Lazy
     @Autowired
     private PublicacaoMapper publicacaoMapper;
 

@@ -10,19 +10,19 @@ import org.springframework.data.repository.query.Param;
 
 public interface TopicoRepositoy extends JpaRepository<TopicoEntity,Long> {
 
-    Page<TopicoEntity> findByCategoria(Categorias categoria, Pageable pageable);
+        Page<TopicoEntity> findByCategoria(Categorias categoria, Pageable pageable);
 
-    Page<TopicoEntity> findByTituloStartingWithIgnoreCase(String termo, Pageable pageable);
+        Page<TopicoEntity> findByTituloStartingWithIgnoreCase(String termo, Pageable pageable);
 
     @Query("SELECT DISTINCT t FROM TopicoEntity t " +
             "LEFT JOIN t.publicacaoEntities p " +
             "WHERE LOWER(t.titulo) LIKE LOWER(CONCAT('%', :termo, '%')) " +
             "OR LOWER(t.descricao) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-            "OR LOWER(t.categoria) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+            "OR LOWER(CAST(t.categoria AS string)) LIKE LOWER(CONCAT('%', :termo, '%')) " +
             "OR LOWER(p.titulo) LIKE LOWER(CONCAT('%', :termo, '%')) " +
             "OR LOWER(p.text) LIKE LOWER(CONCAT('%', :termo, '%')) " +
             "OR LOWER(p.urlVideo) LIKE LOWER(CONCAT('%', :termo, '%')) " +
             "OR LOWER(p.urlFoto) LIKE LOWER(CONCAT('%', :termo, '%'))")
-    Page<TopicoEntity> searchTopicByTermDeeply(@Param("termo") String termo, Pageable pageable);
+        Page<TopicoEntity> searchTopicByTermDeeply(@Param("termo") String termo, Pageable pageable);
 
-}
+    }

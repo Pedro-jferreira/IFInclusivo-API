@@ -1,20 +1,15 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
 
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleProfessorDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleTopicoDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TopicoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
-import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
 import com.example.IfGoiano.IfCoders.entity.TopicoEntity;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 @Component
 public class TopicoMapper {
@@ -24,7 +19,7 @@ public class TopicoMapper {
     @Lazy
     @Autowired
     ProfessorMapper professorMapper;
-@Lazy
+    @Lazy
     @Autowired
     PublicacaoMapper publicacaoMapper;
 

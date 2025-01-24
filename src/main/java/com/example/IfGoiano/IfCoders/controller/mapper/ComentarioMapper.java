@@ -20,6 +20,10 @@ public class ComentarioMapper {
 
     @Autowired
     private ModelMapper modelMapper;
+    @Autowired
+    private UsuarioMapper usuarioMapper;
+    @Autowired
+    private PublicacaoMapper publicacaoMapper;
 
     public SimpleComentarioDTO toSimpleComentarioDTO(ComentarioEntity comentarioEntity) {
         SimpleComentarioDTO dto = new SimpleComentarioDTO();
@@ -69,48 +73,33 @@ public class ComentarioMapper {
 
         // Mapeamento do campo 'usuario'
         if (comentarioEntity.getUsuario() != null) {
-            SimpleUsuarioDTO usuarioDTO = new SimpleUsuarioDTO();
-            usuarioDTO.setId(comentarioEntity.getUsuario().getId());
-            usuarioDTO.setNome(comentarioEntity.getUsuario().getNome()); // Adicione mais campos se necessário
-            comentarioOutputDTO.setUsuario(usuarioDTO);
+            comentarioOutputDTO.setUsuario(usuarioMapper.toSimpleDTO(comentarioEntity.getUsuario()));
         }
 
         // Mapeamento do campo 'publicacao'
-        if (comentarioEntity.getPublicacao() != null) {
-            SimplePublicacaoDTO publicacaoDTO = new SimplePublicacaoDTO();
-            publicacaoDTO.setId(comentarioEntity.getPublicacao().getId());
-            publicacaoDTO.setTitulo(comentarioEntity.getPublicacao().getTitulo()); // Adicione mais campos se necessário
-            comentarioOutputDTO.setPublicacao(publicacaoDTO);
-        }
+        if (comentarioEntity.getPublicacao() != null) comentarioOutputDTO
+                .setPublicacao(publicacaoMapper
+                        .toSimplePublicacaoDTO(comentarioEntity
+                                .getPublicacao()));
+
 
         // Mapeamento do 'comentarioPai'
         if (comentarioEntity.getComentarioPai() != null) {
-            SimpleComentarioDTO comentarioPaiDTO = new SimpleComentarioDTO();
-            comentarioPaiDTO.setId(comentarioEntity.getComentarioPai().getId());
-            comentarioOutputDTO.setComentarioPai(comentarioPaiDTO);
+            comentarioOutputDTO.setComentarioPai(toSimpleComentarioDTO(comentarioEntity.getComentarioPai()));
         }
 
         // Mapeamento dos 'comentariosFilhos'
         if (comentarioEntity.getComentariosFilhos() != null && !comentarioEntity.getComentariosFilhos().isEmpty()) {
-            List<SimpleComentarioDTO> filhosDTO = new ArrayList<>();
-            for (ComentarioEntity comentarioFilho : comentarioEntity.getComentariosFilhos()) {
-                SimpleComentarioDTO comentarioFilhoDTO = new SimpleComentarioDTO();
-                comentarioFilhoDTO.setId(comentarioFilho.getId());
-                filhosDTO.add(comentarioFilhoDTO);
+            for (ComentarioEntity comentario : comentarioEntity.getComentariosFilhos()) {
+                comentarioOutputDTO.getComentariosFilhos().add(toSimpleComentarioDTO(comentario));
             }
-            comentarioOutputDTO.setComentariosFilhos(filhosDTO);
-        }
 
+        }
         // Mapeamento do 'usefulBy'
         if (comentarioEntity.getUsefulBy() != null && !comentarioEntity.getUsefulBy().isEmpty()) {
-            List<SimpleUsuarioDTO> usefulByDTO = new ArrayList<>();
-            for (UsuarioEntity usuarioEntity : comentarioEntity.getUsefulBy()) {
-                SimpleUsuarioDTO usuarioDTO = new SimpleUsuarioDTO();
-                usuarioDTO.setId(usuarioEntity.getId());
-                usuarioDTO.setNome(usuarioEntity.getNome()); // Adicione mais campos se necessário
-                usefulByDTO.add(usuarioDTO);
+            for (UsuarioEntity usuario : comentarioEntity.getUsefulBy()) {
+                comentarioOutputDTO.getUsefulBy().add(usuarioMapper.toSimpleDTO(usuario));
             }
-            comentarioOutputDTO.setUsefulBy(usefulByDTO);
         }
 
         return comentarioOutputDTO;

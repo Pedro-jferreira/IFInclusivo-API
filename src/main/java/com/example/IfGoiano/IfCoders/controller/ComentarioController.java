@@ -64,9 +64,16 @@ public class ComentarioController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content) })
     @PostMapping("/{idUser}/{idPublicacao}")
-    public ResponseEntity<ComentarioOutputDTO> save(@PathVariable Long idUser,@PathVariable Long idPublicacao, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do comentário a ser cadastrado", required = true,
-            content = @Content(schema = @Schema(implementation = ComentarioInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody ComentarioInputDTO comentario) {
-            var savedComentarioDTO = service.save(idUser,idPublicacao,comentario);
+    public ResponseEntity<ComentarioOutputDTO> save(
+            @PathVariable Long idUser,
+            @PathVariable Long idPublicacao,
+            @RequestParam(value = "idComentarioPai", required = false) Long idComentarioPai,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados do comentário a ser cadastrado",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = ComentarioInputDTO.class)))
+            @org.springframework.web.bind.annotation.RequestBody ComentarioInputDTO comentario) {
+            var savedComentarioDTO = service.save(idUser,idPublicacao,idComentarioPai,comentario);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedComentarioDTO);
     }
 

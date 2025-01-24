@@ -1,7 +1,6 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleLibrasDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.*;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.*;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.*;
 import com.example.IfGoiano.IfCoders.entity.*;
@@ -162,13 +161,64 @@ public class UsuarioMapper {
         if (usuarioEntity == null) {
             return null;
         }
-        SimpleUsuarioDTO simpleUsuarioDTO = new SimpleUsuarioDTO();
-        simpleUsuarioDTO.setId(usuarioEntity.getId());
-        simpleUsuarioDTO.setNome(usuarioEntity.getNome());
-        simpleUsuarioDTO.setMatricula(usuarioEntity.getMatricula());
-        simpleUsuarioDTO.setBiografia(usuarioEntity.getBiografia());
-        simpleUsuarioDTO.setDataCriacao(usuarioEntity.getDataCriacao());
-        return simpleUsuarioDTO;
+
+        SimpleUsuarioDTO usuarioDTO;
+        if (usuarioEntity instanceof AlunoEntity){
+            SimpleAlunoDTO a = new SimpleAlunoDTO();
+            a.setId(usuarioEntity.getId());
+            a.setNome(usuarioEntity.getNome());
+            a.setMatricula(usuarioEntity.getMatricula());
+            a.setBiografia(usuarioEntity.getBiografia());
+            a.setDataCriacao(usuarioEntity.getDataCriacao());
+            CursoInputDTO c = new CursoInputDTO();
+            c.setNome(((AlunoEntity) usuarioEntity).getCurso().getNome());
+            a.setCurso(c);
+            usuarioDTO= a;
+        }else if (usuarioEntity instanceof AlunoNapneEntity){
+            SimpleAlunoNapneDTO a = new SimpleAlunoNapneDTO();
+            a.setId(usuarioEntity.getId());
+            a.setNome(usuarioEntity.getNome());
+            a.setMatricula(usuarioEntity.getMatricula());
+            a.setBiografia(usuarioEntity.getBiografia());
+            a.setDataCriacao(usuarioEntity.getDataCriacao());
+            CursoInputDTO c = new CursoInputDTO();
+            c.setNome(((AlunoEntity) usuarioEntity).getCurso().getNome());
+            a.setCurso(c);
+            a.setCondicao(((AlunoNapneEntity) usuarioEntity).getCondicao());
+            a.setNecessidadeEscolar(((AlunoNapneEntity) usuarioEntity).getNecessidadeEscolar());
+            a.setNecessidadeEspecial(((AlunoNapneEntity) usuarioEntity).getNecessidadeEspecial());
+            usuarioDTO=  a;
+        } else if (usuarioEntity instanceof ProfessorEntity) {
+            SimpleProfessorDTO p= new SimpleProfessorDTO();
+            p.setId(usuarioEntity.getId());
+            p.setNome(usuarioEntity.getNome());
+            p.setMatricula(usuarioEntity.getMatricula());
+            p.setBiografia(usuarioEntity.getBiografia());
+            p.setDataCriacao(usuarioEntity.getDataCriacao());
+            p.setFormacao(((ProfessorEntity) usuarioEntity).getFormacao());
+            usuarioDTO=  p;
+
+        } else if (usuarioEntity instanceof TutorEntity) {
+            SimpleTutorDTO t= new SimpleTutorDTO();
+            t.setId(usuarioEntity.getId());
+            t.setNome(usuarioEntity.getNome());
+            t.setMatricula(usuarioEntity.getMatricula());
+            t.setBiografia(usuarioEntity.getBiografia());
+            t.setDataCriacao(usuarioEntity.getDataCriacao());
+            t.setEspecialidade(((TutorEntity) usuarioEntity).getEspecialidade());
+            usuarioDTO=  t;
+        } else if (usuarioEntity instanceof InterpreteEntity) {
+            SimpleInterpreteDTO i= new SimpleInterpreteDTO();
+            i.setId(usuarioEntity.getId());
+            i.setNome(usuarioEntity.getNome());
+            i.setMatricula(usuarioEntity.getMatricula());
+            i.setBiografia(usuarioEntity.getBiografia());
+            i.setDataCriacao(usuarioEntity.getDataCriacao());
+            i.setSalary(((InterpreteEntity) usuarioEntity).getSalary());
+            usuarioDTO=  i;
+        }else throw new IllegalArgumentException("parce no usuario entity paritir do input  1 deto falhou");
+
+        return usuarioDTO;
     }
 
 

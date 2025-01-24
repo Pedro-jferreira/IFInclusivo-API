@@ -23,6 +23,7 @@ public class PublicacaoMapper {
     @Lazy
     @Autowired
     TopicoMapper topicoMapper;
+    @Lazy
     @Autowired
     ComentarioMapper comentarioMapper;
 

@@ -54,14 +54,18 @@ public class ComentarioServiceImpl implements ComentarioService {
 
     @Override
     @Transactional
-    public ComentarioOutputDTO save(Long idUser,Long idPublicacao, ComentarioInputDTO comentario) {
+    public ComentarioOutputDTO save(Long idUser,Long idPublicacao,Long idComentarioPai, ComentarioInputDTO comentario) {
         var publicacao = publicacaoService.findById(idPublicacao);
         var usuario = usuarioService.findById(idUser);
+        ComentarioEntity comentarioPai = null;
+        if (idComentarioPai != null) {
+            comentarioPai = repository.findById(idComentarioPai).orElseThrow(()-> new ResourceNotFoundException(idComentarioPai));
+        }
 
         ComentarioEntity comentarioEntity = mapper.toComentarioEntity(comentario);
-
         comentarioEntity.setUsuario(usuarioMapper.toEntity(usuario));
         comentarioEntity.setPublicacao(publicacaoMapper.toPublicacaoEntity(publicacao));
+        comentarioEntity.setComentarioPai(comentarioPai);
 
         return findById(repository.save(comentarioEntity).getId());
     }

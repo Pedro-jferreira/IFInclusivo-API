@@ -8,5 +8,5 @@ import java.util.Objects;
 @Data
 public class ComentarioInputDTO {
     private String content;
-    private SimpleComentarioDTO comentarioPai;
+
 }

@@ -43,34 +43,25 @@ public class ComentarioMapper {
             return null; // Tratar caso nulo
         }
         ComentarioEntity comentarioEntity = new ComentarioEntity();
-
         comentarioEntity.setContent(comentarioInputDTO.getContent());
-
-
-        if (comentarioInputDTO.getComentarioPai() != null && comentarioInputDTO.getComentarioPai().getId() != null) {
-            ComentarioEntity comentarioPai = new ComentarioEntity();
-            comentarioPai.setId(comentarioInputDTO.getComentarioPai().getId());
-            comentarioEntity.setComentarioPai(comentarioPai);
-        }
-
         return comentarioEntity;
     }
 
     public ComentarioOutputDTO toComentarioOutputDTO(ComentarioEntity comentarioEntity) {
         if (comentarioEntity == null) {
-            return null;  // Tratar caso nulo
+            return null;
         }
 
         ComentarioOutputDTO comentarioOutputDTO = new ComentarioOutputDTO();
 
-        // Mapeamento dos campos simples
+
         comentarioOutputDTO.setId(comentarioEntity.getId());
         comentarioOutputDTO.setContent(comentarioEntity.getContent());
         comentarioOutputDTO.setDataCriacao(comentarioEntity.getDataCriacao());
 
-        // Mapeamento do campo 'usuario'
         if (comentarioEntity.getUsuario() != null) {
             comentarioOutputDTO.setUsuario(usuarioMapper.toSimpleDTO(comentarioEntity.getUsuario()));
+            System.out.println("errooo 000000");
         }
 
         // Mapeamento do campo 'publicacao'
@@ -83,6 +74,7 @@ public class ComentarioMapper {
         // Mapeamento do 'comentarioPai'
         if (comentarioEntity.getComentarioPai() != null) {
             comentarioOutputDTO.setComentarioPai(toSimpleComentarioDTO(comentarioEntity.getComentarioPai()));
+            System.out.println("\n\n\nerro 1111\n\n\n");
         }
 
         // Mapeamento dos 'comentariosFilhos'
@@ -96,6 +88,7 @@ public class ComentarioMapper {
         if (comentarioEntity.getUsefulBy() != null && !comentarioEntity.getUsefulBy().isEmpty()) {
             for (UsuarioEntity usuario : comentarioEntity.getUsefulBy()) {
                 comentarioOutputDTO.getUsefulBy().add(usuarioMapper.toSimpleDTO(usuario));
+                System.out.println("\n\n\nErrooo 2222\n\n\n");
             }
         }
 

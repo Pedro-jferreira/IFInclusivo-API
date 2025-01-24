@@ -18,8 +18,11 @@ public interface TopicoRepositoy extends JpaRepository<TopicoEntity,Long> {
             "LEFT JOIN t.publicacaoEntities p " +
             "WHERE LOWER(t.titulo) LIKE LOWER(CONCAT('%', :termo, '%')) " +
             "OR LOWER(t.descricao) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+            "OR LOWER(t.categoria) LIKE LOWER(CONCAT('%', :termo, '%')) " +
             "OR LOWER(p.titulo) LIKE LOWER(CONCAT('%', :termo, '%')) " +
-            "OR LOWER(p.text) LIKE LOWER(CONCAT('%', :termo, '%'))")
+            "OR LOWER(p.text) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+            "OR LOWER(p.urlVideo) LIKE LOWER(CONCAT('%', :termo, '%')) " +
+            "OR LOWER(p.urlFoto) LIKE LOWER(CONCAT('%', :termo, '%'))")
     Page<TopicoEntity> searchTopicByTermDeeply(@Param("termo") String termo, Pageable pageable);
 
 }

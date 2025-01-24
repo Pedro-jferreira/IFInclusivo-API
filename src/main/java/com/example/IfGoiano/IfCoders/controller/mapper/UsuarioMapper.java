@@ -161,62 +161,38 @@ public class UsuarioMapper {
         if (usuarioEntity == null) {
             return null;
         }
-
         SimpleUsuarioDTO usuarioDTO;
-        if (usuarioEntity instanceof AlunoEntity){
-            SimpleAlunoDTO a = new SimpleAlunoDTO();
-            a.setId(usuarioEntity.getId());
-            a.setNome(usuarioEntity.getNome());
-            a.setMatricula(usuarioEntity.getMatricula());
-            a.setBiografia(usuarioEntity.getBiografia());
-            a.setDataCriacao(usuarioEntity.getDataCriacao());
-            CursoInputDTO c = new CursoInputDTO();
-            c.setNome(((AlunoEntity) usuarioEntity).getCurso().getNome());
-            a.setCurso(c);
-            usuarioDTO= a;
-        }else if (usuarioEntity instanceof AlunoNapneEntity){
-            SimpleAlunoNapneDTO a = new SimpleAlunoNapneDTO();
-            a.setId(usuarioEntity.getId());
-            a.setNome(usuarioEntity.getNome());
-            a.setMatricula(usuarioEntity.getMatricula());
-            a.setBiografia(usuarioEntity.getBiografia());
-            a.setDataCriacao(usuarioEntity.getDataCriacao());
-            CursoInputDTO c = new CursoInputDTO();
-            c.setNome(((AlunoEntity) usuarioEntity).getCurso().getNome());
-            a.setCurso(c);
-            a.setCondicao(((AlunoNapneEntity) usuarioEntity).getCondicao());
-            a.setNecessidadeEscolar(((AlunoNapneEntity) usuarioEntity).getNecessidadeEscolar());
-            a.setNecessidadeEspecial(((AlunoNapneEntity) usuarioEntity).getNecessidadeEspecial());
-            usuarioDTO=  a;
-        } else if (usuarioEntity instanceof ProfessorEntity) {
-            SimpleProfessorDTO p= new SimpleProfessorDTO();
-            p.setId(usuarioEntity.getId());
-            p.setNome(usuarioEntity.getNome());
-            p.setMatricula(usuarioEntity.getMatricula());
-            p.setBiografia(usuarioEntity.getBiografia());
-            p.setDataCriacao(usuarioEntity.getDataCriacao());
+        if (usuarioEntity instanceof ProfessorEntity) {
+            SimpleProfessorDTO p = new SimpleProfessorDTO();
             p.setFormacao(((ProfessorEntity) usuarioEntity).getFormacao());
-            usuarioDTO=  p;
-
-        } else if (usuarioEntity instanceof TutorEntity) {
-            SimpleTutorDTO t= new SimpleTutorDTO();
-            t.setId(usuarioEntity.getId());
-            t.setNome(usuarioEntity.getNome());
-            t.setMatricula(usuarioEntity.getMatricula());
-            t.setBiografia(usuarioEntity.getBiografia());
-            t.setDataCriacao(usuarioEntity.getDataCriacao());
-            t.setEspecialidade(((TutorEntity) usuarioEntity).getEspecialidade());
-            usuarioDTO=  t;
+            usuarioDTO = p;
         } else if (usuarioEntity instanceof InterpreteEntity) {
-            SimpleInterpreteDTO i= new SimpleInterpreteDTO();
-            i.setId(usuarioEntity.getId());
-            i.setNome(usuarioEntity.getNome());
-            i.setMatricula(usuarioEntity.getMatricula());
-            i.setBiografia(usuarioEntity.getBiografia());
-            i.setDataCriacao(usuarioEntity.getDataCriacao());
-            i.setSalary(((InterpreteEntity) usuarioEntity).getSalary());
-            usuarioDTO=  i;
-        }else throw new IllegalArgumentException("parce no usuario entity paritir do input  1 deto falhou");
+            SimpleInterpreteDTO interpreteOutputDTO = new SimpleInterpreteDTO();
+            interpreteOutputDTO.setSalary(((InterpreteEntity) usuarioEntity).getSalary());
+            usuarioDTO = interpreteOutputDTO;
+        } else if (usuarioEntity instanceof TutorEntity) {
+            SimpleTutorDTO tutorOutputDTO = new SimpleTutorDTO();
+            tutorOutputDTO.setEspecialidade(((TutorEntity) usuarioEntity).getEspecialidade());
+            usuarioDTO = tutorOutputDTO;
+        } else if (usuarioEntity instanceof AlunoNapneEntity) {
+            SimpleAlunoNapneDTO a = getSimpleAlunoNapne((AlunoNapneEntity) usuarioEntity);
+            usuarioDTO = a;
+        } else if (usuarioEntity instanceof AlunoEntity) {
+            SimpleAlunoDTO a = new SimpleAlunoDTO();
+            CursoInputDTO c = new CursoInputDTO();
+            c.setNome(((AlunoEntity) usuarioEntity).getCurso().getNome());
+            a.setCurso(c);
+            usuarioDTO = a;
+        }else {
+            usuarioDTO= new SimpleUsuarioDTO();
+        }
+
+        usuarioDTO.setId(usuarioEntity.getId());
+        usuarioDTO.setNome(usuarioEntity.getNome());
+        usuarioDTO.setMatricula(usuarioEntity.getMatricula());
+        usuarioDTO.setBiografia(usuarioEntity.getBiografia());
+        usuarioDTO.setDataCriacao(usuarioEntity.getDataCriacao());
+
 
         return usuarioDTO;
     }
@@ -265,6 +241,13 @@ public class UsuarioMapper {
         a.setNecessidadeEscolar(usuarioEntity.getNecessidadeEscolar());
         a.setNecessidadeEspecial(usuarioEntity.getNecessidadeEspecial());
         a.setSituacao(usuarioEntity.getSituacao());
+        return a;
+    }
+    private static SimpleAlunoNapneDTO getSimpleAlunoNapne(AlunoNapneEntity usuarioEntity) {
+        SimpleAlunoNapneDTO a  = new SimpleAlunoNapneDTO();
+        a.setCondicao(usuarioEntity.getCondicao());
+        a.setNecessidadeEscolar(usuarioEntity.getNecessidadeEscolar());
+        a.setNecessidadeEspecial(usuarioEntity.getNecessidadeEspecial());
         return a;
     }
 

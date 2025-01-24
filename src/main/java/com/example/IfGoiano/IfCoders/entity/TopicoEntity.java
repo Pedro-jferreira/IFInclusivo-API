@@ -27,6 +27,7 @@ public class TopicoEntity implements Serializable {
     @NotNull
     private String descricao;
     @NotNull
+    @Enumerated(EnumType.STRING)
     private Categorias categoria;
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

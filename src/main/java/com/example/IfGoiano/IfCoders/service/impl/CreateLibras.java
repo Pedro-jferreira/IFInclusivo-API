@@ -5,9 +5,12 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.InterpreteMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
+import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
+import com.example.IfGoiano.IfCoders.repository.InterpreteRepository;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CreateLibras {
@@ -15,7 +18,7 @@ public class CreateLibras {
     private LibrasRepository librasRepository;
 
     @Autowired
-    private InterpreteServiceImpl interpreteServiceImpl;
+    private InterpreteRepository interpreteRepository;
 
     @Autowired
     private InterpreteMapper interpreteMapper;
@@ -24,12 +27,17 @@ public class CreateLibras {
     LibrasMapper mapper;
 
 
+    @Transactional
     public LibrasOutputDTO createLibras(LibrasInputDTO librasInputDTO, Long idInterprete) {
-        var interprete = this.interpreteServiceImpl.findById(idInterprete);//No interprete service ja lança uma exeção
-
+        var interprete = this.interpreteRepository.findById(idInterprete).orElseThrow(() -> new ResourceNotFoundException("Interprete not found"));//No interprete service ja lança uma exeção
         LibrasEntity librasEntity = mapper.toLibrasEntity(librasInputDTO);
-        librasEntity.getInterprete().add(interpreteMapper.toInterpreteEntity(interprete));
+
+
+        interprete.getLibras().add(librasEntity);
+        librasEntity.getInterprete().add(interprete);
+
         this.librasRepository.save(librasEntity);
-        return mapper.toLibrasOutputDTO(librasEntity);
+        this.interpreteRepository.save(interprete);
+        return mapper.toLibrasOutputDTO(interprete.getLibras().get(0));
     }
 }

@@ -19,7 +19,7 @@ public class InterpreteEntity extends TutorEntity {
     @NotNull    @Column(nullable = false)
     private Double salary;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "interprete_libras", joinColumns = @JoinColumn(name = "interprete_id"), inverseJoinColumns = @JoinColumn(name= "libras_id"))
     private List<LibrasEntity> libras = new ArrayList<>();
 

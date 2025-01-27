@@ -8,12 +8,14 @@ import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
+import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
 import com.example.IfGoiano.IfCoders.service.LibrasService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -33,6 +35,9 @@ public class LibrasServiceImpl implements LibrasService {
     private UsuarioServiceImpl usuarioService;
     @Autowired
     private UsuarioMapper usuarioMapper;
+
+    @Autowired
+    private UsuarioRepository userRepository;
 
     public LibrasOutputDTO findById(Long id) {
         var libras = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Libras not found"));
@@ -83,21 +88,26 @@ public class LibrasServiceImpl implements LibrasService {
       return this.createLibras.createLibras(libras, idInterprete);
     }
 
+    @Transactional
     public LibrasOutputDTO sugereLibras(LibrasInputDTO libras, Long idUser) {
-        var usuario = usuarioService.findById(idUser);
-        if (usuario == null) {
-            throw new ResourceNotFoundException("User not found");
-        }
+        var usuario = this.userRepository.findById(idUser).orElseThrow(() -> new ResourceNotFoundException("Usuario not found"));
+
 
         var libra = repository.findByPalavra(libras.getPalavra());
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
         if (libra.isEmpty()) {
-            librasEntity.getSugeriu().add(usuarioMapper.toEntity(usuario));
+            librasEntity.getSugeriu().add(usuario);
+            usuario.getLibrasEntities().add(librasEntity);
             librasEntity.setStatus(Status.EMANALISE);
-            return findById(repository.save(librasEntity).getId());
+
+            this.repository.save(librasEntity);
+            this.userRepository.save(usuario);
+
+
+            return findById(librasEntity.getId());
         }
         if (libra.get().getStatus() == Status.EMANALISE) {
-            libra.get().getSugeriu().add(usuarioMapper.toEntity(usuario));
+            libra.get().getSugeriu().add(usuario);
             return findById(repository.save(libra.get()).getId());
         } else {
             throw new RuntimeException("Libras existed");

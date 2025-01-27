@@ -6,8 +6,8 @@ import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.RequestAnalisePalavra;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
+import com.example.IfGoiano.IfCoders.service.InterpreteService;
 import com.example.IfGoiano.IfCoders.service.impl.AnalisarLibras;
-import com.example.IfGoiano.IfCoders.service.impl.InterpreteServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -15,6 +15,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,10 +29,11 @@ import java.util.List;
 public class InterpreteController {
 
     @Autowired
-    InterpreteServiceImpl interpreteService;
+    InterpreteService interpreteService;
 
     @Autowired
     AnalisarLibras analisarLibras;
+
 
     @Operation(summary = "Buscar todos os intérpretes", tags = "Intérprete")
     @ApiResponses(value = {
@@ -117,5 +120,12 @@ public class InterpreteController {
     public ResponseEntity<LibrasOutputDTO> analisarLibras(@RequestBody RequestAnalisePalavra requestAnalisePalavra, @PathVariable Long idInterprete){
 
         return new ResponseEntity<>(this.analisarLibras.analisarPalavra(requestAnalisePalavra, idInterprete), HttpStatus.CREATED);
+    }
+
+
+    @GetMapping("/historico-sugeridas")
+    public ResponseEntity<Page<LibrasOutputDTO>> historicoLibras(Pageable pageable){
+        return new ResponseEntity<>(this.interpreteService.historicoLibrasSugeridas(pageable), HttpStatus.OK);
+
     }
 }

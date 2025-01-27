@@ -4,7 +4,6 @@ import com.example.IfGoiano.IfCoders.controller.DTO.input.RequestAnalisePalavra;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.InterpreteMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
-import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import com.example.IfGoiano.IfCoders.exception.BadRequestException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
@@ -19,7 +18,7 @@ public class AnalisarLibras {
 
 
     @Autowired
-    private LibrasServiceImpl librasService;
+    private LibrasRepository librasRepository;
 
     @Autowired
     private LibrasMapper librasMapper;
@@ -32,7 +31,7 @@ public class AnalisarLibras {
 
     @Transactional
     public LibrasOutputDTO analisarPalavra(RequestAnalisePalavra requestAnalisePalavra, Long idInterprete) {
-        var libras = this.librasService.findByPalavra(requestAnalisePalavra.getPalavra());
+        var libras = this.librasRepository.findByPalavra(requestAnalisePalavra.getPalavra()).get();
 
         var interpreteAnalise = this.interpreteRepository.findById(idInterprete).orElseThrow(
                 () -> new ResourceNotFoundException("Interprete not found"));
@@ -47,9 +46,15 @@ public class AnalisarLibras {
         libras.setUrl(requestAnalisePalavra.getUrl());
         libras.setFoto(requestAnalisePalavra.getFoto());
         libras.setVideo(requestAnalisePalavra.getVideo());
-        libras.getInterprete().add(interpreteMapper.toSimpleInterpreteDTO(interpreteAnalise));
+        libras.getInterprete().add(interpreteAnalise);
 
-        return  librasMapper.toLibrasOutputDTO(librasService.mapper.toLibrasEntity(libras));
+        interpreteAnalise.getLibras().add(libras);
+
+        this.librasRepository.save(libras);
+        this.interpreteRepository.save(interpreteAnalise);
+
+
+        return  librasMapper.toLibrasOutputDTO(libras);
 
 
     }

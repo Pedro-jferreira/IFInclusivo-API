@@ -6,6 +6,7 @@ import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import lombok.Data;
 
 import jakarta.persistence.*;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,14 +31,14 @@ public class LibrasEntity implements Serializable {
     private Categorias categorias;
 
 
-    @ManyToMany(mappedBy = "libras")
+    @ManyToMany(mappedBy = "libras", cascade = {CascadeType.MERGE})
     private List<InterpreteEntity> interprete = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
-            name="sugeriu_libras",
+            name = "sugeriu_libras",
             joinColumns = @JoinColumn(name = "libras_id"),
-            inverseJoinColumns = @JoinColumn(name ="usuario_id" ))
+            inverseJoinColumns = @JoinColumn(name = "usuario_id"))
     private List<UsuarioEntity> sugeriu = new ArrayList<>();
 
 }

@@ -12,7 +12,7 @@ public interface AlunoNapneService {
 
     AlunoNapneOutputDTO findById(Long id);
 
-    AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapne, Long idCurso);
+    AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapne, Long idCurso, Long idConfigAc);
 
     AlunoNapneOutputDTO update(AlunoNapneInputDTO alunoNapne, Long id);
 

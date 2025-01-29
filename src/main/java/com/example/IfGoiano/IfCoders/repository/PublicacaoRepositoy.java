@@ -22,7 +22,7 @@ public interface PublicacaoRepositoy extends JpaRepository<PublicacaoEntity,Long
     FROM PublicacaoEntity p
     LEFT JOIN p.comentarios c
     LEFT JOIN c.comentariosFilhos cf
-    LEFT JOIN p.topicoEntities t
+    LEFT JOIN p.topico t
     WHERE
         LOWER(p.titulo) LIKE LOWER(CONCAT('%', :termo, '%')) OR
         LOWER(p.text) LIKE LOWER(CONCAT('%', :termo, '%')) OR
@@ -35,6 +35,6 @@ public interface PublicacaoRepositoy extends JpaRepository<PublicacaoEntity,Long
     Page<PublicacaoEntity> searchPublicacaoByTermDeeply(@Param("termo") String termo, Pageable pageable);
 
 
-    Page<PublicacaoEntity> findByTopicoEntities_Id(Long topicoId, Pageable pageable);
+    Page<PublicacaoEntity> findByTopicoId(Long topicoId, Pageable pageable);
 
 }

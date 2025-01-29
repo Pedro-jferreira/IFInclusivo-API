@@ -19,6 +19,6 @@ public class LibrasOutputDTO {
     private Status status;
     private Categorias categorias;
     private List<SimpleUsuarioDTO> sugeriu;
-    private List<SimpleInterpreteDTO> interpreteAnalise;
+    private List<SimpleInterpreteDTO> interprete;
 
 }

@@ -68,8 +68,9 @@ public class AlunoController {
                     required = true,
             content = @Content(schema = @Schema(implementation = AlunoInputDTO.class)))
             @RequestParam Long idCurso,
+            @RequestParam Long idConfigAc,
             @org.springframework.web.bind.annotation.RequestBody AlunoInputDTO aluno) {
-        var savedAluno = alunoServiceImpl.save(aluno,idCurso);
+        var savedAluno = alunoServiceImpl.save(aluno,idCurso,idConfigAc);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedAluno.getId()).toUri();
         return ResponseEntity.created(location).body(savedAluno);

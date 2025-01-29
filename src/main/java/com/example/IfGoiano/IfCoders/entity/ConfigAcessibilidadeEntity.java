@@ -18,7 +18,7 @@ public class ConfigAcessibilidadeEntity implements Serializable {
     private TemaCSS tema;
     private String zoom;
 
-    @OneToOne
-    @JoinColumn(name = "usuario_id", referencedColumnName = "id", unique = true)
+    @ManyToOne
+    @JoinColumn(name = "configAcessibilidade_id")
     private UsuarioEntity usuario;
 }

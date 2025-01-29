@@ -36,12 +36,9 @@ public class TopicoEntity implements Serializable {
     @ManyToOne
     @JoinColumn(name = "professor_id")
     private ProfessorEntity professor;
+    @OneToMany(mappedBy = "topico")
+    private List<PublicacaoEntity> publicacoes = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(
-            name = "topico_publicacao",
-            joinColumns = @JoinColumn(name = "topico_id"),
-            inverseJoinColumns =@JoinColumn(name = "publicacao_id") )
-    private List<PublicacaoEntity> publicacaoEntities = new ArrayList<>();
+
 
 }

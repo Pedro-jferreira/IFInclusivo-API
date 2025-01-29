@@ -24,6 +24,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Autowired
     UsuarioMapper mapper;
 
+    @Autowired
+    ConfigAcessibilidadeService configAcessibilidadeService;
+    @Autowired
+    ConfigAcblMapper configAcblMapper;
 
     @Override
     public List<UsuarioOutputDTO> findAll() {
@@ -36,8 +40,10 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     @Override
-    public UsuarioOutputDTO save(UsuarioInputDTO usuarioId) {
+    public UsuarioOutputDTO save(UsuarioInputDTO usuarioId, Long idConfigAc) {
+        var acesibilidade = configAcessibilidadeService.findById(idConfigAc);
         UsuarioEntity usuarioEntity = mapper.toEntity(usuarioId);
+        usuarioEntity.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acesibilidade));
         return findById(repository.save(usuarioEntity).getId());
     }
 

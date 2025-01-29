@@ -36,8 +36,7 @@ public class UsuarioEntity {
     private LocalDateTime dataCriacao;
 
 
-
-    @OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne
     private ConfigAcessibilidadeEntity configAcessibilidadeEntity;
 
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
@@ -46,7 +45,7 @@ public class UsuarioEntity {
     @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
     private List<PublicacaoEntity> publicacaoEntities = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "sugeriu", cascade = CascadeType.ALL)
+    @ManyToMany(mappedBy = "sugeriu", cascade = {CascadeType.MERGE})
     private List<LibrasEntity> librasEntities = new ArrayList<>();
 
     @OneToMany(mappedBy = "userEnvia", cascade = CascadeType.ALL)

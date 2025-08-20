@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.entity;
 
 
+import com.example.IfGoiano.IfCoders.entity.Enums.Role;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +11,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -35,6 +38,12 @@ public class UsuarioEntity {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;
 
+    @Column(nullable = false)
+    private boolean isActive = false;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    private Set<Role> roles = new HashSet<>();
 
     @OneToOne
     private ConfigAcessibilidadeEntity configAcessibilidadeEntity;

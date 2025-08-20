@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,7 +57,7 @@ public class TopicoController {
         TopicoOutputDTO topico = service.findById(id);
         return ResponseEntity.ok().body(topico);
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Criar um novo tópico", tags = "Tópico")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Topic created",
@@ -72,7 +73,7 @@ public class TopicoController {
         var topico1 = service.save(topico,idProfessor);
         return ResponseEntity.status(HttpStatus.CREATED).body(topico1);
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Atualizar um tópico por ID", tags = "Tópico")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "topic updated",
@@ -89,7 +90,7 @@ public class TopicoController {
             content = @Content(schema = @Schema(implementation = TopicoInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody TopicoInputDTO topicoDetails) {
         return ResponseEntity.ok().body(service.update(id,  topicoDetails));
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Excluir um tópico por ID", tags = "Tópico")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Topic deleted",
@@ -130,7 +131,7 @@ public class TopicoController {
         Page<TopicoOutputDTO> resultados = service.searchTopicByTermDeeply(termo, pagina, tamanho);
         return ResponseEntity.ok(resultados);
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/add-publicacao")
     public ResponseEntity<TopicoOutputDTO> addPublicacao(
             @RequestParam Long idPublicacao,

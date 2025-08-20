@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -55,7 +56,7 @@ public class ComentarioController {
         var comentario = service.findById(id);
         return ResponseEntity.ok().body(comentario);
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Criar um novo comentário", tags = "Comentário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Comment created",
@@ -76,7 +77,7 @@ public class ComentarioController {
             var savedComentarioDTO = service.save(idUser,idPublicacao,idComentarioPai,comentario);
             return ResponseEntity.status(HttpStatus.CREATED).body(savedComentarioDTO);
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Atualizar um comentário por ID", tags = "Comentário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Comment updated",
@@ -94,7 +95,7 @@ public class ComentarioController {
         var comentario = service.update(id, comentarioDetails);
         return ResponseEntity.ok().body(comentario);
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Excluir um comentário por ID", tags = "Comentário")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Comment deleted",

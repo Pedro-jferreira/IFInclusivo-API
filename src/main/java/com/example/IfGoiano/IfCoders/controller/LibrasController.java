@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -47,7 +48,7 @@ public class LibrasController {
     public ResponseEntity<LibrasOutputDTO> findById(@PathVariable Long id) {
         return new ResponseEntity<>(librasService.findById(id), HttpStatus.OK);
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Cadastrar um novo sinal", tags = "Sinais de Libras")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Sign created",
@@ -61,7 +62,7 @@ public class LibrasController {
         return new ResponseEntity<>(librasService.save(sinais,idInterprete), HttpStatus.CREATED);
     }
 
-
+    @SecurityRequirement(name = "bearerAuth")
     @PostMapping("/sugere/{id}")
     public ResponseEntity<LibrasOutputDTO> sugereLibras(@RequestBody LibrasInputDTO sinais, @PathVariable Long id) {
 
@@ -81,7 +82,7 @@ public class LibrasController {
         return new ResponseEntity<>(librasService.findAll(pag, itens), HttpStatus.OK);
     }
 
-
+    @SecurityRequirement(name = "bearerAuth")
     @PutMapping("/update/{id}")
     public ResponseEntity<LibrasOutputDTO> updateLibras(@PathVariable Long id, @RequestBody LibrasInputDTO sinais) {
         return new ResponseEntity<>(librasService.update(sinais, id), HttpStatus.NO_CONTENT);
@@ -96,6 +97,7 @@ public class LibrasController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
+    @SecurityRequirement(name = "bearerAuth")
     @DeleteMapping("/{id}")
     public ResponseEntity<LibrasOutputDTO> delete(@PathVariable Long id) {
         librasService.delete(id);
@@ -108,7 +110,7 @@ public class LibrasController {
         Page<LibrasOutputDTO> resultados = this.librasService.searchLibrasByDeeply(palavra, pageable);
         return ResponseEntity.ok(resultados);
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping("/busca-status")
     public ResponseEntity<Page<LibrasOutputDTO>> findByStatus(
             @RequestParam Status status, Pageable pageable) {

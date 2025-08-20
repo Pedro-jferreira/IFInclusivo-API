@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -56,7 +57,7 @@ public class PublicacaoController {
         var publicacao = service.findById(id);
         return ResponseEntity.ok().body(publicacao);
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Criar uma nova publicação", tags = "Publicação")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "publication created",
@@ -72,7 +73,7 @@ public class PublicacaoController {
         var savedPublicacao = service.save(idUser,publicacao);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedPublicacao);
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Atualizar um publicação por ID", tags = "Publicação")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "publication updated",
@@ -87,10 +88,10 @@ public class PublicacaoController {
     @PutMapping("/{id}")
     public ResponseEntity<PublicacaoOutputDTO> update(@PathVariable Long id, @RequestBody(description = "Dados para atualizar uma publicação", required = true,
             content = @Content(schema = @Schema(implementation = PublicacaoInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody PublicacaoInputDTO publicacaoDetails) {
-        var publicacao = service.update(id, publicacaoDetails);
+
         return ResponseEntity.ok().body(service.update(id, publicacaoDetails));
     }
-
+    @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Excluir uma publicação por ID", tags = "Publicação")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Publication deleted",

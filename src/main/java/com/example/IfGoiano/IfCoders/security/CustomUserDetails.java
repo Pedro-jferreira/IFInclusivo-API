@@ -52,4 +52,8 @@ public class CustomUserDetails implements UserDetails {
     public boolean isEnabled() {
         return usuario.isActive();
     }
+
+    public UsuarioEntity getUsuario() {
+        return usuario;
+    }
 }

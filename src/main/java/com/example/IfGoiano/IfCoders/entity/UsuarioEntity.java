@@ -79,4 +79,5 @@ public class UsuarioEntity {
     private List<ComentarioEntity> useful = new ArrayList<>();
 
 
+
 }

@@ -92,10 +92,10 @@ public class UsuarioMapper {
         usuarioOutputDTO.setId(usuarioEntity.getId());
         usuarioOutputDTO.setNome(usuarioEntity.getNome());
         usuarioOutputDTO.setLogin(usuarioEntity.getLogin());
-        usuarioOutputDTO.setSenha(usuarioEntity.getSenha());
         usuarioOutputDTO.setMatricula(usuarioEntity.getMatricula());
         usuarioOutputDTO.setBiografia(usuarioEntity.getBiografia());
         usuarioOutputDTO.setDataCriacao(usuarioEntity.getDataCriacao());
+        usuarioOutputDTO.setRoles(usuarioEntity.getRoles());
 
         // Se a entidade possuir um relacionamento de ConfigAcblEntity
         if (usuarioEntity.getConfigAcessibilidadeEntity() != null) {
@@ -121,10 +121,10 @@ public class UsuarioMapper {
         usuarioEntity.setId(usuarioOutputDTO.getId());
         usuarioEntity.setNome(usuarioOutputDTO.getNome());
         usuarioEntity.setLogin(usuarioOutputDTO.getLogin());
-        usuarioEntity.setSenha(usuarioOutputDTO.getSenha());
         usuarioEntity.setMatricula(usuarioOutputDTO.getMatricula());
         usuarioEntity.setBiografia(usuarioOutputDTO.getBiografia());
         usuarioEntity.setDataCriacao(usuarioOutputDTO.getDataCriacao());
+        usuarioEntity.setRoles(usuarioOutputDTO.getRoles());
 
         // Se o DTO possuir ConfigAcblOutputDTO
         if (usuarioOutputDTO.getConfigAcessibilidadeEntity() != null) {
@@ -192,6 +192,7 @@ public class UsuarioMapper {
         usuarioDTO.setMatricula(usuarioEntity.getMatricula());
         usuarioDTO.setBiografia(usuarioEntity.getBiografia());
         usuarioDTO.setDataCriacao(usuarioEntity.getDataCriacao());
+        usuarioDTO.setRoles(usuarioEntity.getRoles());
 
 
         return usuarioDTO;

@@ -4,9 +4,12 @@ import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
+import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
@@ -16,71 +19,57 @@ public class TokenService {
     @Value("${jwt.secret}")
     private String jwtSecret;
 
-    // tempo em milissegundos (configurável em application.properties)
     @Value("${jwt.auth.expiration}")
     private long authExpiration;
 
     @Value("${jwt.email.expiration}")
     private long emailExpiration;
 
-    // =============================================================
-    // TOKEN PARA AUTENTICAÇÃO (LOGIN NORMAL)
-    // =============================================================
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
+    }
+
     public String generateAuthToken(UsuarioEntity usuario) {
         return Jwts.builder()
                 .setSubject(usuario.getLogin())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .claim("type", "AUTH")
                 .setExpiration(new Date(System.currentTimeMillis() + authExpiration))
-                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // =============================================================
-    // TOKEN PARA CONFIRMAR E-MAIL
-    // =============================================================
     public String generateEmailVerificationToken(UsuarioEntity usuario) {
         return Jwts.builder()
                 .setSubject(usuario.getLogin())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .claim("type", "EMAIL_VERIFICATION")
                 .setExpiration(new Date(System.currentTimeMillis() + emailExpiration))
-                .signWith(SignatureAlgorithm.HS256, jwtSecret)
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
-    // =============================================================
-    // VALIDAÇÕES ÚTEIS
-    // =============================================================
     public boolean isTokenValid(String token) {
-        return !isTokenExpired(token);
-    }
-
-    public boolean isTokenExpired(String token) {
-        return extractExpiration(token).before(new Date());
+        try {
+            extractAllClaims(token); // se não lançar exceção, é válido
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
     public String extractUsername(String token) {
-        return extractClaim(token, Claims::getSubject);
+        return extractAllClaims(token).getSubject();
     }
 
     public String extractTokenType(String token) {
         return extractAllClaims(token).get("type", String.class);
     }
 
-    private Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
-    }
-
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parser()
-                .setSigningKey(jwtSecret)
+        return Jwts.parserBuilder()
+                .setSigningKey(getSigningKey()) // usa Key, não String
+                .build()
                 .parseClaimsJws(token)
                 .getBody();
     }

@@ -35,7 +35,6 @@ public class ProfessorMapper {
         p.setNome(professorEntity.getNome());
         p.setBiografia(professorEntity.getBiografia());
         p.setLogin(professorEntity.getLogin());
-        p.setSenha(professorEntity.getSenha());
         p.setMatricula(professorEntity.getMatricula());
         p.setDataCriacao(professorEntity.getDataCriacao());
         p.setFormacao(professorEntity.getFormacao());

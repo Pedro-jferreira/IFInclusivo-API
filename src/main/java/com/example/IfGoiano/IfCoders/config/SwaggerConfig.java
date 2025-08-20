@@ -1,8 +1,11 @@
 package com.example.IfGoiano.IfCoders.config;
 
 
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -13,6 +16,7 @@ import java.util.Collections;
 
 @Configuration
 public class SwaggerConfig {
+
     @Value("${swagger.url}")
     private String swaggerUrl;
 
@@ -20,17 +24,20 @@ public class SwaggerConfig {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("IF-Inclusivo api")
+                        .title("IF-Inclusivo API")
                         .description("Esta API faz parte de um projeto de extensão desenvolvido na disciplina Projeto " +
-                                "Integrador. O objetivo da disciplina é reunir três professores e grupos de alunos" +
-                                " para integrar o conhecimento de várias matérias e, ao final, entregar um projeto" +
-                                " de extensão. Neste caso, o projeto é um aplicativo destinado a ajudar pessoas" +
-                                " com necessidades específicas. O aplicativo é um fórum onde essas pessoas podem" +
-                                " enviar suas dúvidas e receber ajuda de professores e alunos. Além disso, o aplicativo" +
-                                " conta com um glossário de Libras, que inclui palavras específicas para programação," +
-                                " gerenciado por tutores que adicionam palavras e vídeos de tradução para Libras.")
+                                "Integrador. O objetivo é integrar alunos e professores em um aplicativo de fórum e glossário de Libras.")
                         .version("1.0.0")
                 )
-                .servers(Collections.singletonList(new Server().url(swaggerUrl)));
+                .servers(Collections.singletonList(new Server().url(swaggerUrl)))
+                .components(new Components()
+                        .addSecuritySchemes("bearerAuth",
+                                new SecurityScheme()
+                                        .name("bearerAuth")
+                                        .type(SecurityScheme.Type.HTTP)
+                                        .scheme("bearer")
+                                        .bearerFormat("JWT") // apenas informativo
+                        )
+                );
     }
 }

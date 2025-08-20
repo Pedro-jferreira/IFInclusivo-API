@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,8 +19,8 @@ public class SecurityConfig {
     private final AuthenticationFilter authenticationFilter;
 
     public SecurityConfig(
-                          AuthenticationEntryPointImpl unauthorizedHandler,
-                          AuthenticationFilter authenticationFilter) {
+            AuthenticationEntryPointImpl unauthorizedHandler,
+            AuthenticationFilter authenticationFilter) {
         this.unauthorizedHandler = unauthorizedHandler;
         this.authenticationFilter = authenticationFilter;
     }
@@ -36,7 +37,46 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT stateless
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/auth/**", "/public/**").permitAll() // endpoints públicos
+
+                .requestMatchers(HttpMethod.POST, "/topicos/**").hasRole("PROFESSOR")
+                .requestMatchers(HttpMethod.PUT, "/topicos/**").hasRole("PROFESSOR")
+                .requestMatchers(HttpMethod.DELETE, "/topicos/**").hasRole("PROFESSOR")
+                .requestMatchers(HttpMethod.GET, "/topicos/**").permitAll()
+
+                .requestMatchers(HttpMethod.POST, "/sinais/sugere").authenticated()
+                .requestMatchers(HttpMethod.POST, "/sinais/**").hasAnyRole("TUTOR", "INTERPRETE")
+                .requestMatchers(HttpMethod.PUT, "/sinais/**").hasAnyRole("TUTOR", "INTERPRETE")
+                .requestMatchers(HttpMethod.DELETE, "/sinais/**").hasAnyRole("TUTOR", "INTERPRETE")
+                .requestMatchers(HttpMethod.GET, "/sinais/busca-status").authenticated()
+                .requestMatchers(HttpMethod.GET, "/sinais/**").permitAll()
+
+                .requestMatchers(HttpMethod.GET, "/publicacoes/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/publicacoes/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/publicacoes/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/publicacoes/**").authenticated()
+
+
+                .requestMatchers("/messages/**").hasAnyRole("TUTOR", "INTERPRETE", "PROFESSOR", "ALUNO_NAPNE")
+
+
+                .requestMatchers(HttpMethod.GET, "/comentarios/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/comentarios/**").authenticated()
+                .requestMatchers(HttpMethod.PUT, "/comentarios/**").authenticated()
+                .requestMatchers(HttpMethod.DELETE, "/comentarios/**").authenticated()
+
+                .requestMatchers("/alunosNapne/**").hasAnyRole("ALUNO_NAPNE", "TUTOR", "INTERPRETE")
+
+
+                .requestMatchers("/tutores/**", "/professores/**", "/interpretes/**", "/cursos/**",
+                        "/configuracoesDeAcessibilidade/**", "/alunos/**").authenticated()
+
+                .requestMatchers(
+                        "/auth/**",
+                        "/public/**",
+                        "/swagger-ui/**",
+                        "/swagger-ui.html",
+                        "/v3/api-docs/**"
+                ).permitAll() // endpoints públicos
                 .anyRequest().authenticated(); // resto exige autenticação
 
         // adiciona nosso filtro antes do filtro padrão do Spring

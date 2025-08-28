@@ -33,9 +33,8 @@ public class AuthenticationFilter extends OncePerRequestFilter {
 
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             token = authHeader.substring(7);
-            logger.info("Header Authorization: " + authHeader);
-            logger.info("Token extraído: " + token);
-            logger.info("Username extraído: " + username);
+
+
 
             try {
                 if (tokenService.isTokenValid(token)) {

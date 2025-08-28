@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
 @Data
 public class UsuarioEntity {
@@ -77,7 +77,4 @@ public class UsuarioEntity {
             inverseJoinColumns = @JoinColumn(name = "comentario_id")
     )
     private List<ComentarioEntity> useful = new ArrayList<>();
-
-
-
 }

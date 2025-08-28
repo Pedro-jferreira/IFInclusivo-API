@@ -4,5 +4,7 @@ import lombok.Data;
 
 @Data
 public class MessageInputDTO {
+    private Long IdUserEnvia;
+    private Long IdUserRecebe;
     private String text;
 }

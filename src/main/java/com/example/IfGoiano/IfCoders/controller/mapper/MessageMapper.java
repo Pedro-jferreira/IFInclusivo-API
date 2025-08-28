@@ -34,10 +34,9 @@ public class MessageMapper {
     }
 
 
-    public MessageOutputDTO toMessageOutputDTO(MessageEntity messageEntity){
-        MessageOutputDTO entity = modelMapper.map(messageEntity, MessageOutputDTO.class);
-        return entity;
-    }
+
+
+
     public MessageEntity toMessageEntity(MessageOutputDTO outputDTO){
         MessageEntity entity = modelMapper.map(outputDTO, MessageEntity.class);
         return entity;

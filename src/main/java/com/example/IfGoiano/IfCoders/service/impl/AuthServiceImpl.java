@@ -12,6 +12,7 @@ import com.example.IfGoiano.IfCoders.security.TokenService;
 import com.example.IfGoiano.IfCoders.service.*;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -20,6 +21,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+    @Value("${link.confirme-token}")
+    private String linkToken;
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
 
@@ -100,7 +103,7 @@ public class AuthServiceImpl implements AuthService {
             TutorEntity tutor = tutorMapper.toTutorEntity((TutorInputDTO) user);
             tutor.getRoles().add(Role.ROLE_TUTOR);
             tutor.setActive(false);
-            tutor.setSenha(passwordEncoder.encode(tutor.getSenha()));
+            tutor.setSenha(passwordEncoder.encode(user.getSenha()));
             usuario = tutorRepository.save(tutor);
         }
 
@@ -110,7 +113,7 @@ public class AuthServiceImpl implements AuthService {
 
 
         String token = tokenService.generateEmailVerificationToken(usuario);
-        String link = "http://localhost:8080/auth/verify-email?token=" + token;
+        String link = linkToken + token;
 
         emailService.send(
                 usuario.getLogin(),

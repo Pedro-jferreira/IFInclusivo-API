@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "aluno_napne")

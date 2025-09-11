@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
+@Table(name= "aluno")
 @Data
 @DiscriminatorValue("ALUNO")
 public class AlunoEntity extends UsuarioEntity {

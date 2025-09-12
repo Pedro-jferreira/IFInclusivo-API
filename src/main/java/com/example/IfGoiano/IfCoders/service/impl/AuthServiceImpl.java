@@ -11,7 +11,6 @@ import com.example.IfGoiano.IfCoders.security.CustomUserDetails;
 import com.example.IfGoiano.IfCoders.security.TokenService;
 import com.example.IfGoiano.IfCoders.service.*;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,6 +22,9 @@ import org.springframework.stereotype.Service;
 public class AuthServiceImpl implements AuthService {
     @Value("${link.confirme-token}")
     private String linkToken;
+
+    @Value("${link.reset-token}")
+    private String linkResetToken;
     private final UsuarioRepository usuarioRepository;
     private final UsuarioMapper usuarioMapper;
 
@@ -146,8 +148,55 @@ public class AuthServiceImpl implements AuthService {
         usuario.setActive(true);
         usuarioRepository.save(usuario);
     }
+    @Override
+    public void forgotPassword(String email) {
+        UsuarioEntity usuario = usuarioRepository.findByLogin(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
 
+        String token = tokenService.generatePasswordResetToken(usuario); // tipo RESET_PASSWORD
+        String link = linkResetToken + token;
 
+        emailService.send(
+                usuario.getLogin(),
+                "Redefinição de Senha",
+                "Clique no link para redefinir sua senha: " + link
+        );
+    }
+
+    @Transactional
+    @Override
+    public void resetPassword(String token, String novaSenha) {
+        if (!tokenService.isTokenValid(token)) {
+            throw new RuntimeException("Token inválido ou expirado");
+        }
+
+        String type = tokenService.extractTokenType(token);
+        if (!"RESET_PASSWORD".equals(type)) {
+            throw new RuntimeException("Token não é de reset de senha");
+        }
+
+        String username = tokenService.extractUsername(token);
+
+        UsuarioEntity usuario = usuarioRepository.findByLogin(username)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        usuarioRepository.save(usuario);
+    }
+
+    @Transactional
+    @Override
+    public void updatePassword(String email, String senhaAtual, String novaSenha) {
+        UsuarioEntity usuario = usuarioRepository.findByLogin(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
+            throw new RuntimeException("Senha atual incorreta");
+        }
+
+        usuario.setSenha(passwordEncoder.encode(novaSenha));
+        usuarioRepository.save(usuario);
+    }
     @Override
     public void logout() {
 

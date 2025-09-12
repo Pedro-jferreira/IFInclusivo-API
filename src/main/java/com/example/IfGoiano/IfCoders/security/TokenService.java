@@ -24,6 +24,8 @@ public class TokenService {
 
     @Value("${jwt.email.expiration}")
     private long emailExpiration;
+    @Value("${jwt.reset.expiration}")
+    private long resetExpiration;
 
     private Key getSigningKey() {
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
@@ -48,7 +50,15 @@ public class TokenService {
                 .signWith(getSigningKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
-
+    public String generatePasswordResetToken(UsuarioEntity usuario) {
+        return Jwts.builder()
+                .setSubject(usuario.getLogin())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .claim("type", "RESET_PASSWORD")
+                .setExpiration(new Date(System.currentTimeMillis() + resetExpiration))
+                .signWith(getSigningKey(), SignatureAlgorithm.HS256)
+                .compact();
+    }
     public boolean isTokenValid(String token) {
         try {
             extractAllClaims(token); // se não lançar exceção, é válido
@@ -57,7 +67,6 @@ public class TokenService {
             return false;
         }
     }
-
     public String extractUsername(String token) {
         return extractAllClaims(token).getSubject();
     }
@@ -73,4 +82,5 @@ public class TokenService {
                 .parseClaimsJws(token)
                 .getBody();
     }
+
 }

@@ -55,5 +55,25 @@ public class AuthController {
         authService.logout();
         return ResponseEntity.ok("Logout efetuado com sucesso.");
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<String> forgotPassword(@RequestBody ForgotPasswordRequest request) {
+        authService.forgotPassword(request.getEmail());
+        return ResponseEntity.ok("E-mail de redefinição de senha enviado, verifique sua caixa de entrada.");
+    }
+
+    // 🔹 2. Resetar senha via token
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordRequest request) {
+        authService.resetPassword(request.getToken(), request.getNovaSenha());
+        return ResponseEntity.ok("Senha redefinida com sucesso.");
+    }
+
+    // 🔹 3. Atualizar senha estando logado
+    @PostMapping("/update-password")
+    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest request) {
+        authService.updatePassword(request.getEmail(), request.getSenhaAtual(), request.getNovaSenha());
+        return ResponseEntity.ok("Senha atualizada com sucesso.");
+    }
 }
 

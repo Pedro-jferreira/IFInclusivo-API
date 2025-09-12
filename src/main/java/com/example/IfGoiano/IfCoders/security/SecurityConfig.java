@@ -69,9 +69,12 @@ public class SecurityConfig {
 
                 .requestMatchers("/tutores/**", "/professores/**", "/interpretes/**", "/cursos/**",
                         "/configuracoesDeAcessibilidade/**", "/alunos/**").authenticated()
+                .requestMatchers("/auth/login", "/auth/register/**", "/auth/forgot-password",
+                                 "/auth/reset-password", "/auth/verify-email").permitAll()
+
+                .requestMatchers("/auth/update-password").authenticated()
 
                 .requestMatchers(
-                        "/auth/**",
                         "/chat/**",
                         "/public/**",
                         "/swagger-ui/**",

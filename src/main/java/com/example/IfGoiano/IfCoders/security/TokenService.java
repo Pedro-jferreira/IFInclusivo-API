@@ -1,9 +1,9 @@
 package com.example.IfGoiano.IfCoders.security;
 
 import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.example.IfGoiano.IfCoders.exception.TokenExpiredException;
+import com.example.IfGoiano.IfCoders.exception.TokenInvalidException;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -63,8 +63,10 @@ public class TokenService {
         try {
             extractAllClaims(token); // se não lançar exceção, é válido
             return true;
-        } catch (Exception e) {
-            return false;
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("Token expired");
+        } catch (JwtException e){
+            throw new TokenInvalidException("Token Invalido");
         }
     }
     public String extractUsername(String token) {
@@ -73,6 +75,19 @@ public class TokenService {
 
     public String extractTokenType(String token) {
         return extractAllClaims(token).get("type", String.class);
+    }
+
+    public String extractUsernameFromExpiredToken(String token) {
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigningKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody()
+                    .getSubject();
+        } catch (ExpiredJwtException e) {
+            return e.getClaims().getSubject();
+        }
     }
 
     private Claims extractAllClaims(String token) {

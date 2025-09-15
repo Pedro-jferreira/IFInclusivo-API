@@ -73,6 +73,7 @@ public class SecurityConfig {
                                  "/auth/reset-password", "/auth/verify-email").permitAll()
 
                 .requestMatchers("/auth/update-password").authenticated()
+                .requestMatchers("/auth/resend").permitAll()
 
                 .requestMatchers(
                         "/chat/**",

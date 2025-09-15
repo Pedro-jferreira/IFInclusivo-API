@@ -75,5 +75,11 @@ public class AuthController {
         authService.updatePassword(request.getEmail(), request.getSenhaAtual(), request.getNovaSenha());
         return ResponseEntity.ok("Senha atualizada com sucesso.");
     }
+
+    @PostMapping("/resend")
+    public ResponseEntity<String> resendTokenToRegister(@RequestParam String token ) {
+        authService.resendConfirmationEmailFromExpiredToken(token);
+        return ResponseEntity.ok("E-mail Reenviado com sucesso.");
+    }
 }
 

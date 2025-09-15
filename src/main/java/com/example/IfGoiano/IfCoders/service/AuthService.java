@@ -22,4 +22,5 @@ public interface AuthService {
     void updatePassword(String email, String senhaAtual, String novaSenha);
 
     void logout();
+    void resendConfirmationEmailFromExpiredToken(String expiredToken);
 }

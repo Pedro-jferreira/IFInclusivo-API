@@ -6,10 +6,14 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.*;
 import com.example.IfGoiano.IfCoders.entity.*;
 import com.example.IfGoiano.IfCoders.entity.Enums.Role;
+import com.example.IfGoiano.IfCoders.exception.TokenExpiredException;
+import com.example.IfGoiano.IfCoders.exception.TokenInvalidException;
 import com.example.IfGoiano.IfCoders.repository.*;
 import com.example.IfGoiano.IfCoders.security.CustomUserDetails;
 import com.example.IfGoiano.IfCoders.security.TokenService;
 import com.example.IfGoiano.IfCoders.service.*;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AuthServiceImpl implements AuthService {
+
     @Value("${link.confirme-token}")
     private String linkToken;
 
@@ -80,28 +85,28 @@ public class AuthServiceImpl implements AuthService {
     public SimpleUsuarioDTO register(UsuarioInputDTO user) {
         UsuarioEntity usuario = null;
 
-        if (user instanceof ProfessorInputDTO){
+        if (user instanceof ProfessorInputDTO) {
             ProfessorEntity professor = professorMapper.toProfessorEntity((ProfessorInputDTO) user);
             professor.getRoles().add(Role.ROLE_PROFESSOR);
             professor.setActive(false);
             professor.setSenha(passwordEncoder.encode(user.getSenha()));
             usuario = professorRepository.save(professor);
 
-        } else if (user instanceof AlunoInputDTO){
+        } else if (user instanceof AlunoInputDTO) {
             AlunoEntity aluno = alunoMapper.toAlunoEntity((AlunoInputDTO) user);
             aluno.getRoles().add(Role.ROLE_ALUNO);
             aluno.setActive(false);
             aluno.setSenha(passwordEncoder.encode(user.getSenha()));
             usuario = alunoRepository.save(aluno);
 
-        } else if (user instanceof InterpreteInputDTO){
+        } else if (user instanceof InterpreteInputDTO) {
             InterpreteEntity interprete = interpreteMapper.toInterpreteEntity((InterpreteInputDTO) user);
             interprete.getRoles().add(Role.ROLE_INTERPRETE);
             interprete.setActive(false);
             interprete.setSenha(passwordEncoder.encode(user.getSenha()));
             usuario = interpreteRepository.save(interprete);
 
-        } else if (user instanceof TutorInputDTO){
+        } else if (user instanceof TutorInputDTO) {
             TutorEntity tutor = tutorMapper.toTutorEntity((TutorInputDTO) user);
             tutor.getRoles().add(Role.ROLE_TUTOR);
             tutor.setActive(false);
@@ -129,25 +134,30 @@ public class AuthServiceImpl implements AuthService {
     @Override
     @Transactional
     public void verificationToken(String token) {
-        if (!tokenService.isTokenValid(token)) {
-            throw new RuntimeException("Token inválido ou expirado");
+        try {
+            tokenService.isTokenValid(token);
+
+            String type = tokenService.extractTokenType(token);
+            if (!"EMAIL_VERIFICATION".equals(type)) {
+                throw new TokenInvalidException("Token não é do tipo de confirmação de email");
+            }
+
+            String username = tokenService.extractUsername(token);
+            UsuarioEntity usuario = usuarioRepository.findByLogin(username)
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+            usuario.setActive(true);
+            usuarioRepository.save(usuario);
+
+        } catch (TokenExpiredException e) {
+            throw e;
+        } catch (TokenInvalidException e) {
+            throw e;
+        } catch (JwtException e) {
+            throw new TokenInvalidException("Token inválido. Solicite um novo link.");
         }
-
-        String type = tokenService.extractTokenType(token);
-        if (!"EMAIL_VERIFICATION".equals(type)) {
-            throw new RuntimeException("Token não é do tipo de confirmação de email");
-        }
-
-
-        String username = tokenService.extractUsername(token);
-
-
-        UsuarioEntity usuario = usuarioRepository.findByLogin(username)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
-
-        usuario.setActive(true);
-        usuarioRepository.save(usuario);
     }
+
     @Override
     public void forgotPassword(String email) {
         UsuarioEntity usuario = usuarioRepository.findByLogin(email)
@@ -197,6 +207,30 @@ public class AuthServiceImpl implements AuthService {
         usuario.setSenha(passwordEncoder.encode(novaSenha));
         usuarioRepository.save(usuario);
     }
+
+
+    @Override
+    public void resendConfirmationEmailFromExpiredToken(String expiredToken) {
+        String email = tokenService.extractUsernameFromExpiredToken(expiredToken);
+        
+        UsuarioEntity usuario = usuarioRepository.findByLogin(email)
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+
+        if (usuario.isActive()) {
+            throw new RuntimeException("Usuário já confirmado.");
+        }
+
+        String newToken = tokenService.generateEmailVerificationToken(usuario);
+
+        String link = linkToken + newToken;
+
+        emailService.send(
+                usuario.getLogin(),
+                "Confirmação de E-mail",
+                "Clique no link para confirmar seu cadastro: " + link
+        );
+    }
+
     @Override
     public void logout() {
 

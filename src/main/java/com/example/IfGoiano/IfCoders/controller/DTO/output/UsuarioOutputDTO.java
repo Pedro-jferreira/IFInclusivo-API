@@ -23,4 +23,6 @@ public class UsuarioOutputDTO {
     private ConfigAcblOutputDTO configAcessibilidadeEntity;
     private Set<Role> roles;
     private String token;
+    private String userType;
+
 }

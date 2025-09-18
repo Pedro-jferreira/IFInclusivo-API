@@ -90,6 +90,7 @@ public class AuthServiceImpl implements AuthService {
             professor.getRoles().add(Role.ROLE_PROFESSOR);
             professor.setActive(false);
             professor.setSenha(passwordEncoder.encode(user.getSenha()));
+            professor.setUserType("professor");
             usuario = professorRepository.save(professor);
 
         } else if (user instanceof AlunoInputDTO) {
@@ -97,6 +98,7 @@ public class AuthServiceImpl implements AuthService {
             aluno.getRoles().add(Role.ROLE_ALUNO);
             aluno.setActive(false);
             aluno.setSenha(passwordEncoder.encode(user.getSenha()));
+            aluno.setUserType("aluno");
             usuario = alunoRepository.save(aluno);
 
         } else if (user instanceof InterpreteInputDTO) {
@@ -104,6 +106,7 @@ public class AuthServiceImpl implements AuthService {
             interprete.getRoles().add(Role.ROLE_INTERPRETE);
             interprete.setActive(false);
             interprete.setSenha(passwordEncoder.encode(user.getSenha()));
+            interprete.setUserType("interprete");
             usuario = interpreteRepository.save(interprete);
 
         } else if (user instanceof TutorInputDTO) {
@@ -111,6 +114,7 @@ public class AuthServiceImpl implements AuthService {
             tutor.getRoles().add(Role.ROLE_TUTOR);
             tutor.setActive(false);
             tutor.setSenha(passwordEncoder.encode(user.getSenha()));
+            tutor.setUserType("tutor");
             usuario = tutorRepository.save(tutor);
         }
 

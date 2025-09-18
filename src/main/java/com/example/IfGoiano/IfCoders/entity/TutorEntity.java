@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 @Entity
 @Table(name= "tutor")
 @Data
-@DiscriminatorValue("TUTOR")
+@DiscriminatorValue("tutor")
 public class TutorEntity extends UsuarioEntity {
 
     @NotNull

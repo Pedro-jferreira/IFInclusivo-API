@@ -27,7 +27,6 @@ public class MockInterprete {
         InterpreteOutputDTO interpreteOutputDTO = new InterpreteOutputDTO();
         interpreteOutputDTO.setId(number);
         interpreteOutputDTO.setNome("First Name " + number);
-        interpreteOutputDTO.setSenha("First Senha" + number);
         interpreteOutputDTO.setSalary(number.doubleValue());
         interpreteOutputDTO.setBiografia("My biografia " + number);
         interpreteOutputDTO.setLogin("First Login " + number);

@@ -16,4 +16,6 @@ public class SimpleUsuarioDTO {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;
     private Set<Role> roles;
+    private String userType;
+
 }

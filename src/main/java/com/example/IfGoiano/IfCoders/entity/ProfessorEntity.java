@@ -13,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name= "professor")
 @Data
-@DiscriminatorValue("PROFESSOR")
+@DiscriminatorValue("professor")
 public class ProfessorEntity extends UsuarioEntity {
 
     private String formacao;

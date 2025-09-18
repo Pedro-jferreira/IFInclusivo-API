@@ -13,5 +13,5 @@ public class UsuarioInputDTO {
     private String senha;
     private Long matricula;
     private String biografia;
-
+    private String userType;
 }

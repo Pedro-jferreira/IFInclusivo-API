@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 @Entity
 @Table(name= "aluno")
 @Data
-@DiscriminatorValue("ALUNO")
+@DiscriminatorValue("aluno")
 public class AlunoEntity extends UsuarioEntity {
     @ManyToOne
     @JoinColumn(name = "curso_id")

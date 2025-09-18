@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.Formula;
 
 
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@DiscriminatorColumn(name = "tipo_usuario", discriminatorType = DiscriminatorType.STRING)
+@DiscriminatorColumn(name = "userType", discriminatorType = DiscriminatorType.STRING)
 @Data
 public class UsuarioEntity {
     @Id
@@ -33,6 +34,8 @@ public class UsuarioEntity {
     @NotNull    @Column(nullable = false)
     private Long matricula;
     private String biografia;
+    @Column(name = "userType", insertable = false, updatable = false)
+    private String userType;
 
     @CreationTimestamp
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
@@ -62,6 +65,8 @@ public class UsuarioEntity {
 
     @OneToMany(mappedBy = "userRecebe", cascade = CascadeType.ALL)
     private List<MessageEntity> userRecebe = new ArrayList<>();
+
+
 
     @ManyToMany
     @JoinTable(

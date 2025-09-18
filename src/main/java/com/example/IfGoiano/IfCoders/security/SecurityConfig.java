@@ -74,6 +74,8 @@ public class SecurityConfig {
 
                 .requestMatchers("/auth/update-password").authenticated()
                 .requestMatchers("/auth/resend").permitAll()
+                .requestMatchers("/midia/upload").permitAll()
+                .requestMatchers("/test").permitAll()
 
                 .requestMatchers(
                         "/chat/**",

@@ -60,14 +60,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(TokenExpiredException.class)
     public ResponseEntity<ExceptionResponse> handleTokenExpiredException(Exception ex) {
         ExceptionResponse response = new ExceptionResponse(new Date(), "Token expired.",ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.EXPECTATION_FAILED);
+        return new ResponseEntity<>(response, HttpStatus.GONE);
     }
 
 
     @ExceptionHandler(TokenInvalidException.class)
     public ResponseEntity<ExceptionResponse> handleTokenExceptionInvalid(Exception ex) {
         ExceptionResponse response = new ExceptionResponse(new Date(), "Token invalid.",ex.getMessage());
-        return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
 

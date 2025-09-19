@@ -5,6 +5,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.Date;
 
@@ -68,6 +69,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleTokenExceptionInvalid(Exception ex) {
         ExceptionResponse response = new ExceptionResponse(new Date(), "Token invalid.",ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<String> handleRuntime(RuntimeException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body("Não foi possível completar o cadastro.");
     }
 
 

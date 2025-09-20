@@ -13,6 +13,7 @@ target/
 .springBeans
 .sts4-cache
 .env
+.if-inclusivo-firebase-adminsdk-fbsvc-3588b0811d.json
 
 ### IntelliJ IDEA ###
 .idea

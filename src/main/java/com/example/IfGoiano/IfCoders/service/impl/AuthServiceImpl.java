@@ -6,21 +6,29 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.*;
 import com.example.IfGoiano.IfCoders.entity.*;
 import com.example.IfGoiano.IfCoders.entity.Enums.Role;
+import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.exception.TokenExpiredException;
 import com.example.IfGoiano.IfCoders.exception.TokenInvalidException;
 import com.example.IfGoiano.IfCoders.repository.*;
 import com.example.IfGoiano.IfCoders.security.CustomUserDetails;
 import com.example.IfGoiano.IfCoders.security.TokenService;
 import com.example.IfGoiano.IfCoders.service.*;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthException;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -75,12 +83,29 @@ public class AuthServiceImpl implements AuthService {
         Authentication authentication = authenticationManager.authenticate(authToken);
         CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
         UsuarioEntity usuario = userDetails.getUsuario();
-        String token = tokenService.generateAuthToken(usuario);
+        String apiToken = tokenService.generateAuthToken(usuario);
+
+        String firebaseToken = "";
+        try {
+            String uid = "user-" + usuario.getId(); // garante que é único e não conflita
+            Map<String, Object> claims = new HashMap<>();
+            claims.put("roles", usuario.getRoles().stream().map(Role::name).toList());
+
+            firebaseToken = FirebaseAuth.getInstance().createCustomToken(uid, claims);
+        } catch (FirebaseAuthException e) {
+            log.error("Erro ao criar o token customizado do Firebase para o usuário: {}", usuario.getLogin(), e);
+        }
+
         UsuarioOutputDTO dto = usuarioMapper.toOutputDTO(usuario);
-        dto.setToken(token);
+        dto.setToken(apiToken);
+        dto.setFirebaseToken(firebaseToken);
+
         return dto;
     }
 
+
+    // Não se esqueça de injetar um Logger se ainda não o fez
+    private static final Logger log = LoggerFactory.getLogger(AuthServiceImpl.class);
     @Override
     public SimpleUsuarioDTO register(UsuarioInputDTO user) {
         UsuarioEntity usuario = null;
@@ -165,7 +190,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void forgotPassword(String email) {
         UsuarioEntity usuario = usuarioRepository.findByLogin(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado"));
 
         String token = tokenService.generatePasswordResetToken(usuario); // tipo RESET_PASSWORD
         String link = linkResetToken + token;
@@ -181,7 +206,7 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void resetPassword(String token, String novaSenha) {
         if (!tokenService.isTokenValid(token)) {
-            throw new RuntimeException("Token inválido ou expirado");
+            throw new TokenInvalidException("Token inválido ou expirado");
         }
 
         String type = tokenService.extractTokenType(token);

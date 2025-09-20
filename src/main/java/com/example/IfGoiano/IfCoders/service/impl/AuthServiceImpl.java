@@ -59,8 +59,13 @@ public class AuthServiceImpl implements AuthService {
     private final AuthenticationManager authenticationManager;
 
     private final PasswordEncoder passwordEncoder;
+    private final VerifyLoginAndRegistration verifyLogin;
 
-    public AuthServiceImpl(UsuarioMapper usuarioMapper, UsuarioRepository usuarioRepository, AlunoRepository alunoRepository, AlunoMapper alunoMapper, ProfessorRepository professorRepository, ProfessorMapper professorMapper, TutorRepository tutorRepository, AuthenticationManager authenticationManager, TutorMapper tutorMapper, InterpreteRepository interpreteRepository, PasswordEncoder passwordEncoder, InterpreteMapper interpreteMapper, TokenService tokenService, EmailService emailService) {
+    public AuthServiceImpl(UsuarioMapper usuarioMapper, UsuarioRepository usuarioRepository,
+                           AlunoRepository alunoRepository, AlunoMapper alunoMapper,
+                           ProfessorRepository professorRepository, ProfessorMapper professorMapper, TutorRepository tutorRepository,
+                           AuthenticationManager authenticationManager, TutorMapper tutorMapper, InterpreteRepository interpreteRepository,
+                           PasswordEncoder passwordEncoder, InterpreteMapper interpreteMapper, TokenService tokenService, EmailService emailService, VerifyLoginAndRegistration verifyLogin) {
         this.usuarioMapper = usuarioMapper;
         this.usuarioRepository = usuarioRepository;
         this.alunoRepository = alunoRepository;
@@ -75,6 +80,7 @@ public class AuthServiceImpl implements AuthService {
         this.interpreteMapper = interpreteMapper;
         this.tokenService = tokenService;
         this.emailService = emailService;
+        this.verifyLogin = verifyLogin;
     }
 
     @Override
@@ -110,6 +116,9 @@ public class AuthServiceImpl implements AuthService {
     public SimpleUsuarioDTO register(UsuarioInputDTO user) {
         UsuarioEntity usuario = null;
 
+        if(this.verifyLogin.existsByLogin(user.getLogin(), user.getMatricula())){
+            throw new RuntimeException("Usuário já existe.");
+        }
         if (user instanceof ProfessorInputDTO) {
             ProfessorEntity professor = professorMapper.toProfessorEntity((ProfessorInputDTO) user);
             professor.getRoles().add(Role.ROLE_PROFESSOR);

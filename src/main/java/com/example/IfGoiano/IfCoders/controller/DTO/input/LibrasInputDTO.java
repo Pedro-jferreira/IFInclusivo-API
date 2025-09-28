@@ -9,8 +9,6 @@ public class LibrasInputDTO {
     private String palavra;
     private String descricao;
     private String url;
-    private String video;
-    private String foto;
     private String justificativa;
     private Status status;
     private Categorias categorias;

@@ -4,6 +4,7 @@ import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
+import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
@@ -72,9 +73,13 @@ public class LibrasServiceImpl implements LibrasService {
       return mapper.toLibrasOutputDTO(libras);
     }
 
-    public List<LibrasOutputDTO> findAll(int pag, int itens) {
+    @Override
+    public Page<LibrasOutputDTO> findByCategoria(Categorias categoria, Pageable pageable) {
+        return repository.findByCategorias(categoria, pageable).map(mapper::toLibrasOutputDTO);
+    }
 
-        return repository.findAll(PageRequest.of(pag, itens)).stream().map(mapper::toLibrasOutputDTO).collect(Collectors.toList());
+    public Page<LibrasOutputDTO> findAll(Pageable pageable) {
+        return repository.findAll(pageable).map(mapper::toLibrasOutputDTO);
     }
 
 

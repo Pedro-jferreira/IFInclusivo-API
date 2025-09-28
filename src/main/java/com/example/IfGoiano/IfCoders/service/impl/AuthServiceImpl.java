@@ -13,8 +13,7 @@ import com.example.IfGoiano.IfCoders.repository.*;
 import com.example.IfGoiano.IfCoders.security.CustomUserDetails;
 import com.example.IfGoiano.IfCoders.security.TokenService;
 import com.example.IfGoiano.IfCoders.service.*;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
+
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.transaction.Transactional;
@@ -91,20 +90,8 @@ public class AuthServiceImpl implements AuthService {
         UsuarioEntity usuario = userDetails.getUsuario();
         String apiToken = tokenService.generateAuthToken(usuario);
 
-        String firebaseToken = "";
-        try {
-            String uid = "user-" + usuario.getId(); // garante que é único e não conflita
-            Map<String, Object> claims = new HashMap<>();
-            claims.put("roles", usuario.getRoles().stream().map(Role::name).toList());
-
-            firebaseToken = FirebaseAuth.getInstance().createCustomToken(uid, claims);
-        } catch (FirebaseAuthException e) {
-            log.error("Erro ao criar o token customizado do Firebase para o usuário: {}", usuario.getLogin(), e);
-        }
-
         UsuarioOutputDTO dto = usuarioMapper.toOutputDTO(usuario);
         dto.setToken(apiToken);
-        dto.setFirebaseToken(firebaseToken);
 
         return dto;
     }

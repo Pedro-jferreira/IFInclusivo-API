@@ -44,8 +44,6 @@ public class AnalisarLibras {
         libras.setJustificativa(requestAnalisePalavra.getJustificativa());
         libras.setCategorias(requestAnalisePalavra.getCategorias());
         libras.setUrl(requestAnalisePalavra.getUrl());
-        libras.setFoto(requestAnalisePalavra.getFoto());
-        libras.setVideo(requestAnalisePalavra.getVideo());
         libras.getInterprete().add(interpreteAnalise);
 
         interpreteAnalise.getLibras().add(libras);

@@ -41,8 +41,6 @@ public class LibrasMapper {
         dto.setPalavra(librasEntity.getPalavra());
         dto.setDescricao(librasEntity.getDescricao());
         dto.setUrl(librasEntity.getUrl());
-        dto.setVideo(librasEntity.getVideo());
-        dto.setFoto(librasEntity.getFoto());
         dto.setJustificativa(librasEntity.getJustificativa());
         dto.setStatus(librasEntity.getStatus());
 

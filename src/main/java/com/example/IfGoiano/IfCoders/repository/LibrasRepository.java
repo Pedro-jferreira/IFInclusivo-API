@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.repository;
 
 
+import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
 import org.springframework.data.domain.Page;
@@ -28,6 +29,8 @@ public interface LibrasRepository extends JpaRepository<LibrasEntity, Long> {
     Page<LibrasEntity> searchLibrasByDeeply(@Param("search") String search, Pageable pageable);
 
     Optional<LibrasEntity> findByPalavra(String palavra);
+
+    Page<LibrasEntity> findByCategorias(Categorias categoria, Pageable pageable);
 
 
 }

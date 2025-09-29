@@ -21,6 +21,6 @@ public class UsuarioOutputDTO {
     private Set<Role> roles;
     private String token;
     private String userType;
-    private String firebaseToken;
+
 
 }

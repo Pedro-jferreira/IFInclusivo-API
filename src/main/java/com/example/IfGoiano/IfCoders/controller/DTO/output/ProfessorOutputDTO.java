@@ -1,6 +1,5 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleTopicoDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,5 +10,4 @@ import java.util.List;
 @Data
 public class ProfessorOutputDTO extends UsuarioOutputDTO {
     private String formacao;
-    private List<SimpleTopicoDTO> topicos;
 }

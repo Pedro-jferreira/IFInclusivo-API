@@ -1,5 +1,9 @@
 package com.example.IfGoiano.IfCoders.entity.Enums;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.STRING)
+
 public enum Categorias {
     REDES(1),
     BANCO_DE_DADOS(2),

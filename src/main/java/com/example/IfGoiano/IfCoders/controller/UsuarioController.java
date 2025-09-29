@@ -2,8 +2,10 @@ package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
+import com.example.IfGoiano.IfCoders.entity.Enums.Role;
 import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -12,10 +14,10 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/user")
@@ -38,5 +40,20 @@ public class UsuarioController {
     public ResponseEntity<UsuarioOutputDTO> findById(@PathVariable Long id) {
         var usuario = service.findById(id);
         return ResponseEntity.ok().body(usuario);
+    }
+
+    @Operation(summary = "Buscar usuários por nome e/ou role", tags = "Usuario")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Usuários encontrados",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = UsuarioOutputDTO.class))) })
+    })
+    @GetMapping("/search")
+    public ResponseEntity<List<UsuarioOutputDTO>> searchUsers(
+            @RequestParam(required = false) String name, // Parâmetro opcional para nome
+            @RequestParam(required = false) Role role   // Parâmetro opcional para role
+    ) {
+        var usuarios = service.searchUsers(name, role);
+        return ResponseEntity.ok(usuarios);
     }
 }

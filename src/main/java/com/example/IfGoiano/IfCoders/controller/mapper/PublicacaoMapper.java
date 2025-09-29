@@ -1,51 +1,51 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
-
-import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoRequestDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoDetalhadaDTO;
 import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
+import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
+import org.mapstruct.*;
 
-import org.modelmapper.ModelMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import java.util.List;
 
-@Component
-public class PublicacaoMapper {
-    @Autowired
-    ModelMapper modelMapper;
+@Mapper(componentModel = "spring", uses = {UsuarioMapper.class}) // `uses` delega a conversão de usuário para outro mapper
+public interface PublicacaoMapper {
+
+    /**
+     * Converte um DTO de requisição para uma Entidade.
+     * Note que o 'parentId' não é mapeado aqui; o serviço irá buscar a entidade pai e associá-la.
+     */
+    PublicacaoEntity toEntity(PublicacaoRequestDTO dto);
+
+    /**
+     * Converte uma Entidade para um DTO Detalhado.
+     * Mapeia campos adicionais como 'texto', 'categorias' e o ID da resposta escolhida.
+     */
+    @Mapping(target = "totalLikes", expression = "java(entity.getLikeBy() != null ? entity.getLikeBy().size() : 0)")
+    @Mapping(target = "totalRespostas", expression = "java(entity.getRespostas() != null ? entity.getRespostas().size() : 0)")
+    @Mapping(target = "respostaEscolhidaId", source = "respostaEscolhida.id") // Mapeia o ID do objeto aninhado
+    PublicacaoDetalhadaDTO toDetalhadaDTO(PublicacaoEntity entity, @Context UsuarioEntity usuarioLogado);
+
+    /**
+     * O MapStruct gera automaticamente a implementação para converter uma lista de entidades
+     * para uma lista de DTOs Detalhados, reutilizando o método acima.
+     * Você fez um ajuste no DTO para que respostas também sejam detalhadas.
+     */
+    List<PublicacaoDetalhadaDTO> toDetalhadaDTOList(List<PublicacaoEntity> entities, @Context UsuarioEntity usuarioLogado);
 
 
-    public SimplePublicacaoDTO toSimplePublicacaoDTO(PublicacaoEntity publicacao){
-        return modelMapper.map(publicacao, SimplePublicacaoDTO.class);
+
+    /**
+     * Método auxiliar para calcular o campo 'curtidoPeloUsuario' para o DTO Detalhado.
+     */
+    @AfterMapping
+    default void setCurtidoPeloUsuario(PublicacaoEntity entity, @MappingTarget PublicacaoDetalhadaDTO dto, @Context UsuarioEntity usuarioLogado) {
+        if (usuarioLogado == null || entity.getLikeBy() == null) {
+            dto.setCurtidoPeloUsuario(false);
+            return;
+        }
+        boolean curtido = entity.getLikeBy().stream()
+                .anyMatch(usuario -> usuario.getId().equals(usuarioLogado.getId()));
+        dto.setCurtidoPeloUsuario(curtido);
     }
-    public PublicacaoEntity toPublicacaoEntity(SimplePublicacaoDTO simplePublicacaoDTO){
-        return modelMapper.map(simplePublicacaoDTO, PublicacaoEntity.class);
-    }
-
-
-    public PublicacaoInputDTO toPublicacaoInputDTO(PublicacaoEntity publicacaoEntity){
-        return modelMapper.map(publicacaoEntity, PublicacaoInputDTO.class);
-    }
-    public PublicacaoEntity toPublicacaoEntity(PublicacaoInputDTO inputDTO){
-        PublicacaoEntity entity = modelMapper.map(inputDTO, PublicacaoEntity.class);
-        return entity;
-    }
-
-
-    public PublicacaoOutputDTO toPublicacaoOutputDTO(PublicacaoEntity publicacaoEntity){
-        PublicacaoOutputDTO entity =modelMapper.map(publicacaoEntity, PublicacaoOutputDTO.class);
-
-        return entity;
-    }
-    public PublicacaoEntity toPublicacaoEntity(PublicacaoOutputDTO inputDTO) {
-        return modelMapper.map(inputDTO, PublicacaoEntity.class);
-    }
-
-
-    public void updatePublicacaoEntityFromDTO(PublicacaoInputDTO publicacaoDeitails, PublicacaoEntity publicacaoEntity){
-        modelMapper.map(publicacaoDeitails, publicacaoEntity);
-    }
-
-
 }

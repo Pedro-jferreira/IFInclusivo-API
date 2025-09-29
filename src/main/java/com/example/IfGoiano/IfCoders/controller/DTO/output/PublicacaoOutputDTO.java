@@ -1,7 +1,5 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleComentarioDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.SimpleTopicoDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -19,7 +17,5 @@ public class PublicacaoOutputDTO {
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao ;
     private SimpleUsuarioDTO usuario;
-    private SimpleTopicoDTO topico;
-    private List<SimpleComentarioDTO> comentarios;
     private List<SimpleUsuarioDTO> likeBy;
 }

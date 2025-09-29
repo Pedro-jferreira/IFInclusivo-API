@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -13,6 +14,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     private final AuthenticationEntryPointImpl unauthorizedHandler;
@@ -51,9 +53,7 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/sinais/**").permitAll()
 
                 .requestMatchers(HttpMethod.GET, "/publicacoes/**").permitAll()
-                .requestMatchers(HttpMethod.POST, "/publicacoes/**").authenticated()
-                .requestMatchers(HttpMethod.PUT, "/publicacoes/**").authenticated()
-                .requestMatchers(HttpMethod.DELETE, "/publicacoes/**").authenticated()
+                .requestMatchers("/publicacoes/**").authenticated()
 
 
                 .requestMatchers("/messages/**").hasAnyRole("TUTOR", "INTERPRETE", "PROFESSOR", "ALUNO_NAPNE")

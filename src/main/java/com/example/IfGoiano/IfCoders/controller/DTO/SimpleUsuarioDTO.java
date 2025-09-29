@@ -17,5 +17,4 @@ public class SimpleUsuarioDTO {
     private LocalDateTime dataCriacao;
     private Set<Role> roles;
     private String userType;
-
 }

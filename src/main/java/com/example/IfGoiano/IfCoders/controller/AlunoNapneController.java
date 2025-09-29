@@ -2,7 +2,6 @@ package com.example.IfGoiano.IfCoders.controller;
 
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.AlunoNapneServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;

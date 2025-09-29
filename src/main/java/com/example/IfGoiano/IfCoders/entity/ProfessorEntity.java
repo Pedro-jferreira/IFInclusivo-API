@@ -18,8 +18,6 @@ public class ProfessorEntity extends UsuarioEntity {
 
     private String formacao;
 
-    @OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<TopicoEntity> topicos = new ArrayList<>();
 
     public ProfessorEntity() {
         super();

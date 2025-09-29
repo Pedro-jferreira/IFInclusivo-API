@@ -4,12 +4,15 @@ import com.example.IfGoiano.IfCoders.controller.DTO.input.UsuarioInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
+import com.example.IfGoiano.IfCoders.entity.Enums.Role;
 import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
+import com.example.IfGoiano.IfCoders.repository.specification.UsuarioSpecification;
 import com.example.IfGoiano.IfCoders.service.ConfigAcessibilidadeService;
 import com.example.IfGoiano.IfCoders.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -57,6 +60,22 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     }
 
+    @Override
+    public List<UsuarioOutputDTO> searchUsers(String name, Role role) {
+        Specification<UsuarioEntity> spec = Specification.where(null);
+
+        if (name != null && !name.trim().isEmpty()) {
+            spec = spec.and(UsuarioSpecification.nameContains(name));
+        }
+        if (role != null) {
+            spec = spec.and(UsuarioSpecification.hasRole(role));
+        }
+
+        List<UsuarioEntity> usuarios = repository.findAll(spec);
+
+        return usuarios.stream().map(mapper::toOutputDTO).collect(Collectors.toList());
+    }
+
 
     @Override
     public void delete(Long id) {
@@ -67,4 +86,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     public boolean existsById(Long id) {
         return repository.existsById(id);
     }
+
+
 }

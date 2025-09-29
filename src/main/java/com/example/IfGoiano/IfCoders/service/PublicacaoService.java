@@ -1,28 +1,39 @@
 package com.example.IfGoiano.IfCoders.service;
 
-import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoRequestDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoCompletaDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoDetalhadaDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.TopicoOutputDTO;
+import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
+import com.example.IfGoiano.IfCoders.entity.Enums.Ordenacao;
+import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Set;
 
 public interface PublicacaoService {
-    List<PublicacaoOutputDTO> findAll();
+    PublicacaoCompletaDTO findById(Long id,String username);
 
-    PublicacaoOutputDTO findById(Long id);
+    PublicacaoDetalhadaDTO save(PublicacaoRequestDTO publicacao, String username);
 
-    PublicacaoOutputDTO save(Long IdUser,PublicacaoInputDTO publicacao);
+    Page<PublicacaoDetalhadaDTO> findAll(
+            Set<Categorias> categorias,
+            Ordenacao ordenarPor,
+            Pageable pageable,
+            String username
+    );
 
-    PublicacaoOutputDTO update(Long id, PublicacaoInputDTO publicacaoDetails);
+    PublicacaoOutputDTO update(Long id, PublicacaoRequestDTO publicacaoDetails);
 
-    Page<PublicacaoOutputDTO> searchPublicacaoByTermQuickly(String termo, int pagina, int tamanho);
-
-    Page<PublicacaoOutputDTO> searchPublicacaoByTermDeeply(String termo, int pagina, int tamanho);
 
     void delete(Long id);
 
-    void setTopico(PublicacaoOutputDTO publicacaoOutputDTO);
-
-    Page<PublicacaoOutputDTO> findPublicacaobyTopico(Long idTopico, int pagina, int tamanho);
+    @Transactional()
+    Page<PublicacaoDetalhadaDTO> findFilhosById(
+            Long publicacaoId,
+            Ordenacao ordenarPor,
+            Pageable pageable,
+            String username);
 }

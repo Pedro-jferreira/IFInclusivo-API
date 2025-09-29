@@ -51,12 +51,6 @@ public class UsuarioEntity {
     @OneToOne
     private ConfigAcessibilidadeEntity configAcessibilidadeEntity;
 
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<ComentarioEntity> comentarios = new ArrayList<>();
-
-    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL)
-    private List<PublicacaoEntity> publicacaoEntities = new ArrayList<>();
-
     @ManyToMany(mappedBy = "sugeriu", cascade = {CascadeType.MERGE})
     private List<LibrasEntity> librasEntities = new ArrayList<>();
 
@@ -67,19 +61,14 @@ public class UsuarioEntity {
     private List<MessageEntity> userRecebe = new ArrayList<>();
 
 
+    @OneToMany(mappedBy = "usuario", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OrderBy("dataCriacao DESC")
+    private List<PublicacaoEntity> publicacoes = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "usuario_likes_publicacao",
             joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns =@JoinColumn(name = "publicacao_id") )
-    private List<PublicacaoEntity> likes = new ArrayList<>();
-
-    @ManyToMany
-    @JoinTable(
-            name = "usuario_useful_comentario",
-            joinColumns = @JoinColumn(name = "usuario_id"),
-            inverseJoinColumns = @JoinColumn(name = "comentario_id")
-    )
-    private List<ComentarioEntity> useful = new ArrayList<>();
+            inverseJoinColumns = @JoinColumn(name = "publicacao_id") )
+    private Set<PublicacaoEntity> likes = new HashSet<>();
 }

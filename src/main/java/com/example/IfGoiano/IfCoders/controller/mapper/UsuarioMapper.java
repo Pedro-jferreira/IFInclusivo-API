@@ -64,6 +64,7 @@ public class UsuarioMapper {
         } else if (usuarioEntity instanceof InterpreteEntity) {
             InterpreteOutputDTO interpreteOutputDTO = new InterpreteOutputDTO();
             interpreteOutputDTO.setSalary(((InterpreteEntity) usuarioEntity).getSalary());
+            interpreteOutputDTO.setEspecialidade(((InterpreteEntity) usuarioEntity).getEspecialidade());
             List<SimpleLibrasDTO> librasDTOS = new ArrayList<>();
             for (LibrasEntity librasEntity : ((InterpreteEntity) usuarioEntity).getLibras()) {
                 SimpleLibrasDTO sl = new SimpleLibrasDTO();
@@ -168,6 +169,7 @@ public class UsuarioMapper {
         } else if (usuarioEntity instanceof InterpreteEntity) {
             SimpleInterpreteDTO interpreteOutputDTO = new SimpleInterpreteDTO();
             interpreteOutputDTO.setSalary(((InterpreteEntity) usuarioEntity).getSalary());
+            interpreteOutputDTO.setEspecialidade(((InterpreteEntity) usuarioEntity).getEspecialidade());
             usuarioDTO = interpreteOutputDTO;
         } else if (usuarioEntity instanceof TutorEntity) {
             SimpleTutorDTO tutorOutputDTO = new SimpleTutorDTO();

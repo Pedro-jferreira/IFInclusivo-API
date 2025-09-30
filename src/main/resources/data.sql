@@ -60,15 +60,15 @@ CREATE TABLE IF NOT EXISTS interprete_libras (
 
 
 INSERT INTO usuario_entity (nome, login, senha, matricula, biografia, user_type, data_criacao, is_active)
-SELECT 'Maria Silva Santos', 'maria.interprete', '$2a$10$N.zmdr9k7uOgdlLxbYqrh.93UahQJSjpOWlReabWong4lPG2aIwSq', 20231001, 'Intérprete de Libras especializada em tecnologia', 'INTERPRETE', NOW(), true
+SELECT 'Maria Silva Santos', 'maria.interprete', '$2a$10$N.zmdr9k7uOgdlLxbYqrh.93UahQJSjpOWlReabWong4lPG2aIwSq', 20231001, 'Intérprete de Libras especializada em tecnologia', 'interprete', NOW(), true
     WHERE NOT EXISTS (SELECT 1 FROM usuario_entity WHERE login = 'maria.interprete');
 
 INSERT INTO usuario_entity (nome, login, senha, matricula, biografia, user_type, data_criacao, is_active)
-SELECT 'João Pedro Costa', 'joao.interprete', '$2a$10$N.zmdr9k7uOgdlLxbYqrh.93UahQJSjpOWlReabWong4lPG2aIwSq', 20231002, 'Intérprete com foco em programação e desenvolvimento', 'INTERPRETE', NOW(), true
+SELECT 'João Pedro Costa', 'joao.interprete', '$2a$10$N.zmdr9k7uOgdlLxbYqrh.93UahQJSjpOWlReabWong4lPG2aIwSq', 20231002, 'Intérprete com foco em programação e desenvolvimento', 'interprete', NOW(), true
     WHERE NOT EXISTS (SELECT 1 FROM usuario_entity WHERE login = 'joao.interprete');
 
 INSERT INTO usuario_entity (nome, login, senha, matricula, biografia, user_type, data_criacao, is_active)
-SELECT 'Ana Carolina Lima', 'ana.interprete', '$2a$10$N.zmdr9k7uOgdlLxbYqrh.93UahQJSjpOWlReabWong4lPG2aIwSq', 20231003, 'Especialista em sinais técnicos de informática', 'INTERPRETE', NOW(), true
+SELECT 'Ana Carolina Lima', 'ana.interprete', '$2a$10$N.zmdr9k7uOgdlLxbYqrh.93UahQJSjpOWlReabWong4lPG2aIwSq', 20231003, 'Especialista em sinais técnicos de informática', 'interprete', NOW(), true
     WHERE NOT EXISTS (SELECT 1 FROM usuario_entity WHERE login = 'ana.interprete');
 
 -- Inserir dados específicos do tutor (herança)

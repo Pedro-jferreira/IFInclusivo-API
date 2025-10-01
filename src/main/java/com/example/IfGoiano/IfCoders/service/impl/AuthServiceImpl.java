@@ -20,11 +20,13 @@ import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -223,14 +225,24 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public void updatePassword(String email, String senhaAtual, String novaSenha) {
         UsuarioEntity usuario = usuarioRepository.findByLogin(email)
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
         if (!passwordEncoder.matches(senhaAtual, usuario.getSenha())) {
-            throw new RuntimeException("Senha atual incorreta");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Senha atual incorreta");
         }
 
+        if (passwordEncoder.matches(novaSenha, usuario.getSenha())) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "A nova senha não pode ser igual à senha atual");
+        }
         usuario.setSenha(passwordEncoder.encode(novaSenha));
         usuarioRepository.save(usuario);
+        // Envia e-mail de notificação
+        String subject = "Senha atualizada com sucesso";
+        String body = "Olá " + usuario.getNome() + ",\n\n" +
+                "Sua senha foi atualizada com sucesso. " +
+                "Se você não realizou essa alteração, entre em contato imediatamente com o suporte.\n\n" +
+                "Atenciosamente,\nEquipe do Sistema";
+
+        emailService.send(usuario.getLogin(), subject, body);
     }
 
 

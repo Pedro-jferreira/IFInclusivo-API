@@ -8,7 +8,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UpdatePasswordRequest {
-    private String email;
     private String senhaAtual;
     private String novaSenha;
 }

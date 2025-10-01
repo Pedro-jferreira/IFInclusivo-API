@@ -4,7 +4,13 @@ import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.*;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 import com.example.IfGoiano.IfCoders.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -70,9 +76,29 @@ public class AuthController {
     }
 
     // 🔹 3. Atualizar senha estando logado
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(
+            summary = "Atualiza a senha do usuário autenticado",
+            description = "Permite que um usuário logado atualize sua senha atual. " +
+                    "A senha atual deve ser informada corretamente e a nova senha não pode ser igual à atual.",
+            security = @SecurityRequirement(name = "bearerAuth"),
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Senha atualizada com sucesso"),
+                    @ApiResponse(responseCode = "400", description = "Senha atual incorreta ou requisição inválida"),
+                    @ApiResponse(responseCode = "409", description = "Nova senha não pode ser igual à senha atual"),
+                    @ApiResponse(responseCode = "404", description = "Usuário não encontrado"),
+                    @ApiResponse(responseCode = "401", description = "Usuário não autenticado / token inválido")
+            }
+    )
     @PostMapping("/update-password")
-    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest request) {
-        authService.updatePassword(request.getEmail(), request.getSenhaAtual(), request.getNovaSenha());
+    public ResponseEntity<String> updatePassword(@RequestBody UpdatePasswordRequest request,  @AuthenticationPrincipal UserDetails userDetails) {
+
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
+        }
+
+        String username = userDetails.getUsername();
+        authService.updatePassword(username, request.getSenhaAtual(), request.getNovaSenha());
         return ResponseEntity.ok("Senha atualizada com sucesso.");
     }
 

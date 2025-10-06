@@ -115,37 +115,37 @@ WHERE u.login = 'ana.interprete' AND NOT EXISTS (SELECT 1 FROM usuario_entity_ro
 -- Categorias: REDES=0, BANCO_DE_DADOS=1, PROGRAMACAO=2, WEB=3, ESTRUTURA_DE_DADOS=4, ARQUITETURA_DE_COMPUTADORES=5
 INSERT INTO libras (palavra, descricao, url, justificativa, status, categorias) VALUES
 -- PROGRAMACAO (2)
-('JAVA', 'Linguagem de programação orientada a objetos', 'https://www.youtube.com/shorts/zWT6hEAk3h8?feature=share', 'Termo fundamental em programação', 0, 2),
-('PYTHON', 'Linguagem de programação de alto nível', 'https://www.youtube.com/shorts/zWT6hEAk3h8?feature=share', 'Muito utilizada em desenvolvimento', 0, 2),
-('VARIAVEL', 'Espaço na memória para armazenar dados', 'https://www.youtube.com/shorts/zWT6hEAk3h8?feature=share', 'Conceito básico de programação', 0, 2),
-('FUNCAO', 'Bloco de código reutilizável', 'https://www.youtube.com/shorts/zWT6hEAk3h8?feature=share', 'Fundamental para organização do código', 0, 2),
-('LOOP', 'Estrutura de repetição', 'https://www.youtube.com/shorts/zWT6hEAk3h8?feature=share', 'Conceito essencial em algoritmos', 2, 2),
+('JAVA', 'Linguagem de programação orientada a objetos', 'https://www.youtube.com/embed/zWT6hEAk3h8', 'Termo fundamental em programação', 0, 2),
+('PYTHON', 'Linguagem de programação de alto nível', 'https://www.youtube.com/embed/zWT6hEAk3h8', 'Muito utilizada em desenvolvimento', 0, 2),
+('VARIAVEL', 'Espaço na memória para armazenar dados', 'https://www.youtube.com/embed/zWT6hEAk3h8', 'Conceito básico de programação', 0, 2),
+('FUNCAO', 'Bloco de código reutilizável', 'https://www.youtube.com/embed/zWT6hEAk3h8', 'Fundamental para organização do código', 0, 2),
+('LOOP', 'Estrutura de repetição', 'https://www.youtube.com/embed/zWT6hEAk3h8', 'Conceito essencial em algoritmos', 2, 2),
 
 -- BANCO_DE_DADOS (1)
-('SQL', 'Linguagem de consulta estruturada', 'https://www.youtube.com/shorts/zWT6hEAk3h8?feature=share', 'Padrão para bancos relacionais', 0, 1),
-('TABELA', 'Estrutura para organizar dados', 'https://youtu.be/ApuB8dT8tk8', 'Elemento básico de banco de dados', 0, 1),
-('CHAVE_PRIMARIA', 'Identificador único de registro', 'https://youtu.be/ApuB8dT8tk8', 'Conceito fundamental em BD', 0, 1),
-('SELECT', 'Comando para consultar dados', 'https://youtu.be/ApuB8dT8tk8', 'Comando mais usado em SQL', 2, 1),
+('SQL', 'Linguagem de consulta estruturada', 'https://www.youtube.com/embed/zWT6hEAk3h8', 'Padrão para bancos relacionais', 0, 1),
+('TABELA', 'Estrutura para organizar dados', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Elemento básico de banco de dados', 0, 1),
+('CHAVE_PRIMARIA', 'Identificador único de registro', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Conceito fundamental em BD', 0, 1),
+('SELECT', 'Comando para consultar dados', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Comando mais usado em SQL', 2, 1),
 
 -- REDES (0)
-('PROTOCOLO', 'Regras de comunicação em rede', 'https://youtu.be/ApuB8dT8tk8', 'Base da comunicação de dados', 0, 0),
-('TCP_IP', 'Protocolo de comunicação da internet', 'https://youtu.be/ApuB8dT8tk8', 'Protocolo fundamental da web', 0, 0),
-('ROTEADOR', 'Equipamento que direciona dados', 'https://youtu.be/ApuB8dT8tk8', 'Dispositivo essencial em redes', 0, 0),
-('FIREWALL', 'Sistema de segurança de rede', 'https://youtu.be/ApuB8dT8tk8', 'Proteção contra ameaças', 2, 0),
+('PROTOCOLO', 'Regras de comunicação em rede', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Base da comunicação de dados', 0, 0),
+('TCP_IP', 'Protocolo de comunicação da internet', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Protocolo fundamental da web', 0, 0),
+('ROTEADOR', 'Equipamento que direciona dados', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Dispositivo essencial em redes', 0, 0),
+('FIREWALL', 'Sistema de segurança de rede', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Proteção contra ameaças', 2, 0),
 
 -- WEB (3)
-('HTML', 'Linguagem de marcação para web', 'https://youtu.be/ApuB8dT8tk8', 'Base do desenvolvimento web', 0, 3),
-('CSS', 'Linguagem para estilização web', 'https://youtu.be/ApuB8dT8tk8', 'Essencial para design web', 0, 3),
-('JAVASCRIPT', 'Linguagem de programação web', 'https://youtu.be/ApuB8dT8tk8', 'Interatividade em páginas web', 0, 3),
-('NAVEGADOR', 'Software para acessar a web', 'https://youtu.be/ApuB8dT8tk8', 'Interface para internet', 2, 3),
+('HTML', 'Linguagem de marcação para web', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Base do desenvolvimento web', 0, 3),
+('CSS', 'Linguagem para estilização web', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Essencial para design web', 0, 3),
+('JAVASCRIPT', 'Linguagem de programação web', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Interatividade em páginas web', 0, 3),
+('NAVEGADOR', 'Software para acessar a web', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Interface para internet', 2, 3),
 
 -- ESTRUTURA_DE_DADOS (4)
-('ARRAY', 'Estrutura de dados indexada', 'https://youtu.be/ApuB8dT8tk8', 'Estrutura básica de programação', 0, 4),
-('LISTA', 'Coleção ordenada de elementos', 'https://youtu.be/ApuB8dT8tk8', 'Estrutura dinâmica importante', 0, 4),
+('ARRAY', 'Estrutura de dados indexada', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Estrutura básica de programação', 0, 4),
+('LISTA', 'Coleção ordenada de elementos', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Estrutura dinâmica importante', 0, 4),
 
 -- ARQUITETURA_DE_COMPUTADORES (5)
-('CPU', 'Unidade central de processamento', 'https://youtu.be/ApuB8dT8tk8', 'Componente principal do computador', 0, 5),
-('MEMORIA_RAM', 'Memória de acesso aleatório', 'https://youtu.be/ApuB8dT8tk8', 'Armazenamento temporário de dados', 0, 5);
+('CPU', 'Unidade central de processamento', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Componente principal do computador', 0, 5),
+('MEMORIA_RAM', 'Memória de acesso aleatório', 'https://www.youtube.com/embed/ApuB8dT8tk8', 'Armazenamento temporário de dados', 0, 5);
 
 -- Associar libras aos intérpretes (relacionamento many-to-many)
 -- Maria - especialista em tecnologia

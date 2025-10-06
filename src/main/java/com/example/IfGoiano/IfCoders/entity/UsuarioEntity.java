@@ -61,7 +61,9 @@ public class UsuarioEntity {
     private List<MessageEntity> userRecebe = new ArrayList<>();
 
 
-    @OneToMany(mappedBy = "usuario", cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH})
+    @OneToMany(mappedBy = "usuario",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true)
     @OrderBy("dataCriacao DESC")
     private List<PublicacaoEntity> publicacoes = new ArrayList<>();
 

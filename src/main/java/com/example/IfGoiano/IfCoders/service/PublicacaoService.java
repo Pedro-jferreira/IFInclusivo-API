@@ -25,10 +25,12 @@ public interface PublicacaoService {
             String username
     );
 
-    PublicacaoOutputDTO update(Long id, PublicacaoRequestDTO publicacaoDetails);
+    @Transactional
+    PublicacaoDetalhadaDTO update(Long id, PublicacaoRequestDTO publicacaoDetails, String username);
 
 
-    void delete(Long id);
+    @Transactional
+    void delete(Long id, String username);
 
     @Transactional()
     Page<PublicacaoDetalhadaDTO> findFilhosById(

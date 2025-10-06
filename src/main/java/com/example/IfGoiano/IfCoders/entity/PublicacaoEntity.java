@@ -65,7 +65,7 @@ public class PublicacaoEntity implements Serializable {
     @JoinColumn(name = "parent_id")
     private PublicacaoEntity parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy("dataCriacao ASC")
     private List<PublicacaoEntity> respostas = new ArrayList<>();
 

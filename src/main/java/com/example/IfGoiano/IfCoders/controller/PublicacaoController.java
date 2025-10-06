@@ -7,6 +7,7 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoDetalhadaDT
 import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Ordenacao;
+import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.service.PublicacaoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -22,6 +23,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -71,38 +73,71 @@ public class PublicacaoController {
         return publicacaoService.findAll(categorias, ordenarPor, pageable, username);
     }
 
-
     @SecurityRequirement(name = "bearerAuth")
-    @Operation(summary = "Atualizar um publicação por ID", tags = "Publicação")
+    @Operation(summary = "Atualizar uma publicação por ID", tags = "Publicação")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "publication updated",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = PublicacaoOutputDTO.class)) }),
-            @ApiResponse(responseCode = "400", description = "Bad request",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "publication not found",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+            @ApiResponse(responseCode = "200", description = "Publication updated",
+                    content = @Content(schema = @Schema(implementation = PublicacaoOutputDTO.class))),
+            @ApiResponse(responseCode = "401", description = "Usuário não autenticado", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Usuário não autorizado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Publication not found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+    })
     @PutMapping("/{id}")
-    public ResponseEntity<PublicacaoOutputDTO> update(@PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados para atualizar uma publicação", required = true,
-            content = @Content(schema = @Schema(implementation = PublicacaoRequestDTO.class))) @RequestBody PublicacaoRequestDTO publicacaoDetails) {
+    public ResponseEntity<?> update(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails,
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados para atualizar uma publicação",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = PublicacaoRequestDTO.class))
+            ) @RequestBody PublicacaoRequestDTO publicacaoDetails) {
 
-        return ResponseEntity.ok().body(publicacaoService.update(id, publicacaoDetails));
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
+        }
+
+        String username = userDetails.getUsername();
+
+        try {
+            PublicacaoDetalhadaDTO updated = publicacaoService.update(id, publicacaoDetails, username);
+            return ResponseEntity.ok(updated);
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (AccessDeniedException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        }
     }
+
+
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Excluir uma publicação por ID", tags = "Publicação")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Publication deleted",
-                    content = @Content),
-            @ApiResponse(responseCode = "404", description = "Publication not found",
-                    content = @Content),
-            @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+            @ApiResponse(responseCode = "204", description = "Publication deleted", content = @Content),
+            @ApiResponse(responseCode = "401", description = "Usuário não autenticado", content = @Content),
+            @ApiResponse(responseCode = "403", description = "Usuário não autorizado", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Publication not found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+    })
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
-        publicacaoService.delete(id);
+    public ResponseEntity<?> delete(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
+        }
+
+        String username = userDetails.getUsername();
+
+        try {
+            publicacaoService.delete(id, username);
             return ResponseEntity.noContent().build();
+        } catch (ResourceNotFoundException ex) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+        } catch (AccessDeniedException ex) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
+        }
     }
 
     @GetMapping("/{id}")

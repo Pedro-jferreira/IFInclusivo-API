@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/auth")
@@ -106,6 +107,24 @@ public class AuthController {
     public ResponseEntity<String> resendTokenToRegister(@RequestParam String token ) {
         authService.resendConfirmationEmailFromExpiredToken(token);
         return ResponseEntity.ok("E-mail Reenviado com sucesso.");
+    }
+
+    @SecurityRequirement(name = "bearerAuth")
+    @DeleteMapping()
+    public ResponseEntity<?> deleteAccount(
+            @AuthenticationPrincipal UserDetails userDetails,
+            @RequestParam("password") String password) {
+
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
+        }
+
+        try {
+            authService.deleteUser(userDetails.getUsername(), password);
+            return ResponseEntity.ok("Usuário deletado com sucesso");
+        } catch (ResponseStatusException e) {
+            return ResponseEntity.status(e.getStatusCode()).body(e.getReason());
+        }
     }
 }
 

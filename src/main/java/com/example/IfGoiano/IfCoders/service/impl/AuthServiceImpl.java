@@ -14,7 +14,6 @@ import com.example.IfGoiano.IfCoders.security.CustomUserDetails;
 import com.example.IfGoiano.IfCoders.security.TokenService;
 import com.example.IfGoiano.IfCoders.service.*;
 
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.transaction.Transactional;
 import org.slf4j.Logger;
@@ -27,9 +26,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
 public class AuthServiceImpl implements AuthService {
@@ -265,6 +261,29 @@ public class AuthServiceImpl implements AuthService {
                 usuario.getLogin(),
                 "Confirmação de E-mail",
                 "Clique no link para confirmar seu cadastro: " + link
+        );
+    }
+
+    @Transactional
+    @Override
+    public void deleteUser(String email, String password) {
+        UsuarioEntity usuario = usuarioRepository.findByLogin(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
+
+        // Verifica senha
+        if (!passwordEncoder.matches(password, usuario.getSenha())) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Senha incorreta");
+        }
+
+        usuarioRepository.delete(usuario);
+
+        emailService.send(
+                usuario.getLogin(),
+                "Conta Apagada com sucesso",
+                "Olá " + usuario.getNome() + ",\n\n" +
+                        "Sua conta foi apagada com sucesso.\n" +
+                        "Se você não realizou essa ação, entre em contato imediatamente com o suporte.\n\n" +
+                        "Atenciosamente,\nEquipe do Sistema"
         );
     }
 

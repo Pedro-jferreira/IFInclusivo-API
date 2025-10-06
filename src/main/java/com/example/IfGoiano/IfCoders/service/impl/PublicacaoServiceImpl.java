@@ -14,9 +14,13 @@ import com.example.IfGoiano.IfCoders.repository.PublicacaoRepositoy;
 import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
 import com.example.IfGoiano.IfCoders.service.PublicacaoService;
 import jakarta.transaction.Transactional;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -140,13 +144,45 @@ public class PublicacaoServiceImpl implements PublicacaoService {
     }
 
     @Override
-    public PublicacaoOutputDTO update(Long id, PublicacaoRequestDTO publicacaoDetails) {
-        return null;
+    @Transactional
+    public PublicacaoDetalhadaDTO update(Long id, PublicacaoRequestDTO publicacaoDetails, String username) {
+        PublicacaoEntity publicacao = publicacaoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Publicação não encontrada com ID: " + id));
+
+        UsuarioEntity usuarioLogado = usuarioRepository.findByLogin(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado: " + username));
+
+        if (!publicacao.getUsuario().getId().equals(usuarioLogado.getId())) {
+            throw new AccessDeniedException("Você não tem permissão para editar esta publicação");
+        }
+        publicacao.setTitulo(publicacaoDetails.getTitulo());
+        publicacao.setTexto(publicacaoDetails.getTexto());
+        publicacao.setCategorias(publicacaoDetails.getCategorias());
+        if (!publicacao.getParent().getId().equals(publicacaoDetails.getParentId())) {
+            PublicacaoEntity parent = publicacaoRepository.findById(publicacaoDetails.getParentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Publicação pai não encontrada com o ID: " + publicacaoDetails.getParentId()));
+            publicacao.setParent(parent);
+        }
+        PublicacaoEntity saved = publicacaoRepository.save(publicacao);
+
+        return publicacaoMapper.toDetalhadaDTO(saved,usuarioLogado);
     }
 
-    @Override
-    public void delete(Long id) {
 
+    @Transactional
+    @Override
+    public void delete(Long id, String username) {
+        PublicacaoEntity publicacao = publicacaoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Publicação não encontrada com ID: " + id));
+
+        UsuarioEntity usuarioLogado = usuarioRepository.findByLogin(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado: " + username));
+
+        if (!publicacao.getUsuario().getId().equals(usuarioLogado.getId())) {
+            throw new AccessDeniedException("Você não tem permissão para excluir esta publicação");
+        }
+
+        publicacaoRepository.delete(publicacao);
     }
 
     @Transactional()

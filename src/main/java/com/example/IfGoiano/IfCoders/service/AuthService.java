@@ -21,6 +21,9 @@ public interface AuthService {
     @Transactional
     void updatePassword(String email, String senhaAtual, String novaSenha);
 
+    @Transactional
+    void deleteUser(String email, String password);
+
     void logout();
     void resendConfirmationEmailFromExpiredToken(String expiredToken);
 }

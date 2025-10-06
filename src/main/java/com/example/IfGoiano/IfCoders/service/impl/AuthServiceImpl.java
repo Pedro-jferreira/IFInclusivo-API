@@ -270,9 +270,9 @@ public class AuthServiceImpl implements AuthService {
         UsuarioEntity usuario = usuarioRepository.findByLogin(email)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado"));
 
-        // Verifica senha
+
         if (!passwordEncoder.matches(password, usuario.getSenha())) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "Senha incorreta");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Senha incorreta");
         }
 
         usuarioRepository.delete(usuario);

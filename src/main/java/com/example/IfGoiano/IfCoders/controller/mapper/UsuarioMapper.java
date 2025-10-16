@@ -84,9 +84,7 @@ public class UsuarioMapper {
             usuarioOutputDTO = a;
         } else if (usuarioEntity instanceof AlunoEntity) {
             AlunoOutputDTO a = new AlunoOutputDTO();
-            CursoInputDTO c = new CursoInputDTO();
-            c.setNome(((AlunoEntity) usuarioEntity).getCurso().getNome());
-            a.setCurso(c);
+            a.setCurso(((AlunoEntity) usuarioEntity).getCurso());
             usuarioOutputDTO = a;
         }else throw new IllegalArgumentException("parce to output  a partir do usuario entity 2 nao conseguiu identificar o tipo");
 
@@ -180,9 +178,7 @@ public class UsuarioMapper {
             usuarioDTO = a;
         } else if (usuarioEntity instanceof AlunoEntity) {
             SimpleAlunoDTO a = new SimpleAlunoDTO();
-            CursoInputDTO c = new CursoInputDTO();
-            c.setNome(((AlunoEntity) usuarioEntity).getCurso().getNome());
-            a.setCurso(c);
+            a.setCurso(((AlunoEntity) usuarioEntity).getCurso());
             usuarioDTO = a;
         }else {
             usuarioDTO= new SimpleUsuarioDTO();
@@ -274,9 +270,7 @@ public class UsuarioMapper {
             usuarioEntity = al;
         } else if (usuarioOutputDTO instanceof AlunoOutputDTO) {
             AlunoEntity al = new AlunoEntity();
-            CursoEntity c = new CursoEntity();
-            c.setNome(((AlunoOutputDTO) usuarioOutputDTO).getCurso().getNome());
-            al.setCurso(c);
+            al.setCurso(((AlunoOutputDTO) usuarioOutputDTO).getCurso());
             usuarioEntity = al;
         } else throw new IllegalArgumentException("parce de to entity a partir do output falhou 3");
         return usuarioEntity;

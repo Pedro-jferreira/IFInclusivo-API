@@ -65,10 +65,9 @@ public class AlunoNapneController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do aluno NAPNE a ser cadastrado",
                     required = true,
             content = @Content(schema = @Schema(implementation = AlunoNapneInputDTO.class)))
-            @RequestParam Long idCurso,
             @RequestParam Long idConfigAc,
             @org.springframework.web.bind.annotation.RequestBody AlunoNapneInputDTO aluno) {
-        return new ResponseEntity<>(alunoNapneService.save(aluno,idCurso,idConfigAc), HttpStatus.CREATED);
+        return new ResponseEntity<>(alunoNapneService.save(aluno,idConfigAc), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Atualizar um aluno NAPNE por ID", tags = "Aluno NAPNE")

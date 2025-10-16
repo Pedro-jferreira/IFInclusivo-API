@@ -4,14 +4,11 @@ import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.AlunoNapneMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
-import com.example.IfGoiano.IfCoders.controller.mapper.CursoMapper;
 import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.AlunoNapneRepository;
-import com.example.IfGoiano.IfCoders.repository.CursoRepository;
 import com.example.IfGoiano.IfCoders.service.AlunoNapneService;
 import com.example.IfGoiano.IfCoders.service.ConfigAcessibilidadeService;
-import com.example.IfGoiano.IfCoders.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,10 +26,6 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
     @Autowired
     private AlunoNapneMapper alunoNapneMapper;
 
-    @Autowired
-    CursoService cursoService;
-    @Autowired
-    CursoMapper cursoMapper;
     @Autowired
     ConfigAcessibilidadeService configAcessibilidadeService;
     @Autowired
@@ -55,11 +48,9 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
 
     @Override
     @Transactional
-    public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput, Long idCurso, Long idConfigAc) {
-        var curso = cursoService.findById(idCurso);
+    public AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapneInput, Long idConfigAc) {
         var acessibilidade = configAcessibilidadeService.findById(idConfigAc);
         AlunoNapneEntity a = alunoNapneMapper.toAlunoNapneEntity(alunoNapneInput);
-        a.setCurso(cursoMapper.toCursoEntity(curso));
         a.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acessibilidade));
         return findById(alunoNapneRepository.save(a).getId());
     }

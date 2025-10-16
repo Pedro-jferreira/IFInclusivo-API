@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.entity;
 
+import com.example.IfGoiano.IfCoders.entity.Enums.Curso;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -11,9 +12,9 @@ import jakarta.persistence.*;
 @Data
 @DiscriminatorValue("aluno")
 public class AlunoEntity extends UsuarioEntity {
-    @ManyToOne
-    @JoinColumn(name = "curso_id")
-    private CursoEntity curso;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "curso")
+    private Curso curso;
 
 }
 

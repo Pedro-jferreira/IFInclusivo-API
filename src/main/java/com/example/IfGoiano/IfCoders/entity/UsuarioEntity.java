@@ -34,6 +34,8 @@ public class UsuarioEntity {
     @NotNull    @Column(nullable = false)
     private Long matricula;
     private String biografia;
+
+    private String imgPerfil;
     @Column(name = "userType", insertable = false, updatable = false)
     private String userType;
 

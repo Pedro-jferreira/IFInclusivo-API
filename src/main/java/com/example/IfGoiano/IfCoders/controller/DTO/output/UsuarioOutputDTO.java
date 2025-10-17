@@ -15,6 +15,7 @@ public class UsuarioOutputDTO {
     private String login;
     private Long matricula;
     private String biografia;
+    private String imgPerfil;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;
     private ConfigAcblOutputDTO configAcessibilidadeEntity;

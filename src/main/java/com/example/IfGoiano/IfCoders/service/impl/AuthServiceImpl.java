@@ -104,12 +104,15 @@ public class AuthServiceImpl implements AuthService {
         if(this.verifyLogin.existsByLogin(user.getLogin(), user.getMatricula())){
             throw new RuntimeException("Usuário já existe.");
         }
+
+
         if (user instanceof ProfessorInputDTO) {
             ProfessorEntity professor = professorMapper.toProfessorEntity((ProfessorInputDTO) user);
             professor.getRoles().add(Role.ROLE_PROFESSOR);
             professor.setActive(false);
             professor.setSenha(passwordEncoder.encode(user.getSenha()));
             professor.setUserType("professor");
+            professor.setImgPerfil(this.ChooseRandomPhoto());
             usuario = professorRepository.save(professor);
 
         } else if (user instanceof AlunoInputDTO) {
@@ -118,6 +121,7 @@ public class AuthServiceImpl implements AuthService {
             aluno.setActive(false);
             aluno.setSenha(passwordEncoder.encode(user.getSenha()));
             aluno.setUserType("aluno");
+            aluno.setImgPerfil(this.ChooseRandomPhoto());
             usuario = alunoRepository.save(aluno);
 
         } else if (user instanceof InterpreteInputDTO) {
@@ -126,6 +130,7 @@ public class AuthServiceImpl implements AuthService {
             interprete.setActive(false);
             interprete.setSenha(passwordEncoder.encode(user.getSenha()));
             interprete.setUserType("interprete");
+            interprete.setImgPerfil(this.ChooseRandomPhoto());
             usuario = interpreteRepository.save(interprete);
 
         } else if (user instanceof TutorInputDTO) {
@@ -134,6 +139,7 @@ public class AuthServiceImpl implements AuthService {
             tutor.setActive(false);
             tutor.setSenha(passwordEncoder.encode(user.getSenha()));
             tutor.setUserType("tutor");
+            tutor.setImgPerfil(this.ChooseRandomPhoto());
             usuario = tutorRepository.save(tutor);
         }
 
@@ -285,6 +291,18 @@ public class AuthServiceImpl implements AuthService {
                         "Se você não realizou essa ação, entre em contato imediatamente com o suporte.\n\n" +
                         "Atenciosamente,\nEquipe do Sistema"
         );
+    }
+
+    private String ChooseRandomPhoto(){
+        String[] images = {"https://if-inclusivo-dev.s3.us-west-1.amazonaws.com/iFdpEwMEcbFeM8me5Wzp1qNgXq1V2wpltRX4LQnb.png",
+                        "https://if-inclusivo-dev.s3.us-west-1.amazonaws.com/image3.png",
+                   "https://if-inclusivo-dev.s3.us-west-1.amazonaws.com/LQj23N7tiitwPDpH7oajzhC6qk39BFQlr0PwFJgX.png",
+        "https://if-inclusivo-dev.s3.us-west-1.amazonaws.com/image-perfil02.png",
+        "https://if-inclusivo-dev.s3.us-west-1.amazonaws.com/image-perf03.png"};
+
+        int index = (int) (Math.random() * images.length);
+
+        return images[index];
     }
 
     @Override

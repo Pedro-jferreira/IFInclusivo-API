@@ -28,6 +28,7 @@ public class UsuarioMapper {
         usuarioEntity.setSenha(usuarioInputDTO.getSenha());
         usuarioEntity.setMatricula(usuarioInputDTO.getMatricula());
         usuarioEntity.setBiografia(usuarioInputDTO.getBiografia());
+        usuarioEntity.setImgPerfil(usuarioInputDTO.getImgPerfil());
 
         return usuarioEntity;
     }
@@ -45,6 +46,7 @@ public class UsuarioMapper {
         usuarioInputDTO.setSenha(usuarioEntity.getSenha());
         usuarioInputDTO.setMatricula(usuarioEntity.getMatricula());
         usuarioInputDTO.setBiografia(usuarioEntity.getBiografia());
+        usuarioInputDTO.setImgPerfil(usuarioEntity.getImgPerfil());
 
         return usuarioInputDTO;
     }
@@ -93,6 +95,7 @@ public class UsuarioMapper {
         usuarioOutputDTO.setLogin(usuarioEntity.getLogin());
         usuarioOutputDTO.setMatricula(usuarioEntity.getMatricula());
         usuarioOutputDTO.setBiografia(usuarioEntity.getBiografia());
+        usuarioOutputDTO.setImgPerfil(usuarioEntity.getImgPerfil());
         usuarioOutputDTO.setDataCriacao(usuarioEntity.getDataCriacao());
         usuarioOutputDTO.setRoles(usuarioEntity.getRoles());
         usuarioOutputDTO.setUserType(usuarioEntity.getUserType());
@@ -123,6 +126,7 @@ public class UsuarioMapper {
         usuarioEntity.setLogin(usuarioOutputDTO.getLogin());
         usuarioEntity.setMatricula(usuarioOutputDTO.getMatricula());
         usuarioEntity.setBiografia(usuarioOutputDTO.getBiografia());
+        usuarioEntity.setImgPerfil(usuarioOutputDTO.getImgPerfil());
         usuarioEntity.setDataCriacao(usuarioOutputDTO.getDataCriacao());
         usuarioEntity.setRoles(usuarioOutputDTO.getRoles());
 
@@ -151,6 +155,7 @@ public class UsuarioMapper {
         usuarioEntity.setSenha(usuarioInputDTO.getSenha());
         usuarioEntity.setMatricula(usuarioInputDTO.getMatricula());
         usuarioEntity.setBiografia(usuarioInputDTO.getBiografia());
+        usuarioEntity.setImgPerfil(usuarioInputDTO.getImgPerfil());
 
 
     }
@@ -188,6 +193,7 @@ public class UsuarioMapper {
         usuarioDTO.setNome(usuarioEntity.getNome());
         usuarioDTO.setMatricula(usuarioEntity.getMatricula());
         usuarioDTO.setBiografia(usuarioEntity.getBiografia());
+        usuarioDTO.setImgPerfil(usuarioEntity.getImgPerfil());
         usuarioDTO.setDataCriacao(usuarioEntity.getDataCriacao());
         usuarioDTO.setRoles(usuarioEntity.getRoles());
         usuarioDTO.setUserType(usuarioEntity.getUserType());

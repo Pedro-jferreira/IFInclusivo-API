@@ -1,9 +1,9 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasOutputDTOV2;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
@@ -23,9 +23,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
-import java.util.List;
 
 
 @RestController
@@ -197,7 +194,7 @@ public class LibrasController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @GetMapping("/busca-categoria")
-    public ResponseEntity<Page<LibrasOutputDTO>> findByCategoria(
+    public ResponseEntity<Page<LibrasOutputDTOV2>> findByCategoria(
             @RequestParam Categorias categoria, 
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
@@ -209,7 +206,7 @@ public class LibrasController {
             Sort.by(sortBy).ascending();
         
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<LibrasOutputDTO> libras = this.librasService.findByCategoria(categoria, pageable);
+        Page<LibrasOutputDTOV2> libras = this.librasService.findByCategoria(categoria, pageable);
         return ResponseEntity.ok(libras);
     }
 

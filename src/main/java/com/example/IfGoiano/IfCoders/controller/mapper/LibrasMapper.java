@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasOutputDTOV2;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleInterpreteDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleLibrasDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
@@ -64,6 +65,19 @@ public class LibrasMapper {
 
     public void updateLibrasEntityFromDTO(LibrasInputDTO inputDTO, LibrasEntity librasEntity){
         modelMapper.map(inputDTO, librasEntity);
+    }
+
+
+    public LibrasOutputDTOV2 toLibrasOutputDTOV2(LibrasEntity librasEntity){
+        LibrasOutputDTOV2 dto = new LibrasOutputDTOV2();
+        dto.setId(librasEntity.getId());
+        dto.setPalavra(librasEntity.getPalavra());
+        dto.setDescricao(librasEntity.getDescricao());
+        dto.setUrl(librasEntity.getUrl());
+        dto.setJustificativa(librasEntity.getJustificativa());
+        dto.setStatus(librasEntity.getStatus());
+        dto.setCategorias(librasEntity.getCategorias());
+        return dto;
     }
 
 }

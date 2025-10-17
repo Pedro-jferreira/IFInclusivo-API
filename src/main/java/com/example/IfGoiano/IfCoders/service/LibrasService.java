@@ -1,15 +1,13 @@
 package com.example.IfGoiano.IfCoders.service;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasOutputDTOV2;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
-import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 
 @Service
@@ -35,7 +33,7 @@ public interface LibrasService {
 
     void delete(Long id);
 
-    Page<LibrasOutputDTO> findByCategoria(Categorias categoria, Pageable pageable);
+    Page<LibrasOutputDTOV2> findByCategoria(Categorias categoria, Pageable pageable);
 
 
 }

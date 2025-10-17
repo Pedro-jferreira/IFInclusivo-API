@@ -13,6 +13,7 @@ public class SimpleUsuarioDTO {
     private String nome;
     private Long matricula;
     private String biografia;
+    private String imgPerfil;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;
     private Set<Role> roles;

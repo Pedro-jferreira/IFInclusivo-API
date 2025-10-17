@@ -4,15 +4,11 @@ import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.AlunoMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
-import com.example.IfGoiano.IfCoders.controller.mapper.CursoMapper;
 import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
-import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.AlunoRepository;
-import com.example.IfGoiano.IfCoders.repository.CursoRepository;
 import com.example.IfGoiano.IfCoders.service.AlunoService;
 import com.example.IfGoiano.IfCoders.service.ConfigAcessibilidadeService;
-import com.example.IfGoiano.IfCoders.service.CursoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,10 +23,6 @@ public class AlunoServiceImpl implements AlunoService {
     private AlunoRepository alunoRepository;
     @Autowired
     private AlunoMapper mapper;
-    @Autowired
-    CursoService cursoService;
-    @Autowired
-    CursoMapper cursoMapper;
     @Autowired
     ConfigAcessibilidadeService configAcessibilidadeService;
     @Autowired
@@ -50,11 +42,9 @@ public class AlunoServiceImpl implements AlunoService {
 
     @Override
     @Transactional
-    public AlunoOutputDTO save(AlunoInputDTO aluno, Long idCurso, Long idConfigAc) {
-        var curso = cursoService.findById(idCurso);
+    public AlunoOutputDTO save(AlunoInputDTO aluno, Long idConfigAc) {
         var acessibilidade = configAcessibilidadeService.findById(idConfigAc);
         AlunoEntity a = mapper.toAlunoEntity(aluno);
-        a.setCurso(cursoMapper.toCursoEntity(curso));
         a.setConfigAcessibilidadeEntity(configAcblMapper.toConfigAcblEntity(acessibilidade));
         return findById( alunoRepository.save(a).getId());
     }

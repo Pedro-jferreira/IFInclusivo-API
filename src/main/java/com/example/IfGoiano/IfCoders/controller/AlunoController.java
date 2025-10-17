@@ -66,10 +66,9 @@ public class AlunoController {
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do aluno a ser cadastrado",
                     required = true,
             content = @Content(schema = @Schema(implementation = AlunoInputDTO.class)))
-            @RequestParam Long idCurso,
             @RequestParam Long idConfigAc,
             @org.springframework.web.bind.annotation.RequestBody AlunoInputDTO aluno) {
-        var savedAluno = alunoServiceImpl.save(aluno,idCurso,idConfigAc);
+        var savedAluno = alunoServiceImpl.save(aluno,idConfigAc);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedAluno.getId()).toUri();
         return ResponseEntity.created(location).body(savedAluno);

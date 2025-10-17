@@ -28,6 +28,7 @@ public class UsuarioMapper {
         usuarioEntity.setSenha(usuarioInputDTO.getSenha());
         usuarioEntity.setMatricula(usuarioInputDTO.getMatricula());
         usuarioEntity.setBiografia(usuarioInputDTO.getBiografia());
+        usuarioEntity.setImgPerfil(usuarioInputDTO.getImgPerfil());
 
         return usuarioEntity;
     }
@@ -45,6 +46,7 @@ public class UsuarioMapper {
         usuarioInputDTO.setSenha(usuarioEntity.getSenha());
         usuarioInputDTO.setMatricula(usuarioEntity.getMatricula());
         usuarioInputDTO.setBiografia(usuarioEntity.getBiografia());
+        usuarioInputDTO.setImgPerfil(usuarioEntity.getImgPerfil());
 
         return usuarioInputDTO;
     }
@@ -84,9 +86,7 @@ public class UsuarioMapper {
             usuarioOutputDTO = a;
         } else if (usuarioEntity instanceof AlunoEntity) {
             AlunoOutputDTO a = new AlunoOutputDTO();
-            CursoInputDTO c = new CursoInputDTO();
-            c.setNome(((AlunoEntity) usuarioEntity).getCurso().getNome());
-            a.setCurso(c);
+            a.setCurso(((AlunoEntity) usuarioEntity).getCurso());
             usuarioOutputDTO = a;
         }else throw new IllegalArgumentException("parce to output  a partir do usuario entity 2 nao conseguiu identificar o tipo");
 
@@ -95,6 +95,7 @@ public class UsuarioMapper {
         usuarioOutputDTO.setLogin(usuarioEntity.getLogin());
         usuarioOutputDTO.setMatricula(usuarioEntity.getMatricula());
         usuarioOutputDTO.setBiografia(usuarioEntity.getBiografia());
+        usuarioOutputDTO.setImgPerfil(usuarioEntity.getImgPerfil());
         usuarioOutputDTO.setDataCriacao(usuarioEntity.getDataCriacao());
         usuarioOutputDTO.setRoles(usuarioEntity.getRoles());
         usuarioOutputDTO.setUserType(usuarioEntity.getUserType());
@@ -125,6 +126,7 @@ public class UsuarioMapper {
         usuarioEntity.setLogin(usuarioOutputDTO.getLogin());
         usuarioEntity.setMatricula(usuarioOutputDTO.getMatricula());
         usuarioEntity.setBiografia(usuarioOutputDTO.getBiografia());
+        usuarioEntity.setImgPerfil(usuarioOutputDTO.getImgPerfil());
         usuarioEntity.setDataCriacao(usuarioOutputDTO.getDataCriacao());
         usuarioEntity.setRoles(usuarioOutputDTO.getRoles());
 
@@ -153,6 +155,7 @@ public class UsuarioMapper {
         usuarioEntity.setSenha(usuarioInputDTO.getSenha());
         usuarioEntity.setMatricula(usuarioInputDTO.getMatricula());
         usuarioEntity.setBiografia(usuarioInputDTO.getBiografia());
+        usuarioEntity.setImgPerfil(usuarioInputDTO.getImgPerfil());
 
 
     }
@@ -180,9 +183,7 @@ public class UsuarioMapper {
             usuarioDTO = a;
         } else if (usuarioEntity instanceof AlunoEntity) {
             SimpleAlunoDTO a = new SimpleAlunoDTO();
-            CursoInputDTO c = new CursoInputDTO();
-            c.setNome(((AlunoEntity) usuarioEntity).getCurso().getNome());
-            a.setCurso(c);
+            a.setCurso(((AlunoEntity) usuarioEntity).getCurso());
             usuarioDTO = a;
         }else {
             usuarioDTO= new SimpleUsuarioDTO();
@@ -192,6 +193,7 @@ public class UsuarioMapper {
         usuarioDTO.setNome(usuarioEntity.getNome());
         usuarioDTO.setMatricula(usuarioEntity.getMatricula());
         usuarioDTO.setBiografia(usuarioEntity.getBiografia());
+        usuarioDTO.setImgPerfil(usuarioEntity.getImgPerfil());
         usuarioDTO.setDataCriacao(usuarioEntity.getDataCriacao());
         usuarioDTO.setRoles(usuarioEntity.getRoles());
         usuarioDTO.setUserType(usuarioEntity.getUserType());
@@ -274,9 +276,7 @@ public class UsuarioMapper {
             usuarioEntity = al;
         } else if (usuarioOutputDTO instanceof AlunoOutputDTO) {
             AlunoEntity al = new AlunoEntity();
-            CursoEntity c = new CursoEntity();
-            c.setNome(((AlunoOutputDTO) usuarioOutputDTO).getCurso().getNome());
-            al.setCurso(c);
+            al.setCurso(((AlunoOutputDTO) usuarioOutputDTO).getCurso());
             usuarioEntity = al;
         } else throw new IllegalArgumentException("parce de to entity a partir do output falhou 3");
         return usuarioEntity;

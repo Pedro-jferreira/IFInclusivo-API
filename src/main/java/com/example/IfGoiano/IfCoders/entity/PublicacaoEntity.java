@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.entity;
 
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.StatusPublicacao;
+import com.example.IfGoiano.IfCoders.entity.Enums.TipoPublicacao;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
@@ -31,7 +32,7 @@ public class PublicacaoEntity implements Serializable {
     private String titulo;
 
     @Lob
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "LONGTEXT")
     private String texto;
 
     @CreationTimestamp
@@ -46,29 +47,32 @@ public class PublicacaoEntity implements Serializable {
             name = "publicacao_categorias",
             joinColumns = @JoinColumn(name = "publicacao_id")
     )
-    @Enumerated(EnumType.STRING) // salva como texto, não número
+    @Enumerated(EnumType.STRING)
     @Column(name = "categoria", nullable = false)
     private Set<Categorias> categorias = new HashSet<>();
 
+    /** Tipo da publicação: dúvida, dica, mentoria, etc. */
     @Enumerated(EnumType.STRING)
-    private StatusPublicacao status = StatusPublicacao.PENDENTE;
+    @Column(nullable = false)
+    private TipoPublicacao tipo;
 
+    /** Status só é usado quando for uma dúvida */
+    @Enumerated(EnumType.STRING)
+    private StatusPublicacao status;
+
+    /** Comentário marcado como resposta da dúvida */
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "resposta_escolhida_id", referencedColumnName = "id")
-    private PublicacaoEntity respostaEscolhida;
+    @JoinColumn(name = "comentario_escolhido_id")
+    private ComentarioEntity comentarioEscolhido;
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
     private UsuarioEntity usuario;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private PublicacaoEntity parent;
-
-    @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy("dataCriacao ASC")
-    private List<PublicacaoEntity> respostas = new ArrayList<>();
-
     @ManyToMany(mappedBy = "likes")
     private Set<UsuarioEntity> likeBy = new HashSet<>();
+
+    @OneToMany(mappedBy = "publicacao", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OrderBy("dataCriacao ASC")
+    private List<ComentarioEntity> comentarios = new ArrayList<>();
 }

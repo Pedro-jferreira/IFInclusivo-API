@@ -1,9 +1,7 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
 
-import com.example.IfGoiano.IfCoders.controller.DTO.SimplePublicacaoDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
-import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.PublicacaoMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
 import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;

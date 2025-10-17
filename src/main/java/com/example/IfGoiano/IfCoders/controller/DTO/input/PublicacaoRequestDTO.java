@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.controller.DTO.input;
 
 
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
+import com.example.IfGoiano.IfCoders.entity.Enums.TipoPublicacao;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -12,7 +13,6 @@ import java.util.Set;
 @Data
 public class PublicacaoRequestDTO {
 
-
     @Size(max = 255, message = "O título não pode exceder 255 caracteres.")
     private String titulo;
 
@@ -22,6 +22,6 @@ public class PublicacaoRequestDTO {
     @NotEmpty(message = "A publicação deve ter pelo menos uma categoria.")
     private Set<Categorias> categorias;
 
-    private Long parentId;
+    private TipoPublicacao tipo;
 
 }

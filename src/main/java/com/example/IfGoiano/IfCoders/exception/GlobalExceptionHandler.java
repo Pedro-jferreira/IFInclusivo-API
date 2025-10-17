@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<String> handleRuntime(RuntimeException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body("Não foi possível completar o cadastro." + ex.getMessage());
+                .body("Conflito de dados: " + ex.getMessage());
     }
 
 

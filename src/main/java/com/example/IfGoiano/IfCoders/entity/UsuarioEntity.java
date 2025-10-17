@@ -73,4 +73,12 @@ public class UsuarioEntity {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "publicacao_id") )
     private Set<PublicacaoEntity> likes = new HashSet<>();
+
+    @ManyToMany
+    @JoinTable(
+            name = "usuario_likes_comentarios",
+            joinColumns = @JoinColumn(name = "usuario_id"),
+            inverseJoinColumns = @JoinColumn(name = "comentario_id")
+    )
+    private Set<ComentarioEntity> likesComentarios = new HashSet<>();
 }

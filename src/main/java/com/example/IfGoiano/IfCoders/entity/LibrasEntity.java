@@ -24,6 +24,7 @@ public class LibrasEntity implements Serializable {
     @Column(length = 800)
     private String descricao;
     private String url;
+    private String fileUrl;
     private String justificativa;
     private Status status;
     private Categorias categorias;

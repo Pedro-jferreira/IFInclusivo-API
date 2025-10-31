@@ -30,10 +30,18 @@ public class LibrasMapper {
     }
 
     public LibrasInputDTO toLibrasInputDTO(LibrasEntity librasEntity){
-        return modelMapper.map(librasEntity, LibrasInputDTO.class);
+        LibrasInputDTO dto = new LibrasInputDTO();
+        dto.setPalavra(librasEntity.getPalavra());
+        dto.setDescricao(librasEntity.getDescricao());
+        dto.setUrl(librasEntity.getUrl());
+        return dto;
     }
     public LibrasEntity toLibrasEntity(LibrasInputDTO inputDTO){
-        return modelMapper.map(inputDTO, LibrasEntity.class);
+        LibrasEntity entity = new LibrasEntity();
+        entity.setPalavra(inputDTO.getPalavra());
+        entity.setDescricao(inputDTO.getDescricao());
+        entity.setUrl(inputDTO.getUrl());
+        return entity;
     }
 
     public LibrasOutputDTO toLibrasOutputDTO(LibrasEntity librasEntity){
@@ -42,6 +50,7 @@ public class LibrasMapper {
         dto.setPalavra(librasEntity.getPalavra());
         dto.setDescricao(librasEntity.getDescricao());
         dto.setUrl(librasEntity.getUrl());
+        dto.setFileUrl(librasEntity.getFileUrl());
         dto.setJustificativa(librasEntity.getJustificativa());
         dto.setStatus(librasEntity.getStatus());
 
@@ -64,7 +73,9 @@ public class LibrasMapper {
     }
 
     public void updateLibrasEntityFromDTO(LibrasInputDTO inputDTO, LibrasEntity librasEntity){
-        modelMapper.map(inputDTO, librasEntity);
+        librasEntity.setPalavra(inputDTO.getPalavra());
+        librasEntity.setDescricao(inputDTO.getDescricao());
+        librasEntity.setUrl(inputDTO.getUrl());
     }
 
 
@@ -74,6 +85,7 @@ public class LibrasMapper {
         dto.setPalavra(librasEntity.getPalavra());
         dto.setDescricao(librasEntity.getDescricao());
         dto.setUrl(librasEntity.getUrl());
+        dto.setFileUrl(librasEntity.getFileUrl());
         dto.setJustificativa(librasEntity.getJustificativa());
         dto.setStatus(librasEntity.getStatus());
         dto.setCategorias(librasEntity.getCategorias());

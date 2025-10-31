@@ -13,6 +13,7 @@ public class LibrasOutputDTO {
     private String palavra;
     private String descricao;
     private String url;
+    private String fileUrl;
     private String video;
     private String foto;
     private String justificativa;

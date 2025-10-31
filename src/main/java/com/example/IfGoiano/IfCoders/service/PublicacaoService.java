@@ -27,6 +27,9 @@ public interface PublicacaoService {
 
 
     @Transactional
+    boolean toggleLike(Long id, String username);
+
+    @Transactional
     void delete(Long id, String username);
 
 }

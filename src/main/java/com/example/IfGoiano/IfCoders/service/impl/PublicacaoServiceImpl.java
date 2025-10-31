@@ -22,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -137,10 +138,31 @@ public class PublicacaoServiceImpl implements PublicacaoService {
         publicacao.setTexto(publicacaoDetails.getTexto());
         publicacao.setCategorias(publicacaoDetails.getCategorias());
         PublicacaoEntity saved = publicacaoRepository.save(publicacao);
-
         return publicacaoMapper.toDetalhadaDTO(saved,usuarioLogado);
     }
 
+    @Override
+    @Transactional
+    public boolean toggleLike(Long id, String username) {
+        PublicacaoEntity publicacao = publicacaoRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Publicação não encontrada com ID: " + id));
+
+        UsuarioEntity usuarioLogado = usuarioRepository.findByLogin(username)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado: " + username));
+        boolean liked;
+        if (publicacao.getLikeBy().contains(usuarioLogado)) {
+            publicacao.getLikeBy().remove(usuarioLogado);
+            usuarioLogado.getLikes().remove(publicacao);
+            liked = false;
+        } else {
+            publicacao.getLikeBy().add(usuarioLogado);
+            usuarioLogado.getLikes().add(publicacao);
+            liked = true;
+        }
+        publicacaoRepository.save(publicacao);
+        usuarioRepository.save(usuarioLogado);
+        return liked;
+    }
 
     @Transactional
     @Override
@@ -151,11 +173,20 @@ public class PublicacaoServiceImpl implements PublicacaoService {
         UsuarioEntity usuarioLogado = usuarioRepository.findByLogin(username)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado: " + username));
 
+        // Verifica se o usuário tem permissão para excluir
         if (!publicacao.getUsuario().getId().equals(usuarioLogado.getId())) {
             throw new AccessDeniedException("Você não tem permissão para excluir esta publicação");
         }
 
+        // 🔹 Remove vínculos de likes antes de excluir a publicação
+        for (UsuarioEntity usuario : new HashSet<>(publicacao.getLikeBy())) {
+            usuario.getLikes().remove(publicacao);
+        }
+        publicacao.getLikeBy().clear();
+
+        // 🔹 Agora sim, exclui a publicação
         publicacaoRepository.delete(publicacao);
     }
+
 
 }

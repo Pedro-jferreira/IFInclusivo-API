@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller.DTO.output;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.PublicacaoUsuarioDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.TipoPublicacao;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -20,7 +21,7 @@ public class PublicacaoResponseDTO {
     private String texto;
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime dataCriacao;
-    private PublicacaoUsuarioDTO usuario;
+    private SimpleUsuarioDTO usuario;
     private TipoPublicacao tipo;
     private Set<Categorias> categorias;
     private int totalLikes;

@@ -25,6 +25,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Set;
 
 @RestController
@@ -154,6 +155,34 @@ public class PublicacaoController {
         String username = (userDetails != null) ? userDetails.getUsername() : null;
         return publicacaoService.findById(id, username);
     }
+
+    @PutMapping("/{id}/like")
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(
+            summary = "Alterna o like em uma publicação",
+            description = "Adiciona ou remove um like de uma publicação conforme o estado atual. Retorna `true` se a publicação foi curtida e `false` se foi descurtida."
+    )
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Like adicionado ou removido com sucesso",
+                    content = @Content(mediaType = "application/json",
+                            schema = @Schema(example = "{\"liked\": true}"))),
+            @ApiResponse(responseCode = "401", description = "Não autorizado (token inválido ou ausente)", content = @Content),
+            @ApiResponse(responseCode = "404", description = "Publicação ou usuário não encontrado", content = @Content)
+    })
+    public ResponseEntity<?> toggleLike(
+            @PathVariable Long id,
+            @AuthenticationPrincipal UserDetails userDetails) {
+
+
+        if (userDetails == null) {
+            return   ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
+        }
+        String username = userDetails.getUsername();
+        boolean liked = publicacaoService.toggleLike(id, username);
+
+        return ResponseEntity.ok(Map.of("liked", liked));
+    }
+
 
 }
 

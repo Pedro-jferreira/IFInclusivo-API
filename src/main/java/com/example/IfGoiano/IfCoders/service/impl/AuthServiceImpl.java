@@ -6,6 +6,7 @@ import com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.*;
 import com.example.IfGoiano.IfCoders.entity.*;
 import com.example.IfGoiano.IfCoders.entity.Enums.Role;
+import com.example.IfGoiano.IfCoders.exception.BadRequestException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.exception.TokenExpiredException;
 import com.example.IfGoiano.IfCoders.exception.TokenInvalidException;
@@ -102,7 +103,7 @@ public class AuthServiceImpl implements AuthService {
         UsuarioEntity usuario = null;
 
         if(this.verifyLogin.existsByLogin(user.getLogin(), user.getMatricula())){
-            throw new RuntimeException("Usuário já existe.");
+            throw new BadRequestException("Usuário já existe.");
         }
 
 

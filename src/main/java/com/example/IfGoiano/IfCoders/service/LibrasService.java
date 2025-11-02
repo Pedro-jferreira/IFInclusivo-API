@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.service;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTOCreated;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasOutputDTOV2;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
@@ -17,7 +18,7 @@ public interface LibrasService {
 
     LibrasOutputDTO findById(Long id);
 
-    LibrasOutputDTO save(LibrasInputDTO librasInputDTO, Long idInterprete );
+    LibrasOutputDTO save(LibrasInputDTOCreated librasInputDTO, Long idInterprete );
 
     LibrasOutputDTO sugereLibras(LibrasInputDTO librasInputDTO,Long id );
 

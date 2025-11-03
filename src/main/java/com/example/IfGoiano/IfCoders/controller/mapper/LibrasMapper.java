@@ -5,6 +5,7 @@ import com.example.IfGoiano.IfCoders.controller.DTO.SimpleInterpreteDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleLibrasDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTOCreated;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
 import org.modelmapper.ModelMapper;
@@ -76,6 +77,17 @@ public class LibrasMapper {
         librasEntity.setPalavra(inputDTO.getPalavra());
         librasEntity.setDescricao(inputDTO.getDescricao());
         librasEntity.setUrl(inputDTO.getUrl());
+    }
+
+    public LibrasEntity toLibrasEntity(LibrasInputDTOCreated inputDTO){
+        LibrasEntity entity = new LibrasEntity();
+        entity.setPalavra(inputDTO.getPalavra());
+        entity.setDescricao(inputDTO.getDescricao());
+        entity.setUrl(inputDTO.getUrl());
+        entity.setJustificativa(inputDTO.getJustificativa());
+        entity.setStatus(inputDTO.getStatus());
+        entity.setCategorias(inputDTO.getCategorias());
+        return entity;
     }
 
 

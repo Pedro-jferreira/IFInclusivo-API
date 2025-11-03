@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTOCreated;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.InterpreteMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
@@ -33,16 +34,10 @@ public class CreateLibras {
 
 
     @Transactional
-    public LibrasOutputDTO createLibras(LibrasInputDTO librasInputDTO, Long idInterprete) throws IOException {
+    public LibrasOutputDTO createLibras(LibrasInputDTOCreated librasInputDTO, Long idInterprete) throws IOException {
         var interprete = this.interpreteRepository.findById(idInterprete).orElseThrow(() -> new ResourceNotFoundException("Interprete not found"));
         LibrasEntity librasEntity = mapper.toLibrasEntity(librasInputDTO);
-        
-        // Upload do arquivo se fornecido
-        if (librasInputDTO.getFile() != null && !librasInputDTO.getFile().isEmpty()) {
-            String fileUrl = uploadFiles.putObject(librasInputDTO.getFile());
-            librasEntity.setFileUrl(fileUrl);
-        }
-        
+
         // Define status como EM_ANALISE por padrão
         librasEntity.setStatus(Status.EMANALISE);
 

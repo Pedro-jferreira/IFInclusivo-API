@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTOCreated;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasOutputDTOV2;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
@@ -91,7 +92,7 @@ public class LibrasServiceImpl implements LibrasService {
     }
 
     // Adicionar regra de negocios nesse metodo de criar libras
-    public LibrasOutputDTO save(LibrasInputDTO libras, Long idInterprete) {
+    public LibrasOutputDTO save(LibrasInputDTOCreated libras, Long idInterprete) {
         try {
             return this.createLibras.createLibras(libras, idInterprete);
         } catch (IOException e) {

@@ -4,6 +4,7 @@ package com.example.IfGoiano.IfCoders.controller;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasOutputDTOV2;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTOCreated;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
@@ -64,7 +65,7 @@ public class LibrasController {
                     content = @Content)})
     @PostMapping
     public ResponseEntity<LibrasOutputDTO> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do sinal a ser cadastrado", required = true,
-            content = @Content(schema = @Schema(implementation = LibrasInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody LibrasInputDTO sinais, @RequestParam Long idInterprete) {
+            content = @Content(schema = @Schema(implementation = LibrasInputDTOCreated.class))) @org.springframework.web.bind.annotation.RequestBody LibrasInputDTOCreated sinais, @RequestParam Long idInterprete) {
         return new ResponseEntity<>(librasService.save(sinais,idInterprete), HttpStatus.CREATED);
     }
 

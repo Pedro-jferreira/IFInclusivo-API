@@ -4,9 +4,11 @@ package com.example.IfGoiano.IfCoders.controller;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasOutputDTOV2;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTOCreated;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
+import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
 import com.example.IfGoiano.IfCoders.service.impl.LibrasServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -22,6 +24,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -32,6 +36,9 @@ public class LibrasController {
 
     @Autowired
     LibrasServiceImpl librasService;
+    
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
 
     @Operation(summary = "Buscar sinal por ID", tags = "Sinais de Libras")
@@ -58,7 +65,7 @@ public class LibrasController {
                     content = @Content)})
     @PostMapping
     public ResponseEntity<LibrasOutputDTO> save(@io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do sinal a ser cadastrado", required = true,
-            content = @Content(schema = @Schema(implementation = LibrasInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody LibrasInputDTO sinais, @RequestParam Long idInterprete) {
+            content = @Content(schema = @Schema(implementation = LibrasInputDTOCreated.class))) @org.springframework.web.bind.annotation.RequestBody LibrasInputDTOCreated sinais, @RequestParam Long idInterprete) {
         return new ResponseEntity<>(librasService.save(sinais,idInterprete), HttpStatus.CREATED);
     }
 
@@ -72,13 +79,15 @@ public class LibrasController {
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
-    @PostMapping("/sugere/{id}")
+    @PostMapping(value = "/sugere", consumes = "multipart/form-data")
     public ResponseEntity<LibrasOutputDTO> sugereLibras(
-            @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do sinal a ser sugerido", required = true,
-                    content = @Content(schema = @Schema(implementation = LibrasInputDTO.class)))
-            @RequestBody LibrasInputDTO sinais, 
-            @PathVariable Long id) {
-        return new ResponseEntity<>(librasService.sugereLibras(sinais, id), HttpStatus.CREATED);
+            @ModelAttribute LibrasInputDTO sinais,
+            @AuthenticationPrincipal UserDetails userDetails) {
+        
+        var usuario = usuarioRepository.findByLogin(userDetails.getUsername())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
+        
+        return new ResponseEntity<>(librasService.sugereLibras(sinais, usuario.getId()), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Buscar sinal por ID", tags = "Sinais de Libras")

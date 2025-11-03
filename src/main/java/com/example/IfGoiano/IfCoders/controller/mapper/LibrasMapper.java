@@ -5,6 +5,7 @@ import com.example.IfGoiano.IfCoders.controller.DTO.SimpleInterpreteDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleLibrasDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleUsuarioDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTOCreated;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
 import org.modelmapper.ModelMapper;
@@ -30,10 +31,18 @@ public class LibrasMapper {
     }
 
     public LibrasInputDTO toLibrasInputDTO(LibrasEntity librasEntity){
-        return modelMapper.map(librasEntity, LibrasInputDTO.class);
+        LibrasInputDTO dto = new LibrasInputDTO();
+        dto.setPalavra(librasEntity.getPalavra());
+        dto.setDescricao(librasEntity.getDescricao());
+        dto.setUrl(librasEntity.getUrl());
+        return dto;
     }
     public LibrasEntity toLibrasEntity(LibrasInputDTO inputDTO){
-        return modelMapper.map(inputDTO, LibrasEntity.class);
+        LibrasEntity entity = new LibrasEntity();
+        entity.setPalavra(inputDTO.getPalavra());
+        entity.setDescricao(inputDTO.getDescricao());
+        entity.setUrl(inputDTO.getUrl());
+        return entity;
     }
 
     public LibrasOutputDTO toLibrasOutputDTO(LibrasEntity librasEntity){
@@ -42,6 +51,7 @@ public class LibrasMapper {
         dto.setPalavra(librasEntity.getPalavra());
         dto.setDescricao(librasEntity.getDescricao());
         dto.setUrl(librasEntity.getUrl());
+        dto.setFileUrl(librasEntity.getFileUrl());
         dto.setJustificativa(librasEntity.getJustificativa());
         dto.setStatus(librasEntity.getStatus());
 
@@ -64,7 +74,20 @@ public class LibrasMapper {
     }
 
     public void updateLibrasEntityFromDTO(LibrasInputDTO inputDTO, LibrasEntity librasEntity){
-        modelMapper.map(inputDTO, librasEntity);
+        librasEntity.setPalavra(inputDTO.getPalavra());
+        librasEntity.setDescricao(inputDTO.getDescricao());
+        librasEntity.setUrl(inputDTO.getUrl());
+    }
+
+    public LibrasEntity toLibrasEntity(LibrasInputDTOCreated inputDTO){
+        LibrasEntity entity = new LibrasEntity();
+        entity.setPalavra(inputDTO.getPalavra());
+        entity.setDescricao(inputDTO.getDescricao());
+        entity.setUrl(inputDTO.getUrl());
+        entity.setJustificativa(inputDTO.getJustificativa());
+        entity.setStatus(inputDTO.getStatus());
+        entity.setCategorias(inputDTO.getCategorias());
+        return entity;
     }
 
 
@@ -74,6 +97,7 @@ public class LibrasMapper {
         dto.setPalavra(librasEntity.getPalavra());
         dto.setDescricao(librasEntity.getDescricao());
         dto.setUrl(librasEntity.getUrl());
+        dto.setFileUrl(librasEntity.getFileUrl());
         dto.setJustificativa(librasEntity.getJustificativa());
         dto.setStatus(librasEntity.getStatus());
         dto.setCategorias(librasEntity.getCategorias());

@@ -1,5 +1,6 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
+import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTOCreated;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasOutputDTOV2;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
@@ -8,6 +9,7 @@ import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
+import com.example.IfGoiano.IfCoders.exception.ConflictException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
 import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
@@ -17,6 +19,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.io.IOException;
 
 
 @Service
@@ -36,6 +39,9 @@ public class LibrasServiceImpl implements LibrasService {
 
     @Autowired
     private UsuarioRepository userRepository;
+
+    @Autowired
+    private UploadFiles uploadFiles;
 
     public LibrasOutputDTO findById(Long id) {
         var libras = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Libras not found"));
@@ -86,18 +92,32 @@ public class LibrasServiceImpl implements LibrasService {
     }
 
     // Adicionar regra de negocios nesse metodo de criar libras
-    public LibrasOutputDTO save(LibrasInputDTO libras, Long idInterprete) {
-      return this.createLibras.createLibras(libras, idInterprete);
+    public LibrasOutputDTO save(LibrasInputDTOCreated libras, Long idInterprete) {
+        try {
+            return this.createLibras.createLibras(libras, idInterprete);
+        } catch (IOException e) {
+            throw new RuntimeException("Erro ao fazer upload do arquivo", e);
+        }
     }
 
     @Transactional
     public LibrasOutputDTO sugereLibras(LibrasInputDTO libras, Long idUser) {
         var usuario = this.userRepository.findById(idUser).orElseThrow(() -> new ResourceNotFoundException("Usuario not found"));
 
-
         var libra = repository.findByPalavra(libras.getPalavra());
         LibrasEntity librasEntity = mapper.toLibrasEntity(libras);
+        
         if (libra.isEmpty()) {
+            // Upload do arquivo se fornecido
+            if (libras.getFile() != null && !libras.getFile().isEmpty()) {
+                try {
+                    String fileUrl = uploadFiles.putObject(libras.getFile());
+                    librasEntity.setFileUrl(fileUrl);
+                } catch (IOException e) {
+                    throw new RuntimeException("Erro ao fazer upload do arquivo", e);
+                }
+            }
+            
             librasEntity.getSugeriu().add(usuario);
             usuario.getLibrasEntities().add(librasEntity);
             librasEntity.setStatus(Status.EMANALISE);
@@ -105,16 +125,14 @@ public class LibrasServiceImpl implements LibrasService {
             this.repository.save(librasEntity);
             this.userRepository.save(usuario);
 
-
             return findById(librasEntity.getId());
         }
         if (libra.get().getStatus() == Status.EMANALISE) {
             libra.get().getSugeriu().add(usuario);
             return findById(repository.save(libra.get()).getId());
         } else {
-            throw new RuntimeException("Libras existed");
+            throw new ConflictException("Libras existed");
         }
-
     }
 
 }

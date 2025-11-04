@@ -1,5 +1,5 @@
 -- Migration para criar a tabela de publicações
-CREATE TABLE publicacoes (
+CREATE TABLE IF NOT EXISTS publicacoes (
     id BIGSERIAL PRIMARY KEY,
     titulo VARCHAR(255),
     texto TEXT NOT NULL,
@@ -15,14 +15,14 @@ CREATE TABLE publicacoes (
 );
 
 -- Tabela para categorias das publicações
-CREATE TABLE publicacao_categorias (
+CREATE TABLE IF NOT EXISTS publicacao_categorias (
     publicacao_id BIGINT NOT NULL,
     categoria VARCHAR(50) NOT NULL,
     FOREIGN KEY (publicacao_id) REFERENCES publicacoes(id)
 );
 
 -- Tabela para likes das publicações
-CREATE TABLE usuario_likes_publicacao (
+CREATE TABLE IF NOT EXISTS usuario_likes_publicacao (
     usuario_id BIGINT NOT NULL,
     publicacao_id BIGINT NOT NULL,
     PRIMARY KEY (usuario_id, publicacao_id),

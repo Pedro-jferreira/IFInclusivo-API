@@ -1,5 +1,5 @@
 -- Migration para criar a tabela de Libras
-CREATE TABLE libras (
+CREATE TABLE IF NOT EXISTS libras (
     id BIGSERIAL PRIMARY KEY,
     palavra VARCHAR(255),
     descricao VARCHAR(800),
@@ -11,7 +11,7 @@ CREATE TABLE libras (
 );
 
 -- Tabela de relacionamento entre usuários e sugestões de Libras
-CREATE TABLE sugeriu_libras (
+CREATE TABLE IF NOT EXISTS sugeriu_libras (
     libras_id BIGINT NOT NULL,
     usuario_id BIGINT NOT NULL,
     PRIMARY KEY (libras_id, usuario_id),
@@ -20,7 +20,7 @@ CREATE TABLE sugeriu_libras (
 );
 
 -- Tabela de relacionamento entre intérpretes e Libras
-CREATE TABLE interprete_libras (
+CREATE TABLE IF NOT EXISTS interprete_libras (
     interprete_id BIGINT NOT NULL,
     libras_id BIGINT NOT NULL,
     PRIMARY KEY (interprete_id, libras_id),

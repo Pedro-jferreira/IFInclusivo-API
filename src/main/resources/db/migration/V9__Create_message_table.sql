@@ -1,5 +1,5 @@
 -- Migration para criar a tabela de mensagens
-CREATE TABLE message (
+CREATE TABLE IF NOT EXISTS message (
     id BIGSERIAL PRIMARY KEY,
     text TEXT,
     data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

@@ -21,10 +21,7 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.Comparator;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -53,6 +50,7 @@ public class PublicacaoServiceImpl implements PublicacaoService {
             Set<Categorias> categorias,
             Ordenacao ordenarPor,
             Pageable pageable,
+            String query,
             String username) {
 
         final UsuarioEntity usuarioLogado = (username != null)
@@ -60,9 +58,17 @@ public class PublicacaoServiceImpl implements PublicacaoService {
                 : null;
 
         Specification<PublicacaoEntity> spec = Specification.where(null);
+        if (query != null && !query.isBlank()) {
+            String queryLower = "%" + query.toLowerCase() + "%";
+            spec = spec.and((root, q, cb) -> cb.or(
+                    cb.like(cb.lower(root.get("titulo").as(String.class)), queryLower),
+                    cb.like(cb.lower(root.get("texto").as(String.class)), queryLower)
+            ));
+        }
+
 
         if (categorias != null && !categorias.isEmpty()) {
-            spec = spec.and((root, query, cb) -> root.join("categorias").in(categorias));
+            spec = spec.and((root, querys, cb) -> root.join("categorias").in(categorias));
         }
 
         if (ordenarPor == Ordenacao.MAIS_RECENTE) {
@@ -90,6 +96,14 @@ public class PublicacaoServiceImpl implements PublicacaoService {
         }
 
         return page.map(entity -> publicacaoMapper.toDetalhadaDTO(entity, usuarioLogado));
+    }
+
+    @Override
+    public Page<PublicacaoResponseDTO> findPublicacoesByUserId(Pageable pageable, Long id) {
+        UsuarioEntity usuarioAutenticado = usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não encontrado com o id: " + id));
+        Page<PublicacaoEntity> page = publicacaoRepository.findPublicacaoEntitiesByUsuarioOrderByDataCriacaoDesc(usuarioAutenticado, pageable);
+        return page.map(entity -> publicacaoMapper.toDetalhadaDTO(entity, usuarioAutenticado));
     }
 
     private double calcularRelevancia(PublicacaoEntity p) {
@@ -139,6 +153,11 @@ public class PublicacaoServiceImpl implements PublicacaoService {
         publicacao.setCategorias(publicacaoDetails.getCategorias());
         PublicacaoEntity saved = publicacaoRepository.save(publicacao);
         return publicacaoMapper.toDetalhadaDTO(saved,usuarioLogado);
+    }
+
+    @Override
+    public List<String> sugerirTitulos(String query, Set<Categorias> categorias) {
+        return publicacaoRepository.findByTituloAndOptionalCategorias(query,categorias).stream().map((PublicacaoEntity::getTitulo)).toList();
     }
 
     @Override

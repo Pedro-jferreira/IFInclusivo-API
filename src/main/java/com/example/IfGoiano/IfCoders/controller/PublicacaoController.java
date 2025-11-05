@@ -25,6 +25,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -64,11 +65,12 @@ public class PublicacaoController {
             @RequestParam(required = false) Set<Categorias> categorias,
             @RequestParam(defaultValue = "MAIS_RECENTE") Ordenacao ordenarPor,
             Pageable pageable,
+            @RequestParam(required = false) String query,
             @AuthenticationPrincipal UserDetails userDetails) {
 
         String username = (userDetails != null) ? userDetails.getUsername() : null;
 
-        return publicacaoService.findAll(categorias, ordenarPor, pageable, username);
+        return publicacaoService.findAll(categorias, ordenarPor, pageable,query, username);
     }
 
     @SecurityRequirement(name = "bearerAuth")
@@ -182,6 +184,21 @@ public class PublicacaoController {
 
         return ResponseEntity.ok(Map.of("liked", liked));
     }
+
+    @GetMapping("/suggestions")
+    public ResponseEntity<List<String>> suggestionsSearch(
+            @RequestParam String query,
+            @RequestParam(required = false) Set<Categorias> categorias
+            ){
+        return  ResponseEntity.ok(publicacaoService.sugerirTitulos(query,categorias));
+    }
+
+    @GetMapping("user/{id}")
+    public  Page<PublicacaoResponseDTO> findByUserId( @PathVariable Long id,Pageable pageable){
+        return publicacaoService.findPublicacoesByUserId(pageable, id);
+
+    }
+
 
 
 }

@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+import java.util.List;
 import java.util.Set;
 
 public interface PublicacaoService {
@@ -19,13 +20,14 @@ public interface PublicacaoService {
             Set<Categorias> categorias,
             Ordenacao ordenarPor,
             Pageable pageable,
-            String username
+            String username,
+            String query
     );
+    Page<PublicacaoResponseDTO>  findPublicacoesByUserId(Pageable pageable, Long id);
 
     @Transactional
     PublicacaoResponseDTO update(Long id, PublicacaoRequestDTO publicacaoDetails, String username);
-
-
+    List<String> sugerirTitulos(String query, Set<Categorias> categorias);
     @Transactional
     boolean toggleLike(Long id, String username);
 

@@ -14,8 +14,11 @@ public interface PublicacaoMapper {
     PublicacaoEntity toEntity(PublicacaoRequestDTO dto);
 
     @Mapping(target = "totalLikes", expression = "java(entity.getLikeBy() != null ? entity.getLikeBy().size() : 0)")
-    @Mapping(target = "totalRespostas", expression = "java(entity.getComentarios() != null ? entity.getComentarios().size() : 0)")
-    @Mapping(target = "respostaEscolhidaId", source = "comentarioEscolhido.id")
+    @Mapping(
+            target = "totalRespostas",
+            expression = "java(entity.getComentarios() != null ? "
+                    + "(int) entity.getComentarios().stream().filter(c -> c.getParent() == null).count() : 0)"
+    )    @Mapping(target = "respostaEscolhidaId", source = "comentarioEscolhido.id")
     @Mapping(target = "tipo", source = "tipo")
     PublicacaoResponseDTO toDetalhadaDTO(PublicacaoEntity entity, @Context UsuarioEntity usuarioLogado);
 
@@ -31,4 +34,5 @@ public interface PublicacaoMapper {
                 .anyMatch(usuario -> usuario.getId().equals(usuarioLogado.getId()));
         dto.setCurtidoPeloUsuario(curtido);
     }
+
 }

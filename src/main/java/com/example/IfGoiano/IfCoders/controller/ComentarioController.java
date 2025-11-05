@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioRequestDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioResponseDTO;
+import com.example.IfGoiano.IfCoders.entity.Enums.Ordenacao;
 import com.example.IfGoiano.IfCoders.service.impl.ComentarioService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -105,11 +106,12 @@ public class ComentarioController {
     @Operation(summary = "Listar comentários de uma publicação")
     public Page<ComentarioResponseDTO> listarComentariosPorPublicacao(
             @PathVariable Long publicacaoId,
+            @RequestParam(defaultValue = "MAIS_RECENTE") Ordenacao ordenacao,
             Pageable pageable,
             @AuthenticationPrincipal UserDetails userDetails) {
 
         var username = (userDetails != null) ? userDetails.getUsername() : null;
-        return comentarioService.listarComentariosPublicacao(publicacaoId, pageable, username);
+        return comentarioService.listarComentariosPublicacao(publicacaoId,ordenacao, pageable, username);
     }
 
 

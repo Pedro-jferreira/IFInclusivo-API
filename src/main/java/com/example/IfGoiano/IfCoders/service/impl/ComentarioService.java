@@ -4,6 +4,7 @@ import com.example.IfGoiano.IfCoders.controller.DTO.input.ComentarioRequestDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ComentarioResponseDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.ComentarioMapper;
 import com.example.IfGoiano.IfCoders.entity.ComentarioEntity;
+import com.example.IfGoiano.IfCoders.entity.Enums.Ordenacao;
 import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
 import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
 import com.example.IfGoiano.IfCoders.repository.ComentarioRepository;
@@ -12,7 +13,9 @@ import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -109,21 +112,27 @@ public class ComentarioService {
     }
 
     @Transactional(readOnly = true)
-    public Page<ComentarioResponseDTO> listarComentariosPublicacao(Long publicacaoId, Pageable pageable, String userName) {
+    public Page<ComentarioResponseDTO> listarComentariosPublicacao(Long publicacaoId, Ordenacao ordenacao, Pageable pageable, String userName) {
         final UsuarioEntity usuarioLogado = (userName != null)
                 ? usuarioRepository.findByLogin(userName).orElse(null)
                 : null;
 
-        return comentarioRepository.findByPublicacaoIdAndParentIsNull(publicacaoId, pageable)
-                .map(entity -> comentarioMapper.toResponseDTO(entity, usuarioLogado));
-    }
+        Page<ComentarioEntity> comentarios;
 
+        if (ordenacao == Ordenacao.RELEVANCIA) {
+            comentarios = comentarioRepository.findByPublicacaoIdAndParentIsNullOrderByRelevancia(publicacaoId, pageable);
+        } else {
+            comentarios = comentarioRepository.findByPublicacaoIdAndParentIsNullOrderByDataCriacaoDesc(publicacaoId, pageable);
+        }
+
+        return comentarios.map(entity -> comentarioMapper.toResponseDTO(entity, usuarioLogado));
+    }
     @Transactional(readOnly = true)
     public Page<ComentarioResponseDTO> listarRespostasComentario(Long parentId, Pageable pageable, String userName) {
         final UsuarioEntity usuarioLogado = (userName != null)
                 ? usuarioRepository.findByLogin(userName).orElse(null)
                 : null;
-        return comentarioRepository.findByParentIdOrderByDataCriacaoDesc(parentId, pageable)
+        return comentarioRepository.findByParentIdOrderByDataCriacaoAsc(parentId, pageable)
                 .map(entity -> comentarioMapper.toResponseDTO(entity, usuarioLogado));
     }
 }

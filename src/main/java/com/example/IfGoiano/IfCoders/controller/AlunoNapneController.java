@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.controller;
 
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.AlunoNapneUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.AlunoNapneServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,9 +15,12 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/alunosNapne")
@@ -64,10 +68,10 @@ public class AlunoNapneController {
     public ResponseEntity<AlunoNapneOutputDTO> save(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do aluno NAPNE a ser cadastrado",
                     required = true,
-            content = @Content(schema = @Schema(implementation = AlunoNapneInputDTO.class)))
+                    content = @Content(schema = @Schema(implementation = AlunoNapneInputDTO.class)))
             @RequestParam Long idConfigAc,
             @org.springframework.web.bind.annotation.RequestBody AlunoNapneInputDTO aluno) {
-        return new ResponseEntity<>(alunoNapneService.save(aluno,idConfigAc), HttpStatus.CREATED);
+        return new ResponseEntity<>(alunoNapneService.save(aluno, idConfigAc), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Atualizar um aluno NAPNE por ID", tags = "Aluno NAPNE")
@@ -81,10 +85,20 @@ public class AlunoNapneController {
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
-    @PutMapping("/{id}")
-    public ResponseEntity<AlunoNapneOutputDTO> update(@PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do aluno NAPNE a ser atualizado", required = true,
-            content = @Content(schema = @Schema(implementation = AlunoNapneInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody AlunoNapneInputDTO aluno) {
-       return new ResponseEntity<>(alunoNapneService.update(aluno,id), HttpStatus.OK);
+    @PutMapping()
+    public ResponseEntity<?> update(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados do aluno NAPNE a ser atualizado",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = AlunoNapneUpdateDTO.class))
+            )
+            @org.springframework.web.bind.annotation.RequestBody AlunoNapneUpdateDTO aluno,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
+        }
+        return new ResponseEntity<>(alunoNapneService.update(aluno, userDetails.getUsername()), HttpStatus.OK);
     }
 
     @Operation(summary = "Excluir um aluno NAPNE por ID", tags = "Aluno NAPNE")

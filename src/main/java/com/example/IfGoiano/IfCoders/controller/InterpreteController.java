@@ -4,6 +4,7 @@ package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.RequestAnalisePalavra;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.InterpreteUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.service.InterpreteService;
@@ -20,6 +21,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -94,10 +97,20 @@ public class InterpreteController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @PutMapping("/{id}")
-    public ResponseEntity<InterpreteOutputDTO> update(@PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do intérprete a ser atualizado", required = true,
-            content = @Content(schema = @Schema(implementation = InterpreteInputDTO.class)))  @org.springframework.web.bind.annotation.RequestBody InterpreteInputDTO interprete) {
-        return new ResponseEntity<>(this.interpreteService.update(interprete, id), HttpStatus.NO_CONTENT);
+    @PutMapping()
+    public ResponseEntity<?> update(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados do intérprete a ser atualizado",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = InterpreteInputDTO.class))
+            )
+            @org.springframework.web.bind.annotation.RequestBody InterpreteUpdateDTO interprete,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
+        }
+        return new ResponseEntity<>(this.interpreteService.update(interprete, userDetails.getUsername()), HttpStatus.NO_CONTENT);
     }
 
     @Operation(summary = "Deletar um intérprete por ID", tags = "Intérprete")

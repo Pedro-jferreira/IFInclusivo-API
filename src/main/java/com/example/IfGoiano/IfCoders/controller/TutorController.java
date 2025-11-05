@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.controller;
 
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TutorInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.TutorUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TutorOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.TutorServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -14,6 +15,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -86,10 +89,20 @@ public class TutorController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)
     })
-    @PutMapping("/{id}")
-    public ResponseEntity<TutorOutputDTO> update(@PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados para atualizar um tutor", required = true,
-            content = @Content(schema = @Schema(implementation = TutorInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody TutorInputDTO tutor) {
-        return new ResponseEntity<>(this.service.update(tutor, id), HttpStatus.OK);
+    @PutMapping()
+    public ResponseEntity<?> update(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados para atualizar um tutor",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = TutorUpdateDTO.class))
+            )
+            @org.springframework.web.bind.annotation.RequestBody TutorUpdateDTO tutor,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
+        }
+        return new ResponseEntity<>(this.service.update(tutor, userDetails.getUsername()), HttpStatus.OK);
     }
 
     @Operation(summary = "Excluir um tutor por ID", tags = "Tutor")

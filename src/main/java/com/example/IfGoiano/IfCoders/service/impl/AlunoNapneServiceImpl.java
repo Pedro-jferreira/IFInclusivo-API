@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.AlunoNapneUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.AlunoNapneMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
@@ -57,8 +58,8 @@ public class AlunoNapneServiceImpl implements AlunoNapneService {
 
     @Override
     @Transactional
-    public AlunoNapneOutputDTO update(AlunoNapneInputDTO alunoNapne, Long id) {
-        var entity = alunoNapneRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException(id));
+    public AlunoNapneOutputDTO update(AlunoNapneUpdateDTO alunoNapne, String username) {
+        var entity = alunoNapneRepository.findByLogin(username).orElseThrow(()-> new ResourceNotFoundException(username));
         alunoNapneMapper.updateAlunoNapneEntiryFromDTO(alunoNapne,entity);
         return alunoNapneMapper.toAlunoNapneOutputDTO(entity);
 

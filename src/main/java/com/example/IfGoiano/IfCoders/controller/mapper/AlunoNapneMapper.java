@@ -3,6 +3,7 @@ package com.example.IfGoiano.IfCoders.controller.mapper;
 import com.example.IfGoiano.IfCoders.controller.DTO.SimpleAlunoNapneDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.AlunoNapneUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
 import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
@@ -32,7 +33,7 @@ public class AlunoNapneMapper {
         return modelMapper.map(alunoNapneEntity, AlunoNapneOutputDTO.class);
     }
 
-    public void updateAlunoNapneEntiryFromDTO(AlunoNapneInputDTO alunoDetails, AlunoNapneEntity alunoEntity) {
+    public void updateAlunoNapneEntiryFromDTO(AlunoNapneUpdateDTO alunoDetails, AlunoNapneEntity alunoEntity) {
         modelMapper.map(alunoDetails, alunoEntity);
     }
 

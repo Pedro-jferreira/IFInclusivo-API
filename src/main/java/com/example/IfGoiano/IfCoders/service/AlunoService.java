@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.service;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.AlunoUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
 
@@ -13,7 +14,7 @@ public interface AlunoService {
 
     AlunoOutputDTO save(AlunoInputDTO aluno, Long idConfigAc);
 
-    AlunoOutputDTO update(Long id, AlunoInputDTO alunoDetails);
+    AlunoOutputDTO update(String username, AlunoUpdateDTO alunoDetails);
 
     void delete(Long id);
     boolean existsById(Long id);

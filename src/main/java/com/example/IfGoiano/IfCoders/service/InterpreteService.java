@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.service;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.RequestAnalisePalavra;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.InterpreteUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import org.springframework.data.domain.Page;
@@ -16,7 +17,7 @@ public interface InterpreteService {
 
     InterpreteOutputDTO save(InterpreteInputDTO interpreteInputDTO, Long idConfigAc);
 
-    InterpreteOutputDTO update(InterpreteInputDTO interpreteOutputDTO, Long id);
+    InterpreteOutputDTO update(InterpreteUpdateDTO interpreteOutputDTO, String userName);
 
     Page<LibrasOutputDTO> historicoLibrasSugeridas(Pageable pageable);
 

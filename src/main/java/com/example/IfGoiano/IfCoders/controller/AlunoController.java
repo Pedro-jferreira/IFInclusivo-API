@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.AlunoUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
 import com.example.IfGoiano.IfCoders.service.impl.AlunoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,12 +12,16 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
 import java.util.List;
+
 @SecurityRequirement(name = "bearerAuth")
 @RestController
 @RequestMapping("/alunos")
@@ -42,12 +47,12 @@ public class AlunoController {
     @Operation(summary = "Buscar aluno por ID", tags = {"Aluno"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the student",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoOutputDTO.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AlunoOutputDTO.class))}),
             @ApiResponse(responseCode = "404", description = "Student not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)})
     @GetMapping("/{id}")
     public ResponseEntity<AlunoOutputDTO> findById(@PathVariable Long id) {
         var aluno = alunoServiceImpl.findById(id);
@@ -57,18 +62,18 @@ public class AlunoController {
     @Operation(summary = "Cadastrar um novo aluno", tags = {"Aluno"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Student created",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoOutputDTO.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AlunoOutputDTO.class))}),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)})
     @PostMapping
     public ResponseEntity<AlunoOutputDTO> save(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do aluno a ser cadastrado",
                     required = true,
-            content = @Content(schema = @Schema(implementation = AlunoInputDTO.class)))
+                    content = @Content(schema = @Schema(implementation = AlunoInputDTO.class)))
             @RequestParam Long idConfigAc,
             @org.springframework.web.bind.annotation.RequestBody AlunoInputDTO aluno) {
-        var savedAluno = alunoServiceImpl.save(aluno,idConfigAc);
+        var savedAluno = alunoServiceImpl.save(aluno, idConfigAc);
         URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
                 .buildAndExpand(savedAluno.getId()).toUri();
         return ResponseEntity.created(location).body(savedAluno);
@@ -77,18 +82,28 @@ public class AlunoController {
     @Operation(summary = "Atualizar um aluno por ID", tags = {"Aluno"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Student updated",
-                    content = { @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AlunoOutputDTO.class)) }),
+                    content = {@Content(mediaType = "application/json",
+                            schema = @Schema(implementation = AlunoOutputDTO.class))}),
             @ApiResponse(responseCode = "400", description = "Bad request",
                     content = @Content),
             @ApiResponse(responseCode = "404", description = "Student not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
-    @PutMapping("/{id}")
-    public ResponseEntity<AlunoOutputDTO> update(@PathVariable Long id, @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Dados do aluno a ser atualizado", required = true,
-            content = @Content(schema = @Schema(implementation = AlunoInputDTO.class))) @org.springframework.web.bind.annotation.RequestBody AlunoInputDTO alunoDetails) {
-        return ResponseEntity.ok().body(alunoServiceImpl.update(id, alunoDetails));
+                    content = @Content)})
+    @PutMapping()
+    public ResponseEntity<?> update(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados do aluno a ser atualizado",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = AlunoUpdateDTO.class))
+            )
+            @org.springframework.web.bind.annotation.RequestBody AlunoUpdateDTO alunoDetails,
+            @AuthenticationPrincipal UserDetails userDetails
+    ) {
+        if (userDetails == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário não autenticado");
+        }
+        return ResponseEntity.ok().body(alunoServiceImpl.update(userDetails.getUsername(), alunoDetails));
     }
 
     @Operation(summary = "Excluir aluno por ID", tags = {"Aluno"})
@@ -98,7 +113,7 @@ public class AlunoController {
             @ApiResponse(responseCode = "404", description = "Student not found",
                     content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error",
-                    content = @Content) })
+                    content = @Content)})
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id, @RequestHeader("Authorization") String authToken) {
         alunoServiceImpl.delete(id);

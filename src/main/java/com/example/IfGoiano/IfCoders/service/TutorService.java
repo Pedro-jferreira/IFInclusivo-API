@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.service;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TutorInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.TutorUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TutorOutputDTO;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public interface TutorService {
 
     TutorOutputDTO save(TutorInputDTO tutorInputDTO, Long idConfigAc);
 
-    TutorOutputDTO update(TutorInputDTO tutorInputDTO, Long id);
+    TutorOutputDTO update(TutorUpdateDTO tutorInputDTO, String userName);
 
     void delete(Long id);
 

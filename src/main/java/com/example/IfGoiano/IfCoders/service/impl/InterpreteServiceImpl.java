@@ -3,6 +3,7 @@ package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.RequestAnalisePalavra;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.InterpreteUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.InterpreteOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
@@ -70,8 +71,8 @@ public class InterpreteServiceImpl implements InterpreteService {
 
     @Override
     @Transactional
-    public InterpreteOutputDTO update(InterpreteInputDTO interpreteInputDTO, Long id) {
-        var interprete = interpreteRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Interprete not found Id :"+ id));
+    public InterpreteOutputDTO update(InterpreteUpdateDTO interpreteInputDTO, String userName) {
+        var interprete = interpreteRepository.findByLogin(userName).orElseThrow(() -> new ResourceNotFoundException("Interprete not found Id :"+ userName));
         interpreteMapper.updateInterpreteEntityFromDTO(interpreteInputDTO, interprete);
 
         return interpreteMapper.toInterpreteOutputDTO(interpreteRepository.save(interprete));

@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.controller.mapper;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TutorInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.TutorUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TutorOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.TutorEntity;
 import org.modelmapper.ModelMapper;
@@ -28,7 +29,7 @@ public class TutorMapper {
     public TutorOutputDTO toTutorOutputDTO(TutorEntity tutorEntity) {
         return modelMapper.map(tutorEntity, TutorOutputDTO.class);
     }
-    public void updateTutorEntityFromDTO(TutorInputDTO tutoDeitails, TutorEntity tutorEntity) {
+    public void updateTutorEntityFromDTO(TutorUpdateDTO tutoDeitails, TutorEntity tutorEntity) {
         modelMapper.map(tutoDeitails, tutorEntity);
     }
 }

@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.service;
 
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.AlunoNapneUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
 
@@ -14,7 +15,7 @@ public interface AlunoNapneService {
 
     AlunoNapneOutputDTO save(AlunoNapneInputDTO alunoNapne, Long idConfigAc);
 
-    AlunoNapneOutputDTO update(AlunoNapneInputDTO alunoNapne, Long id);
+    AlunoNapneOutputDTO update(AlunoNapneUpdateDTO alunoNapne, String userName);
 
     void delete(Long id);
     boolean existsById(Long id);

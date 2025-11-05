@@ -1,6 +1,7 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.TutorInputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.input.update.TutorUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.TutorOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.TutorMapper;
@@ -56,8 +57,8 @@ public class TutorServiceImpl implements TutorService {
 
     @Override
     @Transactional
-    public TutorOutputDTO update(TutorInputDTO tutorDTO, Long id) {
-        var tutor = tutorRepository.findById(id)
+    public TutorOutputDTO update(TutorUpdateDTO tutorDTO, String userName) {
+        var tutor = tutorRepository.findByLogin(userName)
                 .orElseThrow(() -> new ResourceNotFoundException("Tutor not found"));
 
        tutorMapper.updateTutorEntityFromDTO(tutorDTO,tutor);

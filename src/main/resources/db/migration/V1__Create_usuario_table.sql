@@ -1,5 +1,5 @@
 -- Migration para criar a tabela principal de usuários
-CREATE TABLE usuario_entity (
+CREATE TABLE IF NOT EXISTS usuario_entity (
     id BIGSERIAL PRIMARY KEY,
     nome VARCHAR(255) NOT NULL,
     login VARCHAR(255) NOT NULL,
@@ -13,7 +13,7 @@ CREATE TABLE usuario_entity (
 );
 
 -- Tabela para roles dos usuários
-CREATE TABLE usuario_entity_roles (
+CREATE TABLE IF NOT EXISTS usuario_entity_roles (
     usuario_entity_id BIGINT NOT NULL,
     roles VARCHAR(50) NOT NULL,
     FOREIGN KEY (usuario_entity_id) REFERENCES usuario_entity(id)

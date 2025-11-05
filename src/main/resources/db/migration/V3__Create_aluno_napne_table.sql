@@ -1,5 +1,5 @@
 -- Migration para criar a tabela de alunos NAPNE
-CREATE TABLE aluno_napne (
+CREATE TABLE IF NOT EXISTS aluno_napne (
     id BIGINT PRIMARY KEY,
     condicao VARCHAR(255) NOT NULL,
     laudo VARCHAR(255) NOT NULL,

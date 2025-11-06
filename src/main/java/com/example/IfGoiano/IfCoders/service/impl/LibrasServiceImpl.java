@@ -8,6 +8,9 @@ import com.example.IfGoiano.IfCoders.controller.mapper.LibrasMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
 import com.example.IfGoiano.IfCoders.entity.Enums.Categorias;
 import com.example.IfGoiano.IfCoders.entity.Enums.Status;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasRelacionadasDTO;
+
+import java.util.List;
 import com.example.IfGoiano.IfCoders.entity.LibrasEntity;
 import com.example.IfGoiano.IfCoders.exception.ConflictException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
@@ -66,8 +69,20 @@ public class LibrasServiceImpl implements LibrasService {
     }
 
     @Override
-    public Page<LibrasOutputDTO> searchLibrasByDeeply(String search, Pageable pageable) {
-       return repository.searchLibrasByDeeply(search,pageable).map(mapper::toLibrasOutputDTO);
+    public List<String> searchLibrasByDeeply(String search) {
+       return repository.searchLibrasByDeeply(search);
+    }
+
+    @Override
+    public Page<LibrasRelacionadasDTO> findRelatedByCategoria(Long librasId, Pageable pageable) {
+        var libras = repository.findById(librasId).orElseThrow(() -> new ResourceNotFoundException("Libras not found"));
+        return repository.findRelatedByCategoria(libras.getCategorias(), librasId, pageable)
+                .map(l -> {
+                    LibrasRelacionadasDTO dto = new LibrasRelacionadasDTO();
+                    dto.setId(l.getId());
+                    dto.setPalavra(l.getPalavra());
+                    return dto;
+                });
     }
 
     @Override

@@ -2,6 +2,9 @@ package com.example.IfGoiano.IfCoders.controller;
 
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasOutputDTOV2;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.LibrasRelacionadasDTO;
+
+import java.util.List;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.InterpreteInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.LibrasInputDTOCreated;
@@ -159,10 +162,24 @@ public class LibrasController {
             @ApiResponse(responseCode = "500", description = "Internal server error",
                     content = @Content)})
     @GetMapping("/busca-profunda")
-    public ResponseEntity<Page<LibrasOutputDTO>> buscaProfundaLibras(
-            @RequestParam String palavra, Pageable pageable) {
-        Page<LibrasOutputDTO> resultados = this.librasService.searchLibrasByDeeply(palavra, pageable);
+    public ResponseEntity<List<String>> buscaProfundaLibras(
+            @RequestParam String palavra) {
+        List<String> resultados = this.librasService.searchLibrasByDeeply(palavra);
         return ResponseEntity.ok(resultados);
+    }
+
+    @Operation(summary = "Buscar libras relacionadas por categoria", tags = "Sinais de Libras")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Related signs found",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Sign not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)})
+    @GetMapping("/relacionadas/{id}")
+    public ResponseEntity<Page<LibrasRelacionadasDTO>> findRelatedByCategoria(@PathVariable Long id, Pageable pageable) {
+        Page<LibrasRelacionadasDTO> relacionadas = this.librasService.findRelatedByCategoria(id, pageable);
+        return ResponseEntity.ok(relacionadas);
     }
     @SecurityRequirement(name = "bearerAuth")
     @Operation(summary = "Buscar sinais por status", tags = "Sinais de Libras")

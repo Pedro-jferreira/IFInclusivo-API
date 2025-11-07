@@ -39,6 +39,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // JWT stateless
                 .and()
                 .authorizeHttpRequests()
+                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
 
                 .requestMatchers(HttpMethod.POST, "/topicos/**").hasRole("PROFESSOR")
                 .requestMatchers(HttpMethod.PUT, "/topicos/**").hasRole("PROFESSOR")

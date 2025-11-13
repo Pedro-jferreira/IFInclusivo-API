@@ -14,12 +14,10 @@ public class MockLibras {
         LibrasEntity librasEntity = new LibrasEntity();
         librasEntity.setId(number);
         librasEntity.setStatus(Status.APROVADO);
-        librasEntity.setFoto("First foto" + number);
         librasEntity.setDescricao("First descricao" + number);
         librasEntity.setPalavra("First palavra" + number);
         librasEntity.setUrl("First url" + number);
         librasEntity.setJustificativa("First justificativa" + number);
-        librasEntity.setVideo("First video" + number);
         librasEntity.setCategorias(Categorias.REDES);
         InterpreteEntity interprete = input.mockInterpreteEntity(number);
         librasEntity.getInterprete().add(interprete);

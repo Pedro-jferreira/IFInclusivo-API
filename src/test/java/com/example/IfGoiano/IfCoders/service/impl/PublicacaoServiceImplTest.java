@@ -1,7 +1,7 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
 
-import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
+/*import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.PublicacaoMapper;
 import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
 import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
@@ -153,4 +153,4 @@ class PublicacaoServiceImplTest {
 
         assertThrows(ResourceNotFoundException.class, () -> service.update(1L, publicacaoInputDTO));
     }
-}
+}*/

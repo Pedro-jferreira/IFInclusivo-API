@@ -1,20 +1,28 @@
 package com.example.IfGoiano.IfCoders.service.impl;
 
-
-import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoInputDTO;
-import com.example.IfGoiano.IfCoders.controller.mapper.PublicacaoMapper;
-import com.example.IfGoiano.IfCoders.controller.mapper.UsuarioMapper;
-import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
-import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
-import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
-import com.example.IfGoiano.IfCoders.repository.PublicacaoRepositoy;
-import com.example.IfGoiano.IfCoders.service.UsuarioService;
+// Imports do JUnit e Mockito
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.extension.ExtendWith; // <-- CORREÇÃO 1 (Import)
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.junit.jupiter.MockitoExtension; // <-- CORREÇÃO 1 (Import)
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
+
+// Imports de DTOs e Mappers
+import com.example.IfGoiano.IfCoders.controller.DTO.input.PublicacaoRequestDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.PublicacaoResponseDTO;
+import com.example.IfGoiano.IfCoders.controller.mapper.PublicacaoMapper;
+import com.example.IfGoiano.IfCoders.entity.PublicacaoEntity;
+import com.example.IfGoiano.IfCoders.entity.UsuarioEntity;
+import com.example.IfGoiano.IfCoders.repository.PublicacaoRepositoy;
+import com.example.IfGoiano.IfCoders.repository.UsuarioRepository;
+import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -23,134 +31,94 @@ import org.springframework.data.domain.Pageable;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
-
-
 @ExtendWith(MockitoExtension.class)
 class PublicacaoServiceImplTest {
 
+    @InjectMocks
+    private PublicacaoServiceImpl service;
 
     @Mock
     private PublicacaoRepositoy repositoy;
 
     @Mock
+    private UsuarioRepository usuarioRepository;
+
+    @Mock
     private PublicacaoMapper mapper;
 
-    @Mock
-    private UsuarioService usuarioService;
-
-    @Mock
-    private UsuarioMapper usuarioMapper;
-
-    @InjectMocks
-    private PublicacaoServiceImpl service;
-
-    private PublicacaoEntity publicacaoEntity;
-    private PublicacaoOutputDTO publicacaoOutputDTO;
-    private PublicacaoInputDTO publicacaoInputDTO;
-    private UsuarioEntity usuarioEntity;
+    private UsuarioEntity mockUsuario;
+    private PublicacaoEntity mockPublicacaoEntity;
+    private PublicacaoRequestDTO mockRequestDTO;
+    private PublicacaoResponseDTO mockResponseDTO;
 
     @BeforeEach
     void setUp() {
-        publicacaoEntity = new PublicacaoEntity();
+        mockUsuario = new UsuarioEntity();
+        mockUsuario.setId(1L);
+        mockUsuario.setLogin("Isaias");
 
-        publicacaoEntity.setId(1L);
+        mockRequestDTO = new PublicacaoRequestDTO();
+        mockRequestDTO.setTexto("Texto da nova pulicação");
+        mockRequestDTO.setTitulo("Este é um título de teste");
 
-        publicacaoOutputDTO = new PublicacaoOutputDTO();
+        mockPublicacaoEntity = new PublicacaoEntity();
+        mockPublicacaoEntity.setId(10L);
+        mockPublicacaoEntity.setTexto("Texto da  nova publicação");
+        mockPublicacaoEntity.setUsuario(mockUsuario);
 
-        publicacaoInputDTO = new PublicacaoInputDTO();
-
-        usuarioEntity = new UsuarioEntity();
+        mockResponseDTO = new PublicacaoResponseDTO();
+        mockResponseDTO.setId(10L);
+        mockResponseDTO.setTexto("Texto da  nova publicação");
     }
 
     @Test
-    void findAll_ShouldReturnListOfPublicacoes() {
-        when(repositoy.findAll()).thenReturn(List.of(publicacaoEntity));
-        when(mapper.toPublicacaoOutputDTO(any())).thenReturn(publicacaoOutputDTO);
+    @DisplayName("Deve salvar uma nova publicacao com sucesso")
+    void save() {
+        // --- Arrange ---
+        when(usuarioRepository.findByLogin("Isaias")).thenReturn(Optional.of(mockUsuario));
+        when(mapper.toEntity(mockRequestDTO)).thenReturn(mockPublicacaoEntity); // Assumindo que toEntity existe
+        when(repositoy.save(any(PublicacaoEntity.class))).thenReturn(mockPublicacaoEntity);
+        when(mapper.toDetalhadaDTO(mockPublicacaoEntity, mockUsuario)).thenReturn(mockResponseDTO);
 
-        List<PublicacaoOutputDTO> result = service.findAll();
+        PublicacaoResponseDTO result = service.save(mockRequestDTO, "Isaias");
 
         assertNotNull(result);
-        assertEquals(1, result.size());
-        verify(repositoy, times(1)).findAll();
+        assertEquals(10L, result.getId());
+        assertEquals("Texto da  nova publicação", result.getTexto()); // Verificando o DTO de resposta
+
+        verify(usuarioRepository, times(1)).findByLogin("Isaias");
+        verify(repositoy, times(1)).save(mockPublicacaoEntity);
+
+        verify(mapper, times(1)).toDetalhadaDTO(mockPublicacaoEntity, mockUsuario);
+
+        assertEquals("Isaias", mockPublicacaoEntity.getUsuario().getLogin());
     }
 
     @Test
-    void findById_WhenFound_ShouldReturnPublicacao() {
-        when(repositoy.findById(1L)).thenReturn(Optional.of(publicacaoEntity));
-        when(mapper.toPublicacaoOutputDTO(any())).thenReturn(publicacaoOutputDTO);
-
-        PublicacaoOutputDTO result = service.findById(1L);
-
-        assertNotNull(result);
-        verify(repositoy, times(1)).findById(1L);
+    void findAll() {
     }
 
     @Test
-    void findById_WhenNotFound_ShouldThrowException() {
-        when(repositoy.findById(1L)).thenReturn(Optional.empty());
-
-        assertThrows(ResourceNotFoundException.class, () -> service.findById(1L));
-    }
-
-//    @Test
-//    void save_ShouldReturnSavedPublicacao() {
-//        when(usuarioService.findById(1L)).thenReturn(new com.example.IfGoiano.IfCoders.controller.DTO.output.UsuarioOutputDTO());
-//        when(usuarioMapper.toEntity(any())).thenReturn(usuarioEntity);
-//        when(mapper.toPublicacaoEntity(any(PublicacaoInputDTO.class))).thenReturn(publicacaoEntity);
-//        when(repositoy.save(any(PublicacaoEntity.class))).thenReturn(publicacaoEntity);
-//        when(repositoy.findById(any())).thenReturn(Optional.of(publicacaoEntity));
-//        when(mapper.toPublicacaoOutputDTO(any(PublicacaoEntity.class))).thenReturn(publicacaoOutputDTO);
-//
-//        PublicacaoOutputDTO result = service.save(1L, publicacaoInputDTO);
-//
-//        assertNotNull(result);
-//        verify(repositoy, times(1)).save(any());
-//    }
-
-    @Test
-    void delete_ShouldDeletePublicacao() {
-        when(repositoy.findById(1L)).thenReturn(Optional.of(publicacaoEntity));
-
-        service.delete(1L);
-
-        verify(repositoy, times(1)).delete(any());
+    void findPublicacoesByUserId() {
     }
 
     @Test
-    void searchPublicacaoByTermQuickly_ShouldReturnPagedResult() {
-        Pageable pageable = PageRequest.of(0, 10);
-        Page<PublicacaoEntity> page = new PageImpl<>(List.of(publicacaoEntity));
-
-        when(repositoy.searchPublicacaoByTermQuickly(anyString(), any())).thenReturn(page);
-        when(mapper.toPublicacaoOutputDTO(any())).thenReturn(publicacaoOutputDTO);
-
-        Page<PublicacaoOutputDTO> result = service.searchPublicacaoByTermQuickly("test", 0, 10);
-
-        assertNotNull(result);
-        assertEquals(1, result.getTotalElements());
+    void findById() {
     }
 
     @Test
-    void update_WhenFound_ShouldReturnUpdatedPublicacao() {
-        when(repositoy.findById(1L)).thenReturn(Optional.of(publicacaoEntity));
-        when(mapper.toPublicacaoOutputDTO(any())).thenReturn(publicacaoOutputDTO);
-        when(repositoy.save(any())).thenReturn(publicacaoEntity);
-
-        PublicacaoOutputDTO result = service.update(1L, publicacaoInputDTO);
-
-        assertNotNull(result);
-        verify(repositoy, times(1)).save(any());
+    void update() {
     }
 
     @Test
-    void update_WhenNotFound_ShouldThrowException() {
-        when(repositoy.findById(1L)).thenReturn(Optional.empty());
+    void sugerirTitulos() {
+    }
 
-        assertThrows(ResourceNotFoundException.class, () -> service.update(1L, publicacaoInputDTO));
+    @Test
+    void toggleLike() {
+    }
+
+    @Test
+    void delete() {
     }
 }

@@ -29,8 +29,8 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 
 import static org.assertj.core.api.Assertions.assertThat;
-
 /*
+
 @DataJpaTest // indica que e uma classe de teste que vai testa o repositoryJPA
 @ActiveProfiles("test") //indica qual arquivo de properties vai ser usado para os teste
 class LibrasRepositoryTest {
@@ -113,6 +113,4 @@ class LibrasRepositoryTest {
 
 
     }
-
-
 }*/

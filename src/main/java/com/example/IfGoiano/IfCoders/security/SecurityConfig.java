@@ -46,13 +46,14 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/topicos/**").hasRole("PROFESSOR")
                 .requestMatchers(HttpMethod.GET, "/topicos/**").permitAll()
 
-                .requestMatchers(HttpMethod.POST, "/sinais/sugere").authenticated()
+                .requestMatchers(HttpMethod.POST, "/sinais/sugere").permitAll()
                 .requestMatchers(HttpMethod.POST, "/sinais/**").hasAnyRole("TUTOR", "INTERPRETE")
                 .requestMatchers(HttpMethod.PUT, "/sinais/**").hasAnyRole("TUTOR", "INTERPRETE")
                 .requestMatchers(HttpMethod.DELETE, "/sinais/**").hasAnyRole("TUTOR", "INTERPRETE")
                 .requestMatchers(HttpMethod.GET, "/sinais/busca-status").authenticated()
                 .requestMatchers(HttpMethod.GET, "/sinais/**").permitAll()
                 .requestMatchers(HttpMethod.GET,"sinais/busca-categoria").permitAll()
+                .requestMatchers(HttpMethod.POST, "/interpretes/analisar/**").permitAll()
 
                 .requestMatchers(HttpMethod.GET, "/publicacoes/**").permitAll()
                 .requestMatchers("/publicacoes/**").authenticated()

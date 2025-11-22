@@ -130,8 +130,28 @@ public class InterpreteController {
     }
 
 
+
+    @Operation(summary = "Analisar palavra em Libras", tags = "Intérprete")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Palavra analisada com sucesso",
+                    content = { @Content(mediaType = "application/json",
+                            schema = @Schema(implementation = LibrasOutputDTO.class)) }),
+            @ApiResponse(responseCode = "400", description = "Dados inválidos",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Intérprete não encontrado",
+                    content = @Content),
+            @ApiResponse(responseCode = "500", description = "Erro interno do servidor",
+                    content = @Content)
+    })
     @PostMapping("/analisar/{idInterprete}")
-    public ResponseEntity<LibrasOutputDTO> analisarLibras(@RequestBody RequestAnalisePalavra requestAnalisePalavra, @PathVariable Long idInterprete){
+    public ResponseEntity<LibrasOutputDTO> analisarLibras(
+            @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Dados da palavra a ser analisada",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = RequestAnalisePalavra.class))
+            )
+            @RequestBody RequestAnalisePalavra requestAnalisePalavra, 
+            @PathVariable Long idInterprete){
 
         return new ResponseEntity<>(this.analisarLibras.analisarPalavra(requestAnalisePalavra, idInterprete), HttpStatus.CREATED);
     }

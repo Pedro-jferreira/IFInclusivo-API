@@ -9,6 +9,7 @@ import com.example.IfGoiano.IfCoders.exception.BadRequestException;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.InterpreteRepository;
 import com.example.IfGoiano.IfCoders.repository.LibrasRepository;
+import com.example.IfGoiano.IfCoders.service.NotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -33,6 +34,9 @@ public class AnalisarLibras {
 
     @Autowired
     private InterpreteRepository interpreteRepository;
+
+    @Autowired
+    private NotificationService notificationService;
 
 
     private final S3Client s3Client;
@@ -76,17 +80,19 @@ public class AnalisarLibras {
 
         if(requestAnalisePalavra.getFileUrl() != null){
           this.deleteRegisterS3(requestAnalisePalavra.getFileUrl());
-
-
         }
 
         this.librasRepository.save(libras);
         this.interpreteRepository.save(interpreteAnalise);
 
+        // Criar notificação se a libras foi aprovada
+        if (requestAnalisePalavra.getStatus() == Status.APROVADO) {
+            notificationService.createLibrasApprovedNotification(libras);
+        }else{
+            notificationService.createLibrasApprovedNotification(libras);
+        }
 
-
-
-        return  librasMapper.toLibrasOutputDTO(libras);
+        return librasMapper.toLibrasOutputDTO(libras);
 
 
     }

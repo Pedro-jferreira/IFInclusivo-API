@@ -83,4 +83,7 @@ public class UsuarioEntity {
             inverseJoinColumns = @JoinColumn(name = "comentario_id")
     )
     private Set<ComentarioEntity> likesComentarios = new HashSet<>();
+
+    @OneToMany(mappedBy = "usuario", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<NotificationEntity> notifications = new ArrayList<>();
 }

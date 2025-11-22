@@ -13,8 +13,7 @@ public class RequestAnalisePalavra {
    private Status status;
    private String Justificativa;
    private String url;
-   private String video;
-   private String foto;
+   private String fileUrl;
 
 
 

@@ -21,7 +21,6 @@ public class UploadFiles {
 
     private final String region;
 
-    @Value("${aws.bucketName}")
     private String bucketName;
 
     public UploadFiles(@Value("${aws.bucketName}") String bucketName,

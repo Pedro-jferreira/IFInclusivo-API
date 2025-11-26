@@ -31,4 +31,10 @@ public class NotificationEntity {
     @ManyToOne
     @JoinColumn(name = "libras_id")
     private LibrasEntity libras;
+    
+    @Column(length = 50)
+    private String categoria; // "LIBRAS" ou "PUBLICACAO"
+    
+    @Column(name = "item_id")
+    private Long itemId; // ID do item (libras ou publicacao)
 }

@@ -149,5 +149,20 @@ public class LibrasServiceImpl implements LibrasService {
             throw new ConflictException("Libras existed");
         }
     }
+    
+    @Override
+    public Page<LibrasOutputDTO> buscarComFiltros(String termo, Status status, Pageable pageable) {
+        return repository.buscarComFiltros(termo, status, pageable).map(mapper::toLibrasOutputDTO);
+    }
+    
+    @Override
+    public void deletarPalavraReprovada(Long id) {
+        var libras = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Libras not found"));
+        if (libras.getStatus() == Status.REPROVADO) {
+            repository.deleteById(id);
+        } else {
+            throw new IllegalStateException("Apenas palavras reprovadas podem ser deletadas");
+        }
+    }
 
 }

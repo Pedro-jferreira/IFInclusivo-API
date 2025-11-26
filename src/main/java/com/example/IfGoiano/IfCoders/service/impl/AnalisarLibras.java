@@ -85,11 +85,15 @@ public class AnalisarLibras {
         this.librasRepository.save(libras);
         this.interpreteRepository.save(interpreteAnalise);
 
-        // Criar notificação se a libras foi aprovada
+        // Criar notificação baseada no status
         if (requestAnalisePalavra.getStatus() == Status.APROVADO) {
             notificationService.createLibrasApprovedNotification(libras);
-        }else{
-            notificationService.createLibrasApprovedNotification(libras);
+            return librasMapper.toLibrasOutputDTO(libras);
+        } else if (requestAnalisePalavra.getStatus() == Status.REPROVADO) {
+            notificationService.createLibrasReproveNotification(libras);
+            // Deletar palavra reprovada fisicamente
+            this.librasRepository.deleteById(libras.getId());
+            return null; // Palavra foi deletada
         }
 
         return librasMapper.toLibrasOutputDTO(libras);

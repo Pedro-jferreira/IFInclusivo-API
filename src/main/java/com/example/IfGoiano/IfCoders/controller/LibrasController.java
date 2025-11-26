@@ -235,6 +235,42 @@ public class LibrasController {
         Page<LibrasOutputDTOV2> libras = this.librasService.findByCategoria(categoria, pageable);
         return ResponseEntity.ok(libras);
     }
-
+    
+    @Operation(summary = "Buscar palavras com filtros", tags = "Sinais de Libras")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Words found with filters",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)})
+    @GetMapping("/buscar")
+    public ResponseEntity<Page<LibrasOutputDTO>> buscarPalavras(
+            @RequestParam(required = false) String termo,
+            @RequestParam(required = false) Status status,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "ASC") String ordenacao) {
+        
+        Sort sort = ordenacao.equalsIgnoreCase("DESC") ? 
+            Sort.by("palavra").descending() : 
+            Sort.by("palavra").ascending();
+        
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return ResponseEntity.ok(librasService.buscarComFiltros(termo, status, pageable));
+    }
+    
+    @SecurityRequirement(name = "bearerAuth")
+    @Operation(summary = "Deletar palavra reprovada", tags = "Sinais de Libras")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204", description = "Reproved word deleted",
+                    content = @Content),
+            @ApiResponse(responseCode = "404", description = "Word not found",
+                    content = @Content),
+            @ApiResponse(responseCode = "400", description = "Word is not reproved",
+                    content = @Content)})
+    @DeleteMapping("/deletar-reprovada/{id}")
+    public ResponseEntity<Void> deletarPalavraReprovada(@PathVariable Long id) {
+        librasService.deletarPalavraReprovada(id);
+        return ResponseEntity.noContent().build();
+    }
 
 }

@@ -4,6 +4,8 @@ package com.example.IfGoiano.IfCoders.controller;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.update.AlunoNapneUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleAlunoDTO;
 import com.example.IfGoiano.IfCoders.service.impl.AlunoNapneServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -113,6 +115,51 @@ public class AlunoNapneController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         alunoNapneService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
+    }
+    
+    @Operation(summary = "Buscar alunos por termo", tags = "Aluno NAPNE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Students found",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Internal server error",
+                    content = @Content)})
+    @GetMapping("/buscar-alunos")
+    public ResponseEntity<List<SimpleAlunoDTO>> buscarAlunos(@RequestParam String termo) {
+        return ResponseEntity.ok(alunoNapneService.buscarAlunosPorTermo(termo));
+    }
+    
+    @Operation(summary = "Editar aluno NAPNE por ID", tags = "Aluno NAPNE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Student NAPNE updated",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Student NAPNE not found",
+                    content = @Content)})
+    @PutMapping("/{id}")
+    public ResponseEntity<AlunoNapneOutputDTO> editarAlunoNapne(
+            @PathVariable Long id, 
+            @RequestBody AlunoNapneUpdateDTO dto) {
+        return ResponseEntity.ok(alunoNapneService.editarAlunoNapne(id, dto));
+    }
+    
+    @Operation(summary = "Converter aluno para NAPNE", tags = "Aluno NAPNE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Student converted to NAPNE",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "Student not found",
+                    content = @Content)})
+    @PostMapping("/converter-aluno/{alunoId}")
+    public ResponseEntity<AlunoNapneOutputDTO> converterParaNapne(@PathVariable Long alunoId) {
+        return ResponseEntity.ok(alunoNapneService.converterAlunoParaNapne(alunoId));
+    }
+    
+    @Operation(summary = "Converter NAPNE para aluno", tags = "Aluno NAPNE")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "NAPNE converted to student",
+                    content = {@Content(mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "NAPNE not found",
+                    content = @Content)})
+    @PostMapping("/converter-para-aluno/{alunoNapneId}")
+    public ResponseEntity<AlunoOutputDTO> converterParaAluno(@PathVariable Long alunoNapneId) {
+        return ResponseEntity.ok(alunoNapneService.converterNapneParaAluno(alunoNapneId));
     }
 }

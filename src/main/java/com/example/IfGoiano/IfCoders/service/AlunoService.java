@@ -18,4 +18,7 @@ public interface AlunoService {
 
     void delete(Long id);
     boolean existsById(Long id);
+    
+    // Método para converter Aluno para AlunoNapne
+    void converterParaNapne(Long alunoId);
 }

@@ -9,6 +9,7 @@ import com.example.IfGoiano.IfCoders.entity.AlunoEntity;
 import com.example.IfGoiano.IfCoders.exception.ResourceNotFoundException;
 import com.example.IfGoiano.IfCoders.repository.AlunoRepository;
 import com.example.IfGoiano.IfCoders.service.AlunoService;
+import com.example.IfGoiano.IfCoders.service.AlunoNapneService;
 import com.example.IfGoiano.IfCoders.service.ConfigAcessibilidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class AlunoServiceImpl implements AlunoService {
     ConfigAcessibilidadeService configAcessibilidadeService;
     @Autowired
     ConfigAcblMapper configAcblMapper;
+    @Autowired
+    private AlunoNapneService alunoNapneService;
 
 
     @Override
@@ -67,6 +70,12 @@ public class AlunoServiceImpl implements AlunoService {
     @Override
     public boolean existsById(Long id) {
         return alunoRepository.existsById(id);
+    }
+    
+    @Override
+    @Transactional
+    public void converterParaNapne(Long alunoId) {
+        alunoNapneService.converterAlunoParaNapne(alunoId);
     }
 
 

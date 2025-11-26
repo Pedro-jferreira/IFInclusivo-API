@@ -4,6 +4,8 @@ package com.example.IfGoiano.IfCoders.service;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.AlunoNapneInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.update.AlunoNapneUpdateDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoOutputDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.SimpleAlunoDTO;
 import com.example.IfGoiano.IfCoders.entity.AlunoNapneEntity;
 
 import java.util.List;
@@ -19,4 +21,12 @@ public interface AlunoNapneService {
 
     void delete(Long id);
     boolean existsById(Long id);
+    
+    List<SimpleAlunoDTO> buscarAlunosPorTermo(String termo);
+    
+    AlunoNapneOutputDTO converterAlunoParaNapne(Long alunoId);
+    
+    AlunoOutputDTO converterNapneParaAluno(Long alunoNapneId);
+    
+    AlunoNapneOutputDTO editarAlunoNapne(Long id, AlunoNapneUpdateDTO dto);
 }

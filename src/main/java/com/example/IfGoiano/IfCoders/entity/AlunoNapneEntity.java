@@ -17,8 +17,6 @@ public class AlunoNapneEntity extends AlunoEntity {
     @NotNull   @Column(nullable = false)
     private String condicao;
     @NotNull   @Column(nullable = false)
-    private String laudo;
-    @NotNull   @Column(nullable = false)
     private String necessidadeEspecial;
     @NotNull   @Column(nullable = false)
     private String necessidadeEscolar;

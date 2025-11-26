@@ -231,7 +231,7 @@ public class UsuarioMapper {
         AlunoNapneEntity al = new AlunoNapneEntity();
         al.setAcompanhamento(usuarioInputDTO.getAcompanhamento());
         al.setCondicao(usuarioInputDTO.getCondicao());
-        al.setLaudo(usuarioInputDTO.getLaudo());
+
         al.setNecessidadeEscolar(usuarioInputDTO.getNecessidadeEscolar());
         al.setNecessidadeEspecial(usuarioInputDTO.getNecessidadeEspecial());
         al.setSituacao(usuarioInputDTO.getSituacao());
@@ -242,7 +242,7 @@ public class UsuarioMapper {
         AlunoNapneOutputDTO a  = new AlunoNapneOutputDTO();
         a.setAcompanhamento(usuarioEntity.getAcompanhamento());
         a.setCondicao(usuarioEntity.getCondicao());
-        a.setLaudo(usuarioEntity.getLaudo());
+
         a.setNecessidadeEscolar(usuarioEntity.getNecessidadeEscolar());
         a.setNecessidadeEspecial(usuarioEntity.getNecessidadeEspecial());
         a.setSituacao(usuarioEntity.getSituacao());
@@ -286,7 +286,7 @@ public class UsuarioMapper {
         AlunoNapneEntity al = new AlunoNapneEntity();
         al.setAcompanhamento(usuarioOutputDTO.getAcompanhamento());
         al.setCondicao(usuarioOutputDTO.getCondicao());
-        al.setLaudo(usuarioOutputDTO.getLaudo());
+
         al.setNecessidadeEscolar(usuarioOutputDTO.getNecessidadeEscolar());
         al.setNecessidadeEspecial(usuarioOutputDTO.getNecessidadeEspecial());
         al.setSituacao(usuarioOutputDTO.getSituacao());

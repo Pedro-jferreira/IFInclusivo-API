@@ -37,7 +37,9 @@ public interface LibrasRepository extends JpaRepository<LibrasEntity, Long> {
 
     Page<LibrasEntity> findByCategorias(Categorias categoria, Pageable pageable);
 
-    
-
+    @Query("SELECT l FROM LibrasEntity l WHERE " +
+           "(:termo IS NULL OR LOWER(l.palavra) LIKE LOWER(CONCAT('%', :termo, '%'))) AND " +
+           "(:status IS NULL OR l.status = :status)")
+    Page<LibrasEntity> buscarComFiltros(@Param("termo") String termo, @Param("status") Status status, Pageable pageable);
 
 }

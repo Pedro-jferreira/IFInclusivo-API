@@ -40,6 +40,9 @@ public interface LibrasService {
     void delete(Long id);
 
     Page<LibrasOutputDTOV2> findByCategoria(Categorias categoria, Pageable pageable);
-
+    
+    Page<LibrasOutputDTO> buscarComFiltros(String termo, Status status, Pageable pageable);
+    
+    void deletarPalavraReprovada(Long id);
 
 }

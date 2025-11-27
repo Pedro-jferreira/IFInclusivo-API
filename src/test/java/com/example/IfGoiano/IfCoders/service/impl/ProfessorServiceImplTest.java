@@ -2,6 +2,7 @@ package com.example.IfGoiano.IfCoders.service.impl;
 
 import com.example.IfGoiano.IfCoders.controller.DTO.input.ProfessorInputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.input.update.ProfessorUpdateDTO;
+import com.example.IfGoiano.IfCoders.controller.DTO.output.AlunoNapneOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ConfigAcblOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.DTO.output.ProfessorOutputDTO;
 import com.example.IfGoiano.IfCoders.controller.mapper.ConfigAcblMapper;
@@ -194,5 +195,44 @@ class ProfessorServiceImplTest {
     void existsById_ShouldReturnTrue_WhenExists() {
         when(repository.existsById(1L)).thenReturn(true);
         assertTrue(service.existsById(1L));
+    }
+
+    @Test
+    @DisplayName("Deve retornar lista vazia no 'findAll' se não houver professores")
+    void findAll_ShouldReturnEmptyList_WhenNoData() {
+
+        when(repository.findAll()).thenReturn(List.of());
+
+        List<ProfessorOutputDTO> result = service.findAll();
+
+        assertNotNull(result);
+        assertTrue(result.isEmpty());
+        verify(repository).findAll();
+        verify(mapper, never()).toProfessorOutputDTO(any());
+    }
+    @Test
+    @DisplayName("Deve retornar false no 'existsById' se o ID não existir")
+    void existsById_ShouldReturnFalse_WhenNotExists() {
+
+        when(repository.existsById(99L)).thenReturn(false);
+
+        boolean result = service.existsById(99L);
+
+        assertFalse(result);
+    }
+    @Test
+    @DisplayName("Deve lançar ResourceNotFoundException no 'save' se a Configuração de Acessibilidade não for encontrada")
+    void save_ShouldThrowException_WhenConfigAcessibilidadeNotFound() {
+
+        Long idConfigInexistente = 999L;
+
+        when(configAcessibilidadeService.findById(idConfigInexistente))
+                .thenThrow(new ResourceNotFoundException("Config not found"));
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            service.save(mockInputDTO, idConfigInexistente);
+        });
+
+        verify(repository, never()).save(any());
     }
 }

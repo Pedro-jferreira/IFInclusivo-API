@@ -190,7 +190,3 @@ class ConfigAcessibilidadeServiceImplTest {
         verify(repository, never()).delete(any());
     }
 }
-
-    //git add src/test/java/com/example/IfGoiano/IfCoders/service/impl/AlunoServiceImplTest.java
-    //git commit -m "test(AlunoServiceImpl): adiciona suíte de testes completa" -m "Cobre CRUD de Aluno, com atenção especial à lógica de conversão no método delete."
-    //git push -u origin feature/testes-aluno-service
